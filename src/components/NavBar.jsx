@@ -17,7 +17,7 @@ export default function NavBar() {
       <NavLink to="/explore">
         <FontAwesomeIcon icon={faCompass} />
       </NavLink>
-      <NavLink>
+      <NavLink to="/bookmarks">
         <FontAwesomeIcon icon={faBookmark} />
       </NavLink>
     </nav>

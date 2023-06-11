@@ -15,6 +15,7 @@ import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import UsersProvider from "./contexts/UsersProvider";
 import Explore from "./pages/Explore";
+import Bookmarks from "./pages/Bookmarks";
 
 function AppRouter() {
   const router = createBrowserRouter(
@@ -25,6 +26,7 @@ function AppRouter() {
             <Route index element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/:userId" element={<Profile />} />
           </Route>
         </Route>
