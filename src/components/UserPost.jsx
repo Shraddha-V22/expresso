@@ -1,16 +1,49 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../contexts/UsersProvider";
+import { dislikePostService, likePostService } from "../services/postServices";
+import { useAuth } from "../contexts/AuthProvider";
+import { usePosts } from "../contexts/PostsProvider";
+import { POSTS } from "../common/reducerTypes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import { faThumbsUp as faThumbsUpFilled } from "@fortawesome/free-solid-svg-icons";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
+  const {
+    userData: {
+      user: { token, userDetails },
+    },
+  } = useAuth();
+  const { postsDispatch } = usePosts();
   const { users } = useUsers();
-  const { content, username, likes, createdAt } = userPost;
+  const { _id, content, username, likes, createdAt } = userPost;
   const [readMore, setReadMore] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
-  // console.log({ users });
+  const likePost = async (postId, token) => {
+    try {
+      const { data, status } = await likePostService(postId, token);
+      if (status === 201) {
+        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const dislikePost = async (postId, token) => {
+    try {
+      const { data, status } = await dislikePostService(postId, token);
+      if (status === 201) {
+        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <section className="m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
@@ -45,7 +78,21 @@ export default function UserPost({ userPost }) {
           <p>comments 0</p>
         </div>
         <div className="flex w-full justify-evenly gap-2">
-          <button className="w-full border-[1px]">Like</button>
+          {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
+            <button
+              className="w-full border-[1px]"
+              onClick={() => dislikePost(_id, token)}
+            >
+              <FontAwesomeIcon icon={faThumbsUpFilled} />
+            </button>
+          ) : (
+            <button
+              className="w-full border-[1px]"
+              onClick={() => likePost(_id, token)}
+            >
+              <FontAwesomeIcon icon={faThumbsUp} />
+            </button>
+          )}
           <button className="w-full border-[1px]">Comment</button>
           <button className="w-full border-[1px]">Bookmark</button>
         </div>

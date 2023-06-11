@@ -3,17 +3,21 @@ import { useState } from "react";
 import { createContext } from "react";
 import { getAllPostsService } from "../services/postServices";
 import { useEffect } from "react";
+import { useReducer } from "react";
+import { postReducers } from "../reducers/postsReducers";
+import { POSTS } from "../common/reducerTypes";
 
 const PostsContext = createContext();
+const initialPosts = { post: [] };
 
 export default function PostsProvider({ children }) {
-  const [postsData, setPostsData] = useState({ posts: [] });
+  const [postsData, postsDispatch] = useReducer(postReducers, initialPosts);
 
   const getAllPosts = async () => {
     try {
       const { data, status } = await getAllPostsService();
       if (status === 200) {
-        setPostsData((prev) => ({ ...prev, posts: data.posts }));
+        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
       }
     } catch (error) {
       console.error(error);
@@ -25,7 +29,7 @@ export default function PostsProvider({ children }) {
   }, []);
 
   return (
-    <PostsContext.Provider value={{ postsData }}>
+    <PostsContext.Provider value={{ postsData, postsDispatch }}>
       {children}
     </PostsContext.Provider>
   );
