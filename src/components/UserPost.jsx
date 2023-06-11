@@ -8,6 +8,7 @@ import { POSTS } from "../common/reducerTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpFilled } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function UserPost({ userPost }) {
   const { users } = useUsers();
   const { _id, content, username, likes, createdAt } = userPost;
   const [readMore, setReadMore] = useState(false);
+  const [showLikedBy, setShowLikedBy] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -66,16 +68,43 @@ export default function UserPost({ userPost }) {
           <p className={`${readMore ? "" : "line-clamp-3"} text-sm`}>
             {content}
           </p>
-          <button
+          {/* <button
             onClick={() => setReadMore((prev) => !prev)}
             className="text-sm text-blue-500 underline"
           >
             {readMore ? "read less" : "read more"}
-          </button>
+          </button> */}
         </div>
         <div className="flex justify-between text-sm">
-          <p>likes {likes?.likeCount}</p>
+          <p
+            className="cursor-pointer"
+            onClick={() => setShowLikedBy((prev) => !prev)}
+          >
+            likes {likes?.likeCount}
+          </p>
           <p>comments 0</p>
+          <div
+            className={`${
+              showLikedBy ? "" : "hidden"
+            } fixed left-0 top-0 z-20 flex h-[100vh] w-full flex-col gap-2 overflow-y-auto bg-white p-4 py-2`}
+          >
+            <button
+              className="self-start"
+              onClick={() => setShowLikedBy(false)}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+            <h4 className="border-b-[1px] pb-1 capitalize">liked by</h4>
+            {likes?.likedBy.map((user) => (
+              <div
+                key={user._id}
+                className="flex h-[30px] w-[30px] items-center gap-2"
+              >
+                <img src={user.profileImg} alt="" className="rounded-full" />
+                <p>@{user.username}</p>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="flex w-full justify-evenly gap-2">
           {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
