@@ -37,7 +37,7 @@ export const authReducer = (state, { type, payload }) => {
           userDetails: { ...state.user.userDetails, bookmarks: payload },
         },
       };
-    case AUTH.FOLLOW_USER:
+    case AUTH.USER_FOLLOW:
       return {
         ...state,
         user: {

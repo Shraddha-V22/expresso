@@ -7,7 +7,7 @@ export const usersReducers = (state, { type, payload }) => {
         ...state,
         users: payload,
       };
-    case USERS.FOLLOW_USER:
+    case USERS.USER_FOLLOW:
       return {
         ...state,
         users: state.users.map((user) =>

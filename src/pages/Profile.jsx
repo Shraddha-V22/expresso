@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import {
   followUserService,
   getSingleUserService,
+  unfollowUserService,
 } from "../services/userServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { useMemo } from "react";
@@ -19,7 +20,6 @@ export default function Profile() {
     },
     authDispatch,
   } = useAuth();
-  // const { usersDispatch } = useUsers();
   const [userProfile, setUserProfile] = useState({});
   const [userPosts, setUserPosts] = useState([]);
   const { userId } = useParams();
@@ -55,8 +55,19 @@ export default function Profile() {
     try {
       const { data, status } = await followUserService(id, token);
       if (status === 200) {
-        authDispatch({ type: AUTH.FOLLOW_USER, payload: data.user });
-        // usersDispatch({ type: USERS.FOLLOW_USER, payload: data.followUser });
+        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
+        setUserProfile(data.followUser);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const unfollowUserProfile = async (id, token) => {
+    try {
+      const { data, status } = await unfollowUserService(id, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
         setUserProfile(data.followUser);
       }
     } catch (error) {
@@ -92,6 +103,15 @@ export default function Profile() {
         <section className="flex flex-col items-start gap-1 p-4">
           {isUserProfile ? (
             <button className="self-end border-[1px] p-1">edit profile</button>
+          ) : userDetails?.following?.find(
+              ({ _id }) => _id === userProfile?._id
+            ) ? (
+            <button
+              onClick={() => unfollowUserProfile(userProfile?._id, token)}
+              className="self-end border-[1px] p-1"
+            >
+              Following
+            </button>
           ) : (
             <button
               onClick={() => followUserProfile(userProfile?._id, token)}

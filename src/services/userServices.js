@@ -55,3 +55,16 @@ export const followUserService = (followUserId, token) => {
     }
   );
 };
+
+// /api/users/unfollow/:followUserId/
+export const unfollowUserService = (followUserId, token) => {
+  return axios.post(
+    `/api/users/unfollow/${followUserId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
