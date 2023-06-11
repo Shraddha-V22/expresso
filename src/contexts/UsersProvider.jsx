@@ -14,7 +14,6 @@ export default function UsersProvider({ children }) {
       if (status === 200) {
         setUsers(data.users);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }

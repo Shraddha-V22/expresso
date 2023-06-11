@@ -2,6 +2,10 @@ import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { loginService, signUpService } from "../services/authServices";
+import {
+  bookmarkPostService,
+  removeBookmarkPostService,
+} from "../services/userServices";
 
 const AuthContext = createContext();
 
@@ -42,8 +46,56 @@ export default function AuthProvider({ children }) {
     setUserData({ user: {}, isLoggedIn: false });
   };
 
+  const bookmarkPost = async (postId, token) => {
+    try {
+      const { data, status } = await bookmarkPostService(postId, token);
+      if (status === 200) {
+        setUserData((prev) => ({
+          ...prev,
+          user: {
+            ...userData.user,
+            userDetails: {
+              ...userData.user.userDetails,
+              bookmarks: data.bookmarks,
+            },
+          },
+        }));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const removeBookmarkPost = async (postId, token) => {
+    try {
+      const { data, status } = await removeBookmarkPostService(postId, token);
+      if (status === 200) {
+        setUserData((prev) => ({
+          ...prev,
+          user: {
+            ...userData.user,
+            userDetails: {
+              ...userData.user.userDetails,
+              bookmarks: data.bookmarks,
+            },
+          },
+        }));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ userData, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        userData,
+        signIn,
+        signUp,
+        signOut,
+        bookmarkPost,
+        removeBookmarkPost,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

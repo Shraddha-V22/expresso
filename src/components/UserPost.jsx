@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpFilled } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as faBookmarkFilled } from "@fortawesome/free-solid-svg-icons";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ export default function UserPost({ userPost }) {
     userData: {
       user: { token, userDetails },
     },
+    bookmarkPost,
+    removeBookmarkPost,
   } = useAuth();
   const { postsDispatch } = usePosts();
   const { users } = useUsers();
@@ -123,7 +127,21 @@ export default function UserPost({ userPost }) {
             </button>
           )}
           <button className="w-full border-[1px]">Comment</button>
-          <button className="w-full border-[1px]">Bookmark</button>
+          {userDetails?.bookmarks.find((post) => post._id === _id) ? (
+            <button
+              className="w-full border-[1px]"
+              onClick={() => removeBookmarkPost(_id, token)}
+            >
+              <FontAwesomeIcon icon={faBookmarkFilled} />
+            </button>
+          ) : (
+            <button
+              className="w-full border-[1px]"
+              onClick={() => bookmarkPost(_id, token)}
+            >
+              <FontAwesomeIcon icon={faBookmark} />
+            </button>
+          )}
         </div>
       </div>
     </section>
