@@ -8,6 +8,7 @@ export default function RequiredAuth() {
   const {
     userData: { isLoggedIn },
   } = useAuth();
+
   return isLoggedIn ? (
     <Outlet />
   ) : (

@@ -1,3 +1,16 @@
 export const POSTS = {
   INITIALISE: "INITIALISE_POSTS",
 };
+
+export const USERS = {
+  INITIALISE: "INITIALISE_USERS",
+  FOLLOW_USER: "FOLLOW_USER",
+};
+
+export const AUTH = {
+  SIGN_UP: "SIGN_UP",
+  SIGN_IN: "SIGN_IN",
+  SIGN_OUT: "SIGN_OUT",
+  SET_BOOKMARKS: "SET_BOOKMARKS",
+  FOLLOW_USER: "FOLLOW_USER",
+};

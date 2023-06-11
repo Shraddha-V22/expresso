@@ -22,7 +22,9 @@ export default function UserPost({ userPost }) {
     removeBookmarkPost,
   } = useAuth();
   const { postsDispatch } = usePosts();
-  const { users } = useUsers();
+  const {
+    usersData: { users },
+  } = useUsers();
   const { _id, content, username, likes, createdAt } = userPost;
   const [readMore, setReadMore] = useState(false);
   const [showLikedBy, setShowLikedBy] = useState(false);

@@ -3,16 +3,24 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { getAllUsersService } from "../services/userServices";
+import { useReducer } from "react";
+import { usersReducers } from "../reducers/usersReducers";
+import { USERS } from "../common/reducerTypes";
 
 const UsersContext = createContext();
 
+const initialUsers = {
+  users: [],
+};
+
 export default function UsersProvider({ children }) {
-  const [users, setUsers] = useState([]);
+  const [usersData, usersDispatch] = useReducer(usersReducers, initialUsers);
+
   const getAllUsers = async () => {
     try {
       const { data, status } = await getAllUsersService();
       if (status === 200) {
-        setUsers(data.users);
+        usersDispatch({ type: USERS.INITIALISE, payload: data.users });
       }
     } catch (error) {
       console.error(error);
@@ -24,7 +32,9 @@ export default function UsersProvider({ children }) {
   }, []);
 
   return (
-    <UsersContext.Provider value={{ users }}>{children}</UsersContext.Provider>
+    <UsersContext.Provider value={{ usersData, usersDispatch }}>
+      {children}
+    </UsersContext.Provider>
   );
 }
 

@@ -46,7 +46,10 @@ export default function Sidebar({ showMenu, setShowMenu }) {
         >
           @{userDetails?.username}
         </p>
-        <p className="text-xs">0 Following 0 Followers</p>
+        <p className="text-xs">
+          {userDetails?.following?.length} Following{" "}
+          {userDetails?.followers?.length} Followers
+        </p>
       </section>
       <section className="flex flex-col gap-4">
         <div

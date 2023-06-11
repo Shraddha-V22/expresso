@@ -6,20 +6,30 @@ import {
   bookmarkPostService,
   removeBookmarkPostService,
 } from "../services/userServices";
+import { useReducer } from "react";
+import { authReducer } from "../reducers/authReducer";
+import { AUTH } from "../common/reducerTypes";
 
 const AuthContext = createContext();
+const initialUser = {
+  user: {
+    userDetails: {},
+    token: "",
+  },
+  isLoggedIn: false,
+};
 
 export default function AuthProvider({ children }) {
-  const [userData, setUserData] = useState({ user: {}, isLoggedIn: false });
+  const [userData, authDispatch] = useReducer(authReducer, initialUser);
 
   const signUp = async (creds) => {
     try {
       const request = await signUpService(creds);
       const { createdUser, encodedToken } = request.data;
       if (request.status === 201) {
-        setUserData({
-          user: { userDetails: createdUser, token: encodedToken },
-          isLoggedIn: true,
+        authDispatch({
+          type: AUTH.SIGN_UP,
+          payload: { createdUser, encodedToken },
         });
       }
     } catch (error) {
@@ -32,9 +42,9 @@ export default function AuthProvider({ children }) {
       const request = await loginService(creds);
       const { foundUser, encodedToken } = request.data;
       if (request.status === 200) {
-        setUserData({
-          user: { userDetails: foundUser, token: encodedToken },
-          isLoggedIn: true,
+        authDispatch({
+          type: AUTH.SIGN_IN,
+          payload: { foundUser, encodedToken },
         });
       }
     } catch (error) {
@@ -43,42 +53,25 @@ export default function AuthProvider({ children }) {
   };
 
   const signOut = async () => {
-    setUserData({ user: {}, isLoggedIn: false });
+    authDispatch({ type: AUTH.SIGN_OUT });
   };
 
   const bookmarkPost = async (postId, token) => {
     try {
       const { data, status } = await bookmarkPostService(postId, token);
       if (status === 200) {
-        setUserData((prev) => ({
-          ...prev,
-          user: {
-            ...userData.user,
-            userDetails: {
-              ...userData.user.userDetails,
-              bookmarks: data.bookmarks,
-            },
-          },
-        }));
+        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   const removeBookmarkPost = async (postId, token) => {
     try {
       const { data, status } = await removeBookmarkPostService(postId, token);
       if (status === 200) {
-        setUserData((prev) => ({
-          ...prev,
-          user: {
-            ...userData.user,
-            userDetails: {
-              ...userData.user.userDetails,
-              bookmarks: data.bookmarks,
-            },
-          },
-        }));
+        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
       }
     } catch (error) {
       console.error(error);
@@ -94,6 +87,7 @@ export default function AuthProvider({ children }) {
         signOut,
         bookmarkPost,
         removeBookmarkPost,
+        authDispatch,
       }}
     >
       {children}

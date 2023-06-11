@@ -7,7 +7,7 @@ export default function Bookmarks() {
       user: { userDetails },
     },
   } = useAuth();
-  console.log(userDetails?.bookmarks);
+
   return (
     <section>
       <h1>Bookmarks</h1>

@@ -1,18 +1,25 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getSingleUserService } from "../services/userServices";
+import {
+  followUserService,
+  getSingleUserService,
+} from "../services/userServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { useMemo } from "react";
 import { getUserPostsService } from "../services/postServices";
 import UserPost from "../components/UserPost";
+import { AUTH, USERS } from "../common/reducerTypes";
+import { useUsers } from "../contexts/UsersProvider";
 
 export default function Profile() {
   const {
     userData: {
-      user: { userDetails },
+      user: { userDetails, token },
     },
+    authDispatch,
   } = useAuth();
+  // const { usersDispatch } = useUsers();
   const [userProfile, setUserProfile] = useState({});
   const [userPosts, setUserPosts] = useState([]);
   const { userId } = useParams();
@@ -44,9 +51,22 @@ export default function Profile() {
     }
   };
 
+  const followUserProfile = async (id, token) => {
+    try {
+      const { data, status } = await followUserService(id, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.FOLLOW_USER, payload: data.user });
+        // usersDispatch({ type: USERS.FOLLOW_USER, payload: data.followUser });
+        setUserProfile(data.followUser);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getUserProfile(userId);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     getAllUserPosts(userProfile?.username);
@@ -73,14 +93,19 @@ export default function Profile() {
           {isUserProfile ? (
             <button className="self-end border-[1px] p-1">edit profile</button>
           ) : (
-            <button className="self-end border-[1px] p-1">Follow</button>
+            <button
+              onClick={() => followUserProfile(userProfile?._id, token)}
+              className="self-end border-[1px] p-1"
+            >
+              Follow
+            </button>
           )}
           <h3>@{userProfile?.username}</h3>
           <p>{userProfile?.bio}</p>
           <p>{userProfile?.portfolio}</p>
           <div className="flex gap-4 text-sm">
-            <p>0 Following</p>
-            <p>0 Followers</p>
+            <p>{userProfile?.following?.length} Following</p>
+            <p>{userProfile?.followers?.length} Followers</p>
           </div>
         </section>
       </section>
