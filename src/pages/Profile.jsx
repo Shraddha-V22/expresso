@@ -10,8 +10,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import { useMemo } from "react";
 import { getUserPostsService } from "../services/postServices";
 import UserPost from "../components/UserPost";
-import { AUTH, USERS } from "../common/reducerTypes";
-import { useUsers } from "../contexts/UsersProvider";
+import { AUTH } from "../common/reducerTypes";
 
 export default function Profile() {
   const {
@@ -51,21 +50,9 @@ export default function Profile() {
     }
   };
 
-  const followUserProfile = async (id, token) => {
+  const followUnfollowHandler = async (serviceFn, id, token) => {
     try {
-      const { data, status } = await followUserService(id, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
-        setUserProfile(data.followUser);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const unfollowUserProfile = async (id, token) => {
-    try {
-      const { data, status } = await unfollowUserService(id, token);
+      const { data, status } = await serviceFn(id, token);
       if (status === 200) {
         authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
         setUserProfile(data.followUser);
@@ -107,14 +94,26 @@ export default function Profile() {
               ({ _id }) => _id === userProfile?._id
             ) ? (
             <button
-              onClick={() => unfollowUserProfile(userProfile?._id, token)}
+              onClick={() =>
+                followUnfollowHandler(
+                  unfollowUserService,
+                  userProfile?._id,
+                  token
+                )
+              }
               className="self-end border-[1px] p-1"
             >
               Following
             </button>
           ) : (
             <button
-              onClick={() => followUserProfile(userProfile?._id, token)}
+              onClick={() =>
+                followUnfollowHandler(
+                  followUserService,
+                  userProfile?._id,
+                  token
+                )
+              }
               className="self-end border-[1px] p-1"
             >
               Follow
