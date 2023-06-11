@@ -56,28 +56,6 @@ export default function AuthProvider({ children }) {
     authDispatch({ type: AUTH.SIGN_OUT });
   };
 
-  const bookmarkPost = async (postId, token) => {
-    try {
-      const { data, status } = await bookmarkPostService(postId, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const removeBookmarkPost = async (postId, token) => {
-    try {
-      const { data, status } = await removeBookmarkPostService(postId, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -85,8 +63,6 @@ export default function AuthProvider({ children }) {
         signIn,
         signUp,
         signOut,
-        bookmarkPost,
-        removeBookmarkPost,
         authDispatch,
       }}
     >

@@ -4,13 +4,17 @@ import { useUsers } from "../contexts/UsersProvider";
 import { dislikePostService, likePostService } from "../services/postServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
-import { POSTS } from "../common/reducerTypes";
+import { AUTH, POSTS } from "../common/reducerTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpFilled } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarkFilled } from "@fortawesome/free-solid-svg-icons";
+import {
+  bookmarkPostService,
+  removeBookmarkPostService,
+} from "../services/userServices";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -18,8 +22,7 @@ export default function UserPost({ userPost }) {
     userData: {
       user: { token, userDetails },
     },
-    bookmarkPost,
-    removeBookmarkPost,
+    authDispatch,
   } = useAuth();
   const { postsDispatch } = usePosts();
   const {
@@ -47,6 +50,17 @@ export default function UserPost({ userPost }) {
       const { data, status } = await dislikePostService(postId, token);
       if (status === 201) {
         postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePostBookmark = async (serviceFn, postId, token) => {
+    try {
+      const { data, status } = await serviceFn(postId, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
       }
     } catch (error) {
       console.error(error);
@@ -132,14 +146,18 @@ export default function UserPost({ userPost }) {
           {userDetails?.bookmarks.find((post) => post._id === _id) ? (
             <button
               className="w-full border-[1px]"
-              onClick={() => removeBookmarkPost(_id, token)}
+              onClick={() =>
+                handlePostBookmark(removeBookmarkPostService, _id, token)
+              }
             >
               <FontAwesomeIcon icon={faBookmarkFilled} />
             </button>
           ) : (
             <button
               className="w-full border-[1px]"
-              onClick={() => bookmarkPost(_id, token)}
+              onClick={() =>
+                handlePostBookmark(bookmarkPostService, _id, token)
+              }
             >
               <FontAwesomeIcon icon={faBookmark} />
             </button>
