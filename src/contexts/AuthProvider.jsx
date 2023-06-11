@@ -1,11 +1,6 @@
 import { useContext } from "react";
-import { useState } from "react";
 import { createContext } from "react";
 import { loginService, signUpService } from "../services/authServices";
-import {
-  bookmarkPostService,
-  removeBookmarkPostService,
-} from "../services/userServices";
 import { useReducer } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { AUTH } from "../common/reducerTypes";

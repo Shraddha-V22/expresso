@@ -1,5 +1,6 @@
 export const POSTS = {
   INITIALISE: "INITIALISE_POSTS",
+  CREATE_POST: "CREATE_POST",
 };
 
 export const USERS = {

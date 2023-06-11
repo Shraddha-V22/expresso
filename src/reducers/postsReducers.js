@@ -7,7 +7,11 @@ export const postReducers = (state, { type, payload }) => {
         ...state,
         posts: payload,
       };
-
+    case POSTS.CREATE_POST:
+      return {
+        ...state,
+        posts: [payload, ...state.posts],
+      };
     default:
       return state;
   }

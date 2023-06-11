@@ -1,4 +1,6 @@
 import axios from "axios";
+import { v4 as uuid } from "uuid";
+import { formatDate } from "../backend/utils/authUtils";
 
 export const getAllPostsService = () => {
   return axios.get("/api/posts");
@@ -28,6 +30,25 @@ export const dislikePostService = (postId, token) => {
   return axios.post(
     `/api/posts/dislike/${postId}`,
     {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
+
+// /api/posts/
+export const createPostService = (inputText, token) => {
+  return axios.post(
+    `/api/posts/`,
+
+    {
+      postData: {
+        content: inputText,
+      },
+    },
+
     {
       headers: {
         authorization: token,
