@@ -37,7 +37,6 @@ export default function UserPost({ userPost }) {
   const handlePostLike = async (serviceFn, postId, token) => {
     try {
       const { data, status } = await serviceFn(postId, token);
-      console.log(data.posts);
       if (status === 201) {
         postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
       }
@@ -49,7 +48,6 @@ export default function UserPost({ userPost }) {
   const handlePostBookmark = async (serviceFn, postId, token) => {
     try {
       const { data, status } = await serviceFn(postId, token);
-      console.log(data.bookmarks);
       if (status === 200) {
         authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
       }

@@ -8,7 +8,7 @@ import { postReducers } from "../reducers/postsReducers";
 import { POSTS } from "../common/reducerTypes";
 
 const PostsContext = createContext();
-const initialPosts = { post: [], userFeed: [] };
+const initialPosts = { posts: [], userFeed: [] };
 
 export default function PostsProvider({ children }) {
   const [postsData, postsDispatch] = useReducer(postReducers, initialPosts);
