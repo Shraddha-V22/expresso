@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../contexts/UsersProvider";
-import { dislikePostService, likePostService } from "../services/postServices";
+import {
+  deletePostService,
+  dislikePostService,
+  editPostService,
+  likePostService,
+} from "../services/postServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
 import { AUTH, POSTS } from "../common/reducerTypes";
@@ -15,6 +20,8 @@ import {
   bookmarkPostService,
   removeBookmarkPostService,
 } from "../services/userServices";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import Modal from "./Modal";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -29,8 +36,10 @@ export default function UserPost({ userPost }) {
     usersData: { users },
   } = useUsers();
   const { _id, content, username, likes, createdAt } = userPost;
-  const [readMore, setReadMore] = useState(false);
+  // const [readMore, setReadMore] = useState(false);
   const [showLikedBy, setShowLikedBy] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -56,104 +65,144 @@ export default function UserPost({ userPost }) {
     }
   };
 
+  const handlePostDelete = async (postId, token) => {
+    try {
+      const { data, status } = await deletePostService(postId, token);
+      if (status === 201) {
+        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePostEdit = async (postId, token) => {
+    try {
+      const request = await editPostService(postId, token);
+      console.log(request);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <section className="m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
-      <div
-        onClick={() => navigate(`/${user?._id}`)}
-        className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
-      >
-        <img
-          src={user?.profileImg}
-          alt=""
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <div>
-          <p>@{username}</p>
-          <p className="text-xs">{createdAt}</p>
+    <section>
+      <Modal open={openModal} />
+      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
+        <div className="absolute right-4 top-2">
+          <button onClick={() => setShowActions((prev) => !prev)}>
+            <FontAwesomeIcon icon={faEllipsis} />
+          </button>
+          {showActions && (
+            <div className="absolute -right-[80%] top-5 flex flex-col items-start border-[1px] bg-white">
+              {user?._id === userDetails?._id ? (
+                <div>
+                  <button onClick={() => setOpenModal(true)}>edit</button>
+                  <button onClick={() => handlePostDelete(_id, token)}>
+                    delete
+                  </button>
+                </div>
+              ) : (
+                <button>unfollow</button>
+              )}
+            </div>
+          )}
         </div>
-        <div>
-          <p className={`${readMore ? "" : "line-clamp-3"} text-sm`}>
-            {content}
-          </p>
-          {/* <button
+        <div
+          onClick={() => navigate(`/${user?._id}`)}
+          className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
+        >
+          <img
+            src={user?.profileImg}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>
+            <p>@{username}</p>
+            <p className="text-xs">{createdAt}</p>
+          </div>
+          <div>
+            <p className={` text-sm`}>{content}</p>
+            {/* <button
             onClick={() => setReadMore((prev) => !prev)}
             className="text-sm text-blue-500 underline"
           >
             {readMore ? "read less" : "read more"}
           </button> */}
-        </div>
-        <div className="flex justify-between text-sm">
-          <p
-            className="cursor-pointer"
-            onClick={() => setShowLikedBy((prev) => !prev)}
-          >
-            likes {likes?.likeCount}
-          </p>
-          <p>comments 0</p>
-          <div
-            className={`${
-              showLikedBy ? "" : "hidden"
-            } fixed left-0 top-0 z-20 flex h-[100vh] w-full flex-col gap-2 overflow-y-auto bg-white p-4 py-2`}
-          >
-            <button
-              className="self-start"
-              onClick={() => setShowLikedBy(false)}
+          </div>
+          <div className="flex justify-between text-sm">
+            <p
+              className="cursor-pointer"
+              onClick={() => setShowLikedBy((prev) => !prev)}
             >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
-            <h4 className="border-b-[1px] pb-1 capitalize">liked by</h4>
-            {likes?.likedBy.map((user) => (
-              <div
-                key={user._id}
-                className="flex h-[30px] w-[30px] items-center gap-2"
+              likes {likes?.likeCount}
+            </p>
+            <p>comments 0</p>
+            <div
+              className={`${
+                showLikedBy ? "" : "hidden"
+              } fixed left-0 top-0 z-20 flex h-[100vh] w-full flex-col gap-2 overflow-y-auto bg-white p-4 py-2`}
+            >
+              <button
+                className="self-start"
+                onClick={() => setShowLikedBy(false)}
               >
-                <img src={user.profileImg} alt="" className="rounded-full" />
-                <p>@{user.username}</p>
-              </div>
-            ))}
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </button>
+              <h4 className="border-b-[1px] pb-1 capitalize">liked by</h4>
+              {likes?.likedBy.map((user) => (
+                <div
+                  key={user._id}
+                  className="flex h-[30px] w-[30px] items-center gap-2"
+                >
+                  <img src={user.profileImg} alt="" className="rounded-full" />
+                  <p>@{user.username}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex w-full justify-evenly gap-2">
+            {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
+              <button
+                className="w-full border-[1px]"
+                onClick={() => handlePostLike(dislikePostService, _id, token)}
+              >
+                <FontAwesomeIcon icon={faThumbsUpFilled} />
+              </button>
+            ) : (
+              <button
+                className="w-full border-[1px]"
+                onClick={() => handlePostLike(likePostService, _id, token)}
+              >
+                <FontAwesomeIcon icon={faThumbsUp} />
+              </button>
+            )}
+            <button className="w-full border-[1px]">Comment</button>
+
+            {userDetails?.bookmarks.find((postId) => postId === _id) ? (
+              <button
+                className="w-full border-[1px]"
+                onClick={() =>
+                  handlePostBookmark(removeBookmarkPostService, _id, token)
+                }
+              >
+                <FontAwesomeIcon icon={faBookmarkFilled} />
+              </button>
+            ) : (
+              <button
+                className="w-full border-[1px]"
+                onClick={() =>
+                  handlePostBookmark(bookmarkPostService, _id, token)
+                }
+              >
+                <FontAwesomeIcon icon={faBookmark} />
+              </button>
+            )}
           </div>
         </div>
-        <div className="flex w-full justify-evenly gap-2">
-          {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
-            <button
-              className="w-full border-[1px]"
-              onClick={() => handlePostLike(dislikePostService, _id, token)}
-            >
-              <FontAwesomeIcon icon={faThumbsUpFilled} />
-            </button>
-          ) : (
-            <button
-              className="w-full border-[1px]"
-              onClick={() => handlePostLike(likePostService, _id, token)}
-            >
-              <FontAwesomeIcon icon={faThumbsUp} />
-            </button>
-          )}
-          <button className="w-full border-[1px]">Comment</button>
-
-          {userDetails?.bookmarks.find((postId) => postId === _id) ? (
-            <button
-              className="w-full border-[1px]"
-              onClick={() =>
-                handlePostBookmark(removeBookmarkPostService, _id, token)
-              }
-            >
-              <FontAwesomeIcon icon={faBookmarkFilled} />
-            </button>
-          ) : (
-            <button
-              className="w-full border-[1px]"
-              onClick={() =>
-                handlePostBookmark(bookmarkPostService, _id, token)
-              }
-            >
-              <FontAwesomeIcon icon={faBookmark} />
-            </button>
-          )}
-        </div>
-      </div>
+      </section>
     </section>
   );
 }
