@@ -34,20 +34,10 @@ export default function UserPost({ userPost }) {
 
   const user = users.find((user) => user.username === username);
 
-  const likePost = async (postId, token) => {
+  const handlePostLike = async (serviceFn, postId, token) => {
     try {
-      const { data, status } = await likePostService(postId, token);
-      if (status === 201) {
-        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const dislikePost = async (postId, token) => {
-    try {
-      const { data, status } = await dislikePostService(postId, token);
+      const { data, status } = await serviceFn(postId, token);
+      console.log(data.posts);
       if (status === 201) {
         postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
       }
@@ -59,6 +49,7 @@ export default function UserPost({ userPost }) {
   const handlePostBookmark = async (serviceFn, postId, token) => {
     try {
       const { data, status } = await serviceFn(postId, token);
+      console.log(data.bookmarks);
       if (status === 200) {
         authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
       }
@@ -130,20 +121,21 @@ export default function UserPost({ userPost }) {
           {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
             <button
               className="w-full border-[1px]"
-              onClick={() => dislikePost(_id, token)}
+              onClick={() => handlePostLike(dislikePostService, _id, token)}
             >
               <FontAwesomeIcon icon={faThumbsUpFilled} />
             </button>
           ) : (
             <button
               className="w-full border-[1px]"
-              onClick={() => likePost(_id, token)}
+              onClick={() => handlePostLike(likePostService, _id, token)}
             >
               <FontAwesomeIcon icon={faThumbsUp} />
             </button>
           )}
           <button className="w-full border-[1px]">Comment</button>
-          {userDetails?.bookmarks.find((post) => post._id === _id) ? (
+
+          {userDetails?.bookmarks.find((postId) => postId === _id) ? (
             <button
               className="w-full border-[1px]"
               onClick={() =>
