@@ -22,6 +22,7 @@ import {
 } from "../services/userServices";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
+import CreatePost from "./CreatePost";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -39,7 +40,6 @@ export default function UserPost({ userPost }) {
   // const [readMore, setReadMore] = useState(false);
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -47,7 +47,10 @@ export default function UserPost({ userPost }) {
     try {
       const { data, status } = await serviceFn(postId, token);
       if (status === 201) {
-        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
       }
     } catch (error) {
       console.error(error);
@@ -69,17 +72,11 @@ export default function UserPost({ userPost }) {
     try {
       const { data, status } = await deletePostService(postId, token);
       if (status === 201) {
-        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePostEdit = async (postId, token) => {
-    try {
-      const request = await editPostService(postId, token);
-      console.log(request);
     } catch (error) {
       console.error(error);
     }
@@ -87,7 +84,6 @@ export default function UserPost({ userPost }) {
 
   return (
     <section>
-      <Modal open={openModal} />
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
         <div className="absolute right-4 top-2">
           <button onClick={() => setShowActions((prev) => !prev)}>
@@ -97,7 +93,9 @@ export default function UserPost({ userPost }) {
             <div className="absolute -right-[80%] top-5 flex flex-col items-start border-[1px] bg-white">
               {user?._id === userDetails?._id ? (
                 <div>
-                  <button onClick={() => setOpenModal(true)}>edit</button>
+                  <Modal modalFor={"Edit"}>
+                    {<CreatePost edit postId={_id} />}
+                  </Modal>
                   <button onClick={() => handlePostDelete(_id, token)}>
                     delete
                   </button>

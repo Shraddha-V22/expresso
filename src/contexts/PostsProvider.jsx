@@ -17,7 +17,10 @@ export default function PostsProvider({ children }) {
     try {
       const { data, status } = await getAllPostsService();
       if (status === 200) {
-        postsDispatch({ type: POSTS.INITIALISE, payload: data.posts });
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
       }
     } catch (error) {
       console.error(error);

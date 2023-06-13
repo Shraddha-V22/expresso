@@ -56,3 +56,29 @@ export const createPostService = (inputText, token) => {
     }
   );
 };
+
+// /api/posts/edit/:postId
+export const editPostService = (inputText, postId, token) => {
+  return axios.post(
+    `/api/posts/edit/${postId}`,
+    {
+      postData: {
+        content: inputText,
+      },
+    },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
+
+// /api/posts/:postId
+export const deletePostService = (postId, token) => {
+  return axios.delete(`/api/posts/${postId}`, {
+    headers: {
+      authorization: token,
+    },
+  });
+};

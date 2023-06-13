@@ -9,9 +9,11 @@ export default function Explore() {
   return (
     <section>
       <h1>Explore</h1>
-      {posts?.map((post) => (
-        <UserPost key={post._id} userPost={post} />
-      ))}
+      <section className="">
+        {posts?.map((post) => (
+          <UserPost key={post._id} userPost={post} />
+        ))}
+      </section>
     </section>
   );
 }
