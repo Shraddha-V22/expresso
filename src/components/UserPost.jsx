@@ -18,7 +18,9 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarkFilled } from "@fortawesome/free-solid-svg-icons";
 import {
   bookmarkPostService,
+  followUserService,
   removeBookmarkPostService,
+  unfollowUserService,
 } from "../services/userServices";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
@@ -82,6 +84,18 @@ export default function UserPost({ userPost }) {
     }
   };
 
+  const followUnfollowHandler = async (serviceFn, id, token) => {
+    try {
+      const { data, status } = await serviceFn(id, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
+        // setUserProfile(data.followUser);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <section>
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
@@ -101,7 +115,35 @@ export default function UserPost({ userPost }) {
                   </button>
                 </div>
               ) : (
-                <button>unfollow</button>
+                <div>
+                  {userDetails?.following.find(
+                    ({ username }) => username === user?.username
+                  ) ? (
+                    <button
+                      onClick={() =>
+                        followUnfollowHandler(
+                          unfollowUserService,
+                          user?._id,
+                          token
+                        )
+                      }
+                    >
+                      unfollow
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        followUnfollowHandler(
+                          followUserService,
+                          user?._id,
+                          token
+                        )
+                      }
+                    >
+                      follow
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           )}
