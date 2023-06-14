@@ -7,6 +7,11 @@ export const postReducers = (state, { type, payload }) => {
         ...state,
         posts: payload,
       };
+    case POSTS.SET_USER_FEED:
+      return {
+        ...state,
+        userFeed: payload,
+      };
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 export const POSTS = {
   INITIALISE: "INITIALISE_POSTS",
-  CREATE_POST: "CREATE_POST",
+  SET_USER_FEED: "SET_USER_FEED",
 };
 
 export const USERS = {

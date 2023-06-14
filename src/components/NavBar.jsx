@@ -7,7 +7,7 @@ import { faCompass } from "@fortawesome/free-regular-svg-icons";
 
 export default function NavBar() {
   return (
-    <nav className="fixed bottom-0 z-10 flex w-full justify-evenly border-[1px] bg-white">
+    <nav className="fixed bottom-0 z-10 flex w-full justify-evenly border-[1px] bg-white py-1">
       <NavLink to="/">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
