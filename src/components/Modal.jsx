@@ -2,14 +2,16 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function Modal({ children, modalFor }) {
+export default function Modal({ children, modalFor, className }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <button onClick={handleOpen}>{modalFor}</button>
+      <button className={className} onClick={handleOpen}>
+        {modalFor}
+      </button>
       {open === true && (
         <div
           onClick={handleClose}

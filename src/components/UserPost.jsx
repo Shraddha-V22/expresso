@@ -11,20 +11,26 @@ import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
 import { AUTH, POSTS } from "../common/reducerTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faThumbsUp as faThumbsUpFilled } from "@fortawesome/free-solid-svg-icons";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-import { faBookmark as faBookmarkFilled } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsUp,
+  faBookmark,
+  faComment,
+} from "@fortawesome/free-regular-svg-icons";
+import {
+  faThumbsUp as faThumbsUpFilled,
+  faArrowLeft,
+  faBookmark as faBookmarkFilled,
+  faEllipsis,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   bookmarkPostService,
   followUserService,
   removeBookmarkPostService,
   unfollowUserService,
 } from "../services/userServices";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
+import Button from "./Button";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -98,19 +104,22 @@ export default function UserPost({ userPost }) {
 
   return (
     <section>
-      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 border-2 p-2">
+      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
         <div className="absolute right-4 top-2">
           <button onClick={() => setShowActions((prev) => !prev)}>
             <FontAwesomeIcon icon={faEllipsis} />
           </button>
           {showActions && (
-            <div className="absolute -right-[80%] top-5 flex flex-col items-start border-[1px] bg-white">
+            <div className="absolute -right-[80%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
               {user?._id === userDetails?._id ? (
                 <div>
-                  <Modal modalFor={"Edit"}>
+                  <Modal className="px-2" modalFor={"Edit"}>
                     {<CreatePost edit postId={_id} />}
                   </Modal>
-                  <button onClick={() => handlePostDelete(_id, token)}>
+                  <button
+                    className="border-t-[1px] px-2"
+                    onClick={() => handlePostDelete(_id, token)}
+                  >
                     delete
                   </button>
                 </div>
@@ -120,6 +129,7 @@ export default function UserPost({ userPost }) {
                     ({ username }) => username === user?.username
                   ) ? (
                     <button
+                      className="px-2"
                       onClick={() =>
                         followUnfollowHandler(
                           unfollowUserService,
@@ -132,6 +142,7 @@ export default function UserPost({ userPost }) {
                     </button>
                   ) : (
                     <button
+                      className="px-2"
                       onClick={() =>
                         followUnfollowHandler(
                           followUserService,
@@ -159,10 +170,13 @@ export default function UserPost({ userPost }) {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div>
-            <p>@{username}</p>
-            <p className="text-xs">{createdAt}</p>
+          <div className="leading-5">
+            <p>
+              {user?.firstName} {user?.lastName}
+            </p>
+            <p className="text-xs">@{username}</p>
           </div>
+          <p className="text-xs">{createdAt}</p>
           <div>
             <p className={` text-sm`}>{content}</p>
             {/* <button
@@ -203,42 +217,40 @@ export default function UserPost({ userPost }) {
               ))}
             </div>
           </div>
-          <div className="flex w-full justify-evenly gap-2">
+          <div className="flex w-full justify-start gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
-              <button
-                className="w-full border-[1px]"
+              <Button
                 onClick={() => handlePostLike(dislikePostService, _id, token)}
               >
                 <FontAwesomeIcon icon={faThumbsUpFilled} />
-              </button>
+              </Button>
             ) : (
-              <button
-                className="w-full border-[1px]"
+              <Button
                 onClick={() => handlePostLike(likePostService, _id, token)}
               >
                 <FontAwesomeIcon icon={faThumbsUp} />
-              </button>
+              </Button>
             )}
-            <button className="w-full border-[1px]">Comment</button>
+            <Button>
+              <FontAwesomeIcon icon={faComment} />
+            </Button>
 
             {userDetails?.bookmarks.find((postId) => postId === _id) ? (
-              <button
-                className="w-full border-[1px]"
+              <Button
                 onClick={() =>
                   handlePostBookmark(removeBookmarkPostService, _id, token)
                 }
               >
                 <FontAwesomeIcon icon={faBookmarkFilled} />
-              </button>
+              </Button>
             ) : (
-              <button
-                className="w-full border-[1px]"
+              <Button
                 onClick={() =>
                   handlePostBookmark(bookmarkPostService, _id, token)
                 }
               >
                 <FontAwesomeIcon icon={faBookmark} />
-              </button>
+              </Button>
             )}
           </div>
         </div>

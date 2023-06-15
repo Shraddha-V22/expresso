@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { getUserPostsService } from "../services/postServices";
 import UserPost from "../components/UserPost";
 import { AUTH } from "../common/reducerTypes";
+import Button from "../components/Button";
 
 export default function Profile() {
   const {
@@ -93,7 +94,7 @@ export default function Profile() {
           ) : userDetails?.following?.find(
               ({ _id }) => _id === userProfile?._id
             ) ? (
-            <button
+            <Button
               onClick={() =>
                 followUnfollowHandler(
                   unfollowUserService,
@@ -101,12 +102,12 @@ export default function Profile() {
                   token
                 )
               }
-              className="self-end border-[1px] p-1"
+              className={"self-end"}
             >
               Following
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={() =>
                 followUnfollowHandler(
                   followUserService,
@@ -114,14 +115,14 @@ export default function Profile() {
                   token
                 )
               }
-              className="self-end border-[1px] p-1"
+              className={"self-end"}
             >
               Follow
-            </button>
+            </Button>
           )}
           <h3>@{userProfile?.username}</h3>
-          <p>{userProfile?.bio}</p>
-          <p>{userProfile?.portfolio}</p>
+          <p className="text-sm">{userProfile?.bio}</p>
+          <p className="text-sm underline">{userProfile?.portfolio}</p>
           <div className="flex gap-4 text-sm">
             <p>{userProfile?.following?.length} Following</p>
             <p>{userProfile?.followers?.length} Followers</p>

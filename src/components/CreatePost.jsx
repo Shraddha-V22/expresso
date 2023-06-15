@@ -3,6 +3,7 @@ import { usePosts } from "../contexts/PostsProvider";
 import { useAuth } from "../contexts/AuthProvider";
 import { POSTS } from "../common/reducerTypes";
 import { createPostService, editPostService } from "../services/postServices";
+import Button from "./Button";
 
 export default function CreatePost({ edit, postId }) {
   const [inputText, setInputText] = useState("");
@@ -59,25 +60,25 @@ export default function CreatePost({ edit, postId }) {
         rows="2"
       />
       {edit ? (
-        <button
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             handlePostEdit(inputText, postId, token);
           }}
-          className="self-end border-[1px]"
+          className={"self-end"}
         >
           save
-        </button>
+        </Button>
       ) : (
-        <button
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             createUserPost(inputText, token);
           }}
-          className="self-end border-[1px]"
+          className={"self-end"}
         >
           Create
-        </button>
+        </Button>
       )}
     </section>
   );
