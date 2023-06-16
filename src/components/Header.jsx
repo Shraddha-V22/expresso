@@ -15,7 +15,11 @@ export default function Header() {
         onClick={() => setShowMenu((prev) => !prev)}
         className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
       >
-        <img src={userDetails?.profileImg} alt="" className="h-full w-full" />
+        <img
+          src={userDetails?.profileImg}
+          alt=""
+          className="h-full w-full object-cover"
+        />
       </button>
       <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
     </header>
