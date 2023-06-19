@@ -1,8 +1,11 @@
-export default function Button({ children, onClick, className }) {
+export default function Button({ children, onClick, className, disabled }) {
   return (
     <button
       onClick={onClick}
-      className={`${className} rounded-md border-[1px] px-2`}
+      className={`${className} ${
+        disabled ? "opacity-50" : ""
+      } rounded-md border-[1px] px-2`}
+      disabled={disabled}
     >
       {children}
     </button>

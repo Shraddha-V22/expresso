@@ -76,11 +76,7 @@ export default function Profile() {
     <section>
       <section>
         <section className="relative">
-          <img
-            src="https://i.redd.it/gocxo6n16m871.png"
-            alt=""
-            className="w-full"
-          />
+          <img src={userProfile?.profileBg} alt="" className="w-full" />
           <div className="absolute -bottom-[30px] left-4 h-[60px] w-[60px] cursor-pointer overflow-hidden rounded-full border-2 bg-green-200">
             <img
               src={userProfile?.profileImg}

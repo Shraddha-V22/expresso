@@ -66,6 +66,7 @@ export default function CreatePost({ edit, postId }) {
             handlePostEdit(inputText, postId, token);
           }}
           className={"self-end"}
+          disabled={!inputText.length}
         >
           save
         </Button>
@@ -76,6 +77,7 @@ export default function CreatePost({ edit, postId }) {
             createUserPost(inputText, token);
           }}
           className={"self-end"}
+          disabled={!inputText.length}
         >
           Create
         </Button>

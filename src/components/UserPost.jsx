@@ -111,7 +111,7 @@ export default function UserPost({ userPost }) {
       onClick={() => navigate(`/post/${_id}`)}
     >
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
-        <div className="absolute right-4 top-2">
+        <div className="absolute right-2 top-2">
           <button
             onClick={(e) =>
               clickHandler(
@@ -119,11 +119,12 @@ export default function UserPost({ userPost }) {
                 setShowActions((prev) => !prev)
               )
             }
+            className="h-6 w-6 rounded-full hover:bg-gray-100"
           >
             <FontAwesomeIcon icon={faEllipsis} />
           </button>
           {showActions && (
-            <div className="absolute -right-[80%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
+            <div className="absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
               {user?._id === userDetails?._id ? (
                 <div>
                   <Modal className="px-2" modalFor={"Edit"}>

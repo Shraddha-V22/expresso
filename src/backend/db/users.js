@@ -16,6 +16,7 @@ export const users = [
     portfolio: "https://shraddha-v.netlify.app/",
     profileImg:
       "https://i.pinimg.com/736x/b7/8c/ab/b78cabf9b16cff5587fa36d4cfae6d93.jpg",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -33,6 +34,8 @@ export const users = [
     portfolio: "https://jake-peralta.com/",
     profileImg:
       "https://66.media.tumblr.com/74ef112cead7f1f4afce7893a96e3484/tumblr_oyal5v3s4z1r5aju9o2_1280.jpg",
+    profileBg:
+      "https://static1.srcdn.com/wordpress/wp-content/uploads/2020/07/Andy-Samberg-as-Jake-Peralta-in-Brooklyn-Nine-Nine.jpg",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -50,6 +53,8 @@ export const users = [
     portfolio: "https://amy-santiago.com/",
     profileImg:
       "https://i.pinimg.com/736x/d5/71/f4/d571f4aed28eed4191e5e701347a9a9b--brooklyn-nine-santiago.jpg",
+    profileBg:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-RlwDWl0FpBMttQi5b3kMcrWSxcXq7ENc7g&usqp=CAU",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -67,6 +72,7 @@ export const users = [
     portfolio: "https://charles-boyle-food-blogs.com/",
     profileImg:
       "https://i.pinimg.com/736x/28/3a/38/283a38841256d21bb15b0d40fea1406c--brooklyn-nine-nine-selfie.jpg",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -84,6 +90,7 @@ export const users = [
     portfolio: "https://captain-holt.com/",
     profileImg:
       "https://imagoi.com/wp-content/uploads/2020/05/brooklyn-nine-nine-captain-ray-holt-imagoi.jpg",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -101,6 +108,7 @@ export const users = [
     portfolio: "https://linetti-set-go.com/",
     profileImg:
       "https://i.pinimg.com/originals/3e/7d/59/3e7d590dee53420c03d360908dd289dc.jpg",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -118,6 +126,7 @@ export const users = [
     portfolio: "https:/no-fear.com/",
     profileImg:
       "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQgK6pQD-DznOU-AdGX7nc85tlkNG3GkxtQYk5C28t0aheatqjz",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
@@ -135,6 +144,7 @@ export const users = [
     portfolio: "https:/terry-jeffords.com/",
     profileImg:
       "https://imgix.ranker.com/user_node_img/3841/76800565/original/sergeant-terry-jeffords-airplanes-photo-u1?fit=crop&fm=pjpg&q=60&w=650&dpr=2",
+    profileBg: "https://i.redd.it/gocxo6n16m871.png",
     followers: [],
     following: [],
     createdAt: "2023-06-10T22:44:17+05:30",
