@@ -9,7 +9,13 @@ export default function Modal({ children, modalFor, className }) {
 
   return (
     <div>
-      <button className={className} onClick={handleOpen}>
+      <button
+        className={className}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpen();
+        }}
+      >
         {modalFor}
       </button>
       {open === true && (
