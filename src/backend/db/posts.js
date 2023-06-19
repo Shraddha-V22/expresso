@@ -60,6 +60,19 @@ export const posts = [
   {
     _id: uuid(),
     content:
+      "I told amy I like her, she told me she was deeply in love with me, and it's all in the past.",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    username: "itsyaboijakey",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
+    content:
       "I'm scared of businessmen. A whole army of gray-suited Brads and Chads trying to suck my soul and redeem it for frequent flyer miles",
     likes: {
       likeCount: 0,
@@ -80,6 +93,18 @@ export const posts = [
       dislikedBy: [],
     },
     username: "TerryLovesYogurt",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
+    content: "Everything is garbage. Never love anything.",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    username: "CaptainHolt99",
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
@@ -111,6 +136,18 @@ export const posts = [
   },
   {
     _id: uuid(),
+    content: "Love. It sustains you. It's like oatmeal.",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    username: "CaptainHolt99",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
     content:
       "Anyone over the age of six celebrating a birthday should go to hell.",
     likes: {
@@ -119,6 +156,18 @@ export const posts = [
       dislikedBy: [],
     },
     username: "ToughRosa",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
+    content: "We arrested a woman today because we are feminists.",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    username: "itsyaboijakey",
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
