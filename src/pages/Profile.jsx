@@ -55,6 +55,7 @@ export default function Profile() {
     try {
       const { data, status } = await serviceFn(id, token);
       if (status === 200) {
+        console.log(data);
         authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
         setUserProfile(data.followUser);
       }
