@@ -95,7 +95,6 @@ function UsersToFollow({ user, forSearch }) {
       const { data, status } = await serviceFn(id, token);
       if (status === 200) {
         authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
-        // setUserProfile(data.followUser);
       }
     } catch (error) {
       console.error(error);
