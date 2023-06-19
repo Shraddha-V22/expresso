@@ -4,7 +4,6 @@ import { useUsers } from "../contexts/UsersProvider";
 import {
   deletePostService,
   dislikePostService,
-  editPostService,
   likePostService,
 } from "../services/postServices";
 import { useAuth } from "../contexts/AuthProvider";
@@ -45,7 +44,6 @@ export default function UserPost({ userPost }) {
     usersData: { users },
   } = useUsers();
   const { _id, content, username, likes, createdAt } = userPost;
-  // const [readMore, setReadMore] = useState(false);
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
 
@@ -102,11 +100,26 @@ export default function UserPost({ userPost }) {
     }
   };
 
+  const clickHandler = (e, func) => {
+    e.stopPropagation();
+    func;
+  };
+
   return (
-    <section>
+    <section
+      className="cursor-pointer"
+      onClick={() => navigate(`/post/${_id}`)}
+    >
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
         <div className="absolute right-4 top-2">
-          <button onClick={() => setShowActions((prev) => !prev)}>
+          <button
+            onClick={(e) =>
+              clickHandler(
+                e,
+                setShowActions((prev) => !prev)
+              )
+            }
+          >
             <FontAwesomeIcon icon={faEllipsis} />
           </button>
           {showActions && (
@@ -118,7 +131,9 @@ export default function UserPost({ userPost }) {
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"
-                    onClick={() => handlePostDelete(_id, token)}
+                    onClick={(e) =>
+                      clickHandler(e, handlePostDelete(_id, token))
+                    }
                   >
                     delete
                   </button>
@@ -130,11 +145,14 @@ export default function UserPost({ userPost }) {
                   ) ? (
                     <button
                       className="px-2"
-                      onClick={() =>
-                        followUnfollowHandler(
-                          unfollowUserService,
-                          user?._id,
-                          token
+                      onClick={(e) =>
+                        clickHandler(
+                          e,
+                          followUnfollowHandler(
+                            unfollowUserService,
+                            user?._id,
+                            token
+                          )
                         )
                       }
                     >
@@ -143,11 +161,14 @@ export default function UserPost({ userPost }) {
                   ) : (
                     <button
                       className="px-2"
-                      onClick={() =>
-                        followUnfollowHandler(
-                          followUserService,
-                          user?._id,
-                          token
+                      onClick={(e) =>
+                        clickHandler(
+                          e,
+                          followUnfollowHandler(
+                            followUserService,
+                            user?._id,
+                            token
+                          )
                         )
                       }
                     >
@@ -160,7 +181,7 @@ export default function UserPost({ userPost }) {
           )}
         </div>
         <div
-          onClick={() => navigate(`/${user?._id}`)}
+          onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
           className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
         >
           <img
@@ -178,18 +199,17 @@ export default function UserPost({ userPost }) {
           </div>
           <p className="text-xs">{createdAt}</p>
           <div>
-            <p className={` text-sm`}>{content}</p>
-            {/* <button
-            onClick={() => setReadMore((prev) => !prev)}
-            className="text-sm text-blue-500 underline"
-          >
-            {readMore ? "read less" : "read more"}
-          </button> */}
+            <p className={`text-sm`}>{content}</p>
           </div>
           <div className="flex justify-between text-sm">
             <p
               className="cursor-pointer"
-              onClick={() => setShowLikedBy((prev) => !prev)}
+              onClick={(e) =>
+                clickHandler(
+                  e,
+                  setShowLikedBy((prev) => !prev)
+                )
+              }
             >
               likes {likes?.likeCount}
             </p>
@@ -201,7 +221,7 @@ export default function UserPost({ userPost }) {
             >
               <button
                 className="self-start"
-                onClick={() => setShowLikedBy(false)}
+                onClick={(e) => clickHandler(e, setShowLikedBy(false))}
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
               </button>
@@ -220,13 +240,20 @@ export default function UserPost({ userPost }) {
           <div className="flex w-full justify-start gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
               <Button
-                onClick={() => handlePostLike(dislikePostService, _id, token)}
+                onClick={(e) =>
+                  clickHandler(
+                    e,
+                    handlePostLike(dislikePostService, _id, token)
+                  )
+                }
               >
                 <FontAwesomeIcon icon={faThumbsUpFilled} />
               </Button>
             ) : (
               <Button
-                onClick={() => handlePostLike(likePostService, _id, token)}
+                onClick={(e) =>
+                  clickHandler(e, handlePostLike(likePostService, _id, token))
+                }
               >
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Button>
@@ -237,16 +264,22 @@ export default function UserPost({ userPost }) {
 
             {userDetails?.bookmarks.find((postId) => postId === _id) ? (
               <Button
-                onClick={() =>
-                  handlePostBookmark(removeBookmarkPostService, _id, token)
+                onClick={(e) =>
+                  clickHandler(
+                    e,
+                    handlePostBookmark(removeBookmarkPostService, _id, token)
+                  )
                 }
               >
                 <FontAwesomeIcon icon={faBookmarkFilled} />
               </Button>
             ) : (
               <Button
-                onClick={() =>
-                  handlePostBookmark(bookmarkPostService, _id, token)
+                onClick={(e) =>
+                  clickHandler(
+                    e,
+                    handlePostBookmark(bookmarkPostService, _id, token)
+                  )
                 }
               >
                 <FontAwesomeIcon icon={faBookmark} />
@@ -258,17 +291,3 @@ export default function UserPost({ userPost }) {
     </section>
   );
 }
-
-// {
-//   _id: uuid(),
-//   content:
-//     "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
-//   likes: {
-//     likeCount: 0,
-//     likedBy: [],
-//     dislikedBy: [],
-//   },
-//   username: "shubhamsoni",
-//   createdAt: formatDate(),
-//   updatedAt: formatDate(),
-// },
