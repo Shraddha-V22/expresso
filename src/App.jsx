@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import UsersProvider from "./contexts/UsersProvider";
 import Explore from "./pages/Explore";
 import Bookmarks from "./pages/Bookmarks";
+import Post from "./pages/Post";
 
 function AppRouter() {
   const router = createBrowserRouter(
@@ -28,6 +29,7 @@ function AppRouter() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/:userId" element={<Profile />} />
+            <Route path="/post/:postId" element={<Post />} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
