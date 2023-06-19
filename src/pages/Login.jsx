@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import FormInput from "../components/FormInput";
+import AuthContainer from "../components/AuthContainer";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ export default function Login() {
 
   const credsChangeHandler = (e) => {
     const { name, value } = e.target;
+    setErrorMsg("");
     setLoginCreds((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -29,32 +32,49 @@ export default function Login() {
   }, [isLoggedIn]);
 
   return (
-    <section>
-      <form className="m-1 flex flex-col gap-2">
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          className="border-[1px]"
-          onChange={credsChangeHandler}
-        />
-        <input
-          type="text"
-          name="password"
-          placeholder="Password"
-          className="border-[1px]"
-          onChange={credsChangeHandler}
-        />
-        <button
-          className="border-[1px]"
-          onClick={(e) => userSignIn(e, loginCreds)}
-        >
-          Sign In
-        </button>
+    <AuthContainer>
+      <h1 className="mb-4 text-2xl capitalize">sign in</h1>
+      <form className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <FormInput
+            name="username"
+            placeholder="Username"
+            onChange={credsChangeHandler}
+          />
+          <FormInput
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={credsChangeHandler}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <button
+            className="h-8 rounded-md border-[1px] px-2 text-sm"
+            onClick={(e) => userSignIn(e, loginCreds)}
+          >
+            Sign In
+          </button>
+          <button
+            className="h-8 rounded-md border-[1px] px-2 text-sm outline-none"
+            onClick={(e) =>
+              userSignIn(e, {
+                username: "shraddha__22",
+                password: "password@123",
+              })
+            }
+          >
+            Sign In as guest
+          </button>
+        </div>
       </form>
-      <p>
-        Not registered? <Link to="/registration">Sign Up</Link>
+      <p className="text-sm">
+        Not registered?{" "}
+        <Link className="text-blue-500" to="/registration">
+          Sign Up
+        </Link>
       </p>
-    </section>
+    </AuthContainer>
   );
 }

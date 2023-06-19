@@ -11,6 +11,7 @@ export default function Sidebar({ showMenu, setShowMenu }) {
     userData: {
       user: { userDetails },
     },
+    signOut,
   } = useAuth();
 
   const goToUserProfile = (userId) => {
@@ -59,7 +60,10 @@ export default function Sidebar({ showMenu, setShowMenu }) {
           <FontAwesomeIcon icon={faUser} />
           <p>Profile</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div
+          className="flex cursor-pointer items-center gap-4"
+          onClick={signOut}
+        >
           <FontAwesomeIcon icon={faRightFromBracket} />
           <p>Logout</p>
         </div>
