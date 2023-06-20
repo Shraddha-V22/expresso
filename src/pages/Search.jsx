@@ -12,7 +12,7 @@ const useToggleOnFocus = (initialState = false) => {
   const eventHandlers = useMemo(
     () => ({
       onFocus: () => setShow(true),
-      onBlur: () => setShow(false),
+      // onBlur: () => setShow(false),
     }),
     []
   );
