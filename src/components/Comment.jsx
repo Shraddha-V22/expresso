@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../contexts/UsersProvider";
-import {
-  deletePostService,
-  dislikePostService,
-  likePostService,
-} from "../services/postServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
 import { AUTH, POSTS } from "../common/reducerTypes";
@@ -21,17 +16,11 @@ import {
   faBookmark as faBookmarkFilled,
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  bookmarkPostService,
-  followUserService,
-  removeBookmarkPostService,
-  unfollowUserService,
-} from "../services/userServices";
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
 
-export default function UserPost({ userPost }) {
+export default function Comment({ comment }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -39,66 +28,14 @@ export default function UserPost({ userPost }) {
     },
     authDispatch,
   } = useAuth();
-  const { postsDispatch } = usePosts();
   const {
     usersData: { users },
   } = useUsers();
-  const { _id, content, username, likes, comments, createdAt } = userPost;
+  const { _id, content, username, likes, createdAt } = comment;
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
 
   const user = users.find((user) => user.username === username);
-
-  const handlePostLike = async (serviceFn, postId, token) => {
-    try {
-      const { data, status } = await serviceFn(postId, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePostBookmark = async (serviceFn, postId, token) => {
-    try {
-      const { data, status } = await serviceFn(postId, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePostDelete = async (postId, token) => {
-    try {
-      const { data, status } = await deletePostService(postId, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const followUnfollowHandler = async (serviceFn, id, token) => {
-    try {
-      const { data, status } = await serviceFn(id, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
-        // setUserProfile(data.followUser);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const clickHandler = (e, func) => {
     e.stopPropagation();
@@ -106,19 +43,11 @@ export default function UserPost({ userPost }) {
   };
 
   return (
-    <section
-      className="cursor-pointer"
-      onClick={() => navigate(`/post/${_id}`)}
-    >
+    <section className="cursor-pointer">
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
         <div className="absolute right-2 top-2">
           <button
-            onClick={(e) =>
-              clickHandler(
-                e,
-                setShowActions((prev) => !prev)
-              )
-            }
+            onClick={(e) => setShowActions((prev) => !prev)}
             className="h-6 w-6 rounded-full hover:bg-gray-100"
           >
             <FontAwesomeIcon icon={faEllipsis} />
@@ -229,19 +158,8 @@ export default function UserPost({ userPost }) {
           <div className="flex w-full justify-start gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
               <div className="flex items-center rounded-md border">
-                <Button
-                  className="border-none px-2"
-                  onClick={(e) =>
-                    clickHandler(
-                      e,
-                      handlePostLike(dislikePostService, _id, token)
-                    )
-                  }
-                >
-                  <FontAwesomeIcon icon={faThumbsUpFilled} />
-                </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer border-r px-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -251,19 +169,14 @@ export default function UserPost({ userPost }) {
                 >
                   {likes?.likeCount}
                 </p>
+                <Button className="border-none px-2">
+                  <FontAwesomeIcon icon={faThumbsUpFilled} />
+                </Button>
               </div>
             ) : (
               <div className="flex items-center rounded-md border">
-                <Button
-                  className="border-none px-2"
-                  onClick={(e) =>
-                    clickHandler(e, handlePostLike(likePostService, _id, token))
-                  }
-                >
-                  <FontAwesomeIcon icon={faThumbsUp} />
-                </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer border-r px-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -273,15 +186,13 @@ export default function UserPost({ userPost }) {
                 >
                   {likes?.likeCount}
                 </p>
+                <Button className="border-none px-2">
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                </Button>
               </div>
             )}
-            <div className="flex items-center rounded-md border">
-              <Button className="border-none px-2">
-                <FontAwesomeIcon icon={faComment} />
-              </Button>
-              <p className="px-2">{comments?.length}</p>
-            </div>
 
+            {/* 
             {userDetails?.bookmarks.find((postId) => postId === _id) ? (
               <Button
                 onClick={(e) =>
@@ -304,7 +215,7 @@ export default function UserPost({ userPost }) {
               >
                 <FontAwesomeIcon icon={faBookmark} />
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       </section>
