@@ -25,7 +25,10 @@ import {
   unfollowUserHandler,
   editUserHandler,
 } from "./backend/controllers/UserController";
-import { getPostCommentsHandler } from "./backend/controllers/CommentsController";
+import {
+  addPostCommentHandler,
+  getPostCommentsHandler,
+} from "./backend/controllers/CommentsController";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -91,6 +94,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       //comments rountes
       this.get("/comments/:postId", getPostCommentsHandler.bind(this));
+      this.post("/comments/add/:postId", addPostCommentHandler.bind(this));
     },
   });
 }

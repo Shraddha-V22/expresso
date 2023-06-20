@@ -53,7 +53,7 @@ export const addPostCommentHandler = function (schema, request) {
 
     const comment = {
       _id: uuid(),
-      content: commentData,
+      ...commentData,
       likes: {
         likeCount: 0,
         likedBy: [],
@@ -63,9 +63,7 @@ export const addPostCommentHandler = function (schema, request) {
       createdAt: formatDate(),
       updatedAt: formatDate(),
     };
-    console.log("ID", comment);
     const post = schema.posts.findBy({ _id: postId }).attrs;
-    console.log("parent post", post);
     post.comments.push(comment);
 
     this.db.posts.update({ _id: postId }, post);

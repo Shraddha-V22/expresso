@@ -30,6 +30,7 @@ import {
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
+import { addPostCommentService } from "../services/commentsServices";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -46,6 +47,8 @@ export default function UserPost({ userPost }) {
   const { _id, content, username, likes, comments, createdAt } = userPost;
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
+  const [showCommentInput, setShowCommentInput] = useState(false);
+  const [commentInput, setCommentInput] = useState("");
 
   const user = users.find((user) => user.username === username);
 
@@ -95,6 +98,23 @@ export default function UserPost({ userPost }) {
         authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
         // setUserProfile(data.followUser);
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addCommentToPost = async (id, input, token) => {
+    try {
+      const { data, status } = await addPostCommentService(id, input, token);
+      console.log({ data, status });
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+      }
+      setCommentInput("");
+      setShowCommentInput(false);
     } catch (error) {
       console.error(error);
     }
@@ -276,7 +296,15 @@ export default function UserPost({ userPost }) {
               </div>
             )}
             <div className="flex items-center rounded-md border">
-              <Button className="border-none px-2">
+              <Button
+                onClick={(e) =>
+                  clickHandler(
+                    e,
+                    setShowCommentInput((prev) => !prev)
+                  )
+                }
+                className="border-none px-2"
+              >
                 <FontAwesomeIcon icon={faComment} />
               </Button>
               <p className="px-2">{comments?.length}</p>
@@ -308,6 +336,25 @@ export default function UserPost({ userPost }) {
           </div>
         </div>
       </section>
+      {showCommentInput && (
+        <section className="m-2 flex justify-end gap-2 p-2 pt-0">
+          <input
+            type="text"
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setCommentInput(e.target.value)}
+            placeholder="write comment..."
+            className="flex-grow rounded-full bg-gray-200 p-1 indent-2 outline-none placeholder:capitalize"
+          />
+          <button
+            onClick={(e) =>
+              clickHandler(e, addCommentToPost(_id, commentInput, token))
+            }
+            className="rounded-full border px-3 py-1 capitalize"
+          >
+            post
+          </button>
+        </section>
+      )}
     </section>
   );
 }
