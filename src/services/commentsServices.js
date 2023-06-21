@@ -22,6 +22,23 @@ export const addPostCommentService = (postId, inputText, token) => {
   );
 };
 
+// /api/comments/edit/:postId/:commentId
+export const editPostCommentService = (postId, commentId, inputText, token) => {
+  return axios.post(
+    `/api/comments/edit/${postId}/${commentId}`,
+    {
+      commentData: {
+        content: inputText,
+      },
+    },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
+
 // /api/comments/like/:postId/:commentId
 export const likePostCommentService = (postId, commentId, token) => {
   return axios.post(

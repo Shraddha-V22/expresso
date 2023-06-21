@@ -28,6 +28,7 @@ import {
 import {
   addPostCommentHandler,
   dislikePostCommentHandler,
+  editPostCommentHandler,
   getPostCommentsHandler,
   likePostCommentHandler,
 } from "./backend/controllers/CommentsController";
@@ -104,6 +105,10 @@ export function makeServer({ environment = "development" } = {}) {
       this.post(
         "/comments/dislike/:postId/:commentId",
         dislikePostCommentHandler.bind(this)
+      );
+      this.post(
+        "/comments/edit/:postId/:commentId",
+        editPostCommentHandler.bind(this)
       );
     },
   });

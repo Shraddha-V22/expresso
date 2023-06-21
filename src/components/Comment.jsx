@@ -21,6 +21,7 @@ import CreatePost from "./CreatePost";
 import Button from "./Button";
 import {
   dislikePostCommentService,
+  editPostCommentService,
   likePostCommentService,
 } from "../services/commentsServices";
 
@@ -72,7 +73,13 @@ export default function Comment({ comment, postId, setComments }) {
               {user?._id === userDetails?._id ? (
                 <div>
                   <Modal className="px-2" modalFor={"Edit"}>
-                    {<CreatePost edit postId={_id} />}
+                    {
+                      <EditComment
+                        postId={postId}
+                        comment={comment}
+                        setComments={setComments}
+                      />
+                    }
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"
@@ -229,6 +236,63 @@ export default function Comment({ comment, postId, setComments }) {
           </div>
         </div>
       </section>
+    </section>
+  );
+}
+
+function EditComment({ postId, comment, setComments }) {
+  const {
+    userData: {
+      user: { token },
+    },
+  } = useAuth();
+  const { postsDispatch } = usePosts();
+  const [inputText, setInputText] = useState(comment?.content);
+
+  const editPostComment = async (postId, commentId, inputText, token) => {
+    try {
+      const { data, status } = await editPostCommentService(
+        postId,
+        commentId,
+        inputText,
+        token
+      );
+      console.log({ data, status });
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+        setComments((prev) =>
+          prev.map((co) =>
+            co._id === commentId ? { ...co, content: inputText } : co
+          )
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <section className="flex flex-col gap-2">
+      <input
+        type="text"
+        placeholder="Edited comment"
+        onClick={(e) => e.stopPropagation()}
+        onChange={(e) => setInputText(e.target.value)}
+        value={inputText}
+        className="rounded-full bg-gray-200 p-1 indent-2 outline-none placeholder:text-sm placeholder:capitalize"
+      />
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          editPostComment(postId, comment?._id, inputText, token);
+        }}
+        className="self-end rounded-full border px-3 py-1 capitalize"
+      >
+        post
+      </button>
     </section>
   );
 }
