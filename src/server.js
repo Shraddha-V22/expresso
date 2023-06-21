@@ -27,6 +27,7 @@ import {
 } from "./backend/controllers/UserController";
 import {
   addPostCommentHandler,
+  deletePostCommentHandler,
   dislikePostCommentHandler,
   editPostCommentHandler,
   getPostCommentsHandler,
@@ -109,6 +110,10 @@ export function makeServer({ environment = "development" } = {}) {
       this.post(
         "/comments/edit/:postId/:commentId",
         editPostCommentHandler.bind(this)
+      );
+      this.delete(
+        "/comments/delete/:postId/:commentId",
+        deletePostCommentHandler.bind(this)
       );
     },
   });

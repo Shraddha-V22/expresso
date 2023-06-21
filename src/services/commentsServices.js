@@ -39,6 +39,15 @@ export const editPostCommentService = (postId, commentId, inputText, token) => {
   );
 };
 
+// /api/comments/delete/:postId/:commentId
+export const deletePostCommentService = (postId, commentId, token) => {
+  return axios.delete(`/api/comments/delete/${postId}/${commentId}`, {
+    headers: {
+      authorization: token,
+    },
+  });
+};
+
 // /api/comments/like/:postId/:commentId
 export const likePostCommentService = (postId, commentId, token) => {
   return axios.post(

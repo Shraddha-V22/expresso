@@ -5,21 +5,16 @@ import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
 import { AUTH, POSTS } from "../common/reducerTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThumbsUp,
-  faBookmark,
-  faComment,
-} from "@fortawesome/free-regular-svg-icons";
+import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import {
   faThumbsUp as faThumbsUpFilled,
   faArrowLeft,
-  faBookmark as faBookmarkFilled,
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
-import CreatePost from "./CreatePost";
 import Button from "./Button";
 import {
+  deletePostCommentService,
   dislikePostCommentService,
   editPostCommentService,
   likePostCommentService,
@@ -36,6 +31,7 @@ export default function Comment({ comment, postId, setComments }) {
   const {
     usersData: { users },
   } = useUsers();
+  const { postsDispatch } = usePosts();
   const { _id, content, username, likes, createdAt } = comment;
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
@@ -53,6 +49,25 @@ export default function Comment({ comment, postId, setComments }) {
       if (status === 201) {
         setComments(data.comments);
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePostCommentDelete = async (postId, commentId, token) => {
+    try {
+      const { data, status } = await deletePostCommentService(
+        postId,
+        commentId,
+        token
+      );
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+      }
+      setComments((prev) => prev.filter(({ _id }) => _id !== commentId));
     } catch (error) {
       console.error(error);
     }
@@ -83,9 +98,7 @@ export default function Comment({ comment, postId, setComments }) {
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"
-                    onClick={(e) =>
-                      clickHandler(e, handlePostDelete(_id, token))
-                    }
+                    onClick={() => handlePostCommentDelete(postId, _id, token)}
                   >
                     delete
                   </button>
@@ -257,7 +270,6 @@ function EditComment({ postId, comment, setComments }) {
         inputText,
         token
       );
-      console.log({ data, status });
       if (status === 201) {
         postsDispatch({
           type: POSTS.INITIALISE,
