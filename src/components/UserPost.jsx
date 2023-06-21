@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../contexts/UsersProvider";
-import {
-  deletePostService,
-  dislikePostService,
-  likePostService,
-} from "../services/postServices";
+import { dislikePostService, likePostService } from "../services/postServices";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePosts } from "../contexts/PostsProvider";
-import { AUTH, POSTS } from "../common/reducerTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -30,7 +25,6 @@ import {
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
-import { addPostCommentService } from "../services/commentsServices";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -40,7 +34,14 @@ export default function UserPost({ userPost }) {
     },
     authDispatch,
   } = useAuth();
-  const { postsDispatch } = usePosts();
+  const {
+    postsDispatch,
+    handlePostLike,
+    handlePostBookmark,
+    handlePostDelete,
+    followUnfollowHandler,
+    addCommentToPost,
+  } = usePosts();
   const {
     usersData: { users },
   } = useUsers();
@@ -51,73 +52,6 @@ export default function UserPost({ userPost }) {
   const [commentInput, setCommentInput] = useState("");
 
   const user = users.find((user) => user.username === username);
-
-  const handlePostLike = async (serviceFn, postId, token) => {
-    try {
-      const { data, status } = await serviceFn(postId, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePostBookmark = async (serviceFn, postId, token) => {
-    try {
-      const { data, status } = await serviceFn(postId, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePostDelete = async (postId, token) => {
-    try {
-      const { data, status } = await deletePostService(postId, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const followUnfollowHandler = async (serviceFn, id, token) => {
-    try {
-      const { data, status } = await serviceFn(id, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
-        // setUserProfile(data.followUser);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const addCommentToPost = async (id, input, token) => {
-    try {
-      const { data, status } = await addPostCommentService(id, input, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-      }
-      setCommentInput("");
-      setShowCommentInput(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const clickHandler = (e, func) => {
     e.stopPropagation();
@@ -345,9 +279,11 @@ export default function UserPost({ userPost }) {
             className="flex-grow rounded-full bg-gray-200 p-1 indent-2 outline-none placeholder:capitalize"
           />
           <button
-            onClick={(e) =>
-              clickHandler(e, addCommentToPost(_id, commentInput, token))
-            }
+            onClick={(e) => {
+              clickHandler(e, addCommentToPost(_id, commentInput, token));
+              setCommentInput("");
+              setShowCommentInput(false);
+            }}
             className="rounded-full border px-3 py-1 capitalize"
           >
             post

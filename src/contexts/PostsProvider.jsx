@@ -1,16 +1,22 @@
 import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import { getAllPostsService } from "../services/postServices";
+import {
+  deletePostService,
+  getAllPostsService,
+} from "../services/postServices";
 import { useEffect } from "react";
 import { useReducer } from "react";
 import { postReducers } from "../reducers/postsReducers";
-import { POSTS } from "../common/reducerTypes";
+import { AUTH, POSTS } from "../common/reducerTypes";
+import { useAuth } from "./AuthProvider";
+import { addPostCommentService } from "../services/commentsServices";
 
 const PostsContext = createContext();
 const initialPosts = { posts: [], userFeed: [] };
 
 export default function PostsProvider({ children }) {
+  const { authDispatch } = useAuth();
   const [postsData, postsDispatch] = useReducer(postReducers, initialPosts);
 
   const getAllPosts = async () => {
@@ -31,8 +37,85 @@ export default function PostsProvider({ children }) {
     getAllPosts();
   }, []);
 
+  const handlePostLike = async (serviceFn, postId, token) => {
+    try {
+      const { data, status } = await serviceFn(postId, token);
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePostBookmark = async (serviceFn, postId, token) => {
+    try {
+      const { data, status } = await serviceFn(postId, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.SET_BOOKMARKS, payload: data.bookmarks });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePostDelete = async (postId, token) => {
+    try {
+      const { data, status } = await deletePostService(postId, token);
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const followUnfollowHandler = async (serviceFn, id, token) => {
+    try {
+      const { data, status } = await serviceFn(id, token);
+      if (status === 200) {
+        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
+        // setUserProfile(data.followUser);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addCommentToPost = async (id, input, token) => {
+    try {
+      const { data, status } = await addPostCommentService(id, input, token);
+      if (status === 201) {
+        postsDispatch({
+          type: POSTS.INITIALISE,
+          payload: data.posts.reverse(),
+        });
+      }
+      // setCommentInput("");
+      // setShowCommentInput(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <PostsContext.Provider value={{ postsData, postsDispatch }}>
+    <PostsContext.Provider
+      value={{
+        postsData,
+        postsDispatch,
+        handlePostLike,
+        handlePostBookmark,
+        handlePostDelete,
+        followUnfollowHandler,
+        addCommentToPost,
+      }}
+    >
       {children}
     </PostsContext.Provider>
   );
