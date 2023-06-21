@@ -181,10 +181,10 @@ export const deletePostCommentHandler = function (schema, request) {
 
 /**
  * This handler handles upvoting a comment of a post in the db.
- * send POST Request at /api/comments/upvote/:postId/:commentId
+ * send POST Request at /api/comments/like/:postId/:commentId
  * */
 
-export const upvotePostCommentHandler = function (schema, request) {
+export const likePostCommentHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -205,7 +205,7 @@ export const upvotePostCommentHandler = function (schema, request) {
     );
 
     if (
-      post.comments[commentIndex].votes.upvotedBy.some(
+      post.comments[commentIndex].likes.likedBy.some(
         (currUser) => currUser._id === user._id
       )
     ) {
@@ -215,10 +215,11 @@ export const upvotePostCommentHandler = function (schema, request) {
         { errors: ["Cannot upvote a post that is already upvoted. "] }
       );
     }
-    post.comments[commentIndex].votes.downvotedBy = post.comments[
+    post.comments[commentIndex].likes.dislikedBy = post.comments[
       commentIndex
-    ].votes.downvotedBy.filter((currUser) => currUser._id !== user._id);
-    post.comments[commentIndex].votes.upvotedBy.push(user);
+    ].likes.dislikedBy.filter((currUser) => currUser._id !== user._id);
+    post.comments[commentIndex].likes.likeCount += 1;
+    post.comments[commentIndex].likes.likedBy.push(user);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
     return new Response(201, {}, { comments: post.comments });
   } catch (error) {
@@ -234,10 +235,10 @@ export const upvotePostCommentHandler = function (schema, request) {
 
 /**
  * This handler handles downvoting a comment of a post in the db.
- * send POST Request at /api/comments/downvote/:postId/:commentId
+ * send POST Request at /api/comments/dislike/:postId/:commentId
  * */
 
-export const downvotePostCommentHandler = function (schema, request) {
+export const dislikePostCommentHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -258,7 +259,7 @@ export const downvotePostCommentHandler = function (schema, request) {
     );
 
     if (
-      post.comments[commentIndex].votes.downvotedBy.some(
+      post.comments[commentIndex].likes.dislikedBy.some(
         (currUser) => currUser._id === user._id
       )
     ) {
@@ -268,10 +269,11 @@ export const downvotePostCommentHandler = function (schema, request) {
         { errors: ["Cannot downvote a post that is already downvoted. "] }
       );
     }
-    post.comments[commentIndex].votes.upvotedBy = post.comments[
+    post.comments[commentIndex].likes.likedBy = post.comments[
       commentIndex
-    ].votes.upvotedBy.filter((currUser) => currUser._id !== user._id);
-    post.comments[commentIndex].votes.downvotedBy.push(user);
+    ].likes.likedBy.filter((currUser) => currUser._id !== user._id);
+    post.comments[commentIndex].likes.likeCount -= 1;
+    post.comments[commentIndex].likes.dislikedBy.push(user);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
     return new Response(201, {}, { comments: post.comments });
   } catch (error) {

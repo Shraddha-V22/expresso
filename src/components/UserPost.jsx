@@ -106,7 +106,6 @@ export default function UserPost({ userPost }) {
   const addCommentToPost = async (id, input, token) => {
     try {
       const { data, status } = await addPostCommentService(id, input, token);
-      console.log({ data, status });
       if (status === 201) {
         postsDispatch({
           type: POSTS.INITIALISE,
@@ -213,7 +212,7 @@ export default function UserPost({ userPost }) {
         </div>
         <div className="flex flex-col gap-2">
           <div className="leading-5">
-            <p>
+            <p className="text-sm">
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-xs">@{username}</p>

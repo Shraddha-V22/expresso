@@ -27,7 +27,9 @@ import {
 } from "./backend/controllers/UserController";
 import {
   addPostCommentHandler,
+  dislikePostCommentHandler,
   getPostCommentsHandler,
+  likePostCommentHandler,
 } from "./backend/controllers/CommentsController";
 
 export function makeServer({ environment = "development" } = {}) {
@@ -95,6 +97,14 @@ export function makeServer({ environment = "development" } = {}) {
       //comments rountes
       this.get("/comments/:postId", getPostCommentsHandler.bind(this));
       this.post("/comments/add/:postId", addPostCommentHandler.bind(this));
+      this.post(
+        "/comments/like/:postId/:commentId",
+        likePostCommentHandler.bind(this)
+      );
+      this.post(
+        "/comments/dislike/:postId/:commentId",
+        dislikePostCommentHandler.bind(this)
+      );
     },
   });
 }

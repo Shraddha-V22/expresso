@@ -63,7 +63,14 @@ function Comments({ postId }) {
   return (
     <section className="ml-[50px]">
       {comments?.length > 0 ? (
-        comments?.map((co) => <Comment key={co._id} comment={co} />)
+        comments?.map((co) => (
+          <Comment
+            key={co._id}
+            comment={co}
+            postId={postId}
+            setComments={setComments}
+          />
+        ))
       ) : (
         <p>Be the first one to comment!</p>
       )}

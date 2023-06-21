@@ -21,3 +21,29 @@ export const addPostCommentService = (postId, inputText, token) => {
     }
   );
 };
+
+// /api/comments/like/:postId/:commentId
+export const likePostCommentService = (postId, commentId, token) => {
+  return axios.post(
+    `/api/comments/like/${postId}/${commentId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
+
+// /api/comments/dislike/:postId/:commentId
+export const dislikePostCommentService = (postId, commentId, token) => {
+  return axios.post(
+    `/api/comments/dislike/${postId}/${commentId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};

@@ -19,8 +19,12 @@ import {
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
+import {
+  dislikePostCommentService,
+  likePostCommentService,
+} from "../services/commentsServices";
 
-export default function Comment({ comment }) {
+export default function Comment({ comment, postId, setComments }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -42,12 +46,23 @@ export default function Comment({ comment }) {
     func;
   };
 
+  const handlePostCommentLike = async (serviceFn, postId, commentId, token) => {
+    try {
+      const { data, status } = await serviceFn(postId, commentId, token);
+      if (status === 201) {
+        setComments(data.comments);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <section className="cursor-pointer">
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
         <div className="absolute right-2 top-2">
           <button
-            onClick={(e) => setShowActions((prev) => !prev)}
+            onClick={() => setShowActions((prev) => !prev)}
             className="h-6 w-6 rounded-full hover:bg-gray-100"
           >
             <FontAwesomeIcon icon={faEllipsis} />
@@ -122,7 +137,7 @@ export default function Comment({ comment }) {
         </div>
         <div className="flex flex-col gap-2">
           <div className="leading-5">
-            <p>
+            <p className="text-sm">
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-xs">@{username}</p>
@@ -158,8 +173,21 @@ export default function Comment({ comment }) {
           <div className="flex w-full justify-start gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
               <div className="flex items-center rounded-md border">
+                <Button
+                  onClick={() =>
+                    handlePostCommentLike(
+                      dislikePostCommentService,
+                      postId,
+                      _id,
+                      token
+                    )
+                  }
+                  className="border-none px-2"
+                >
+                  <FontAwesomeIcon icon={faThumbsUpFilled} />
+                </Button>
                 <p
-                  className="cursor-pointer border-r px-2"
+                  className="cursor-pointer px-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -169,14 +197,24 @@ export default function Comment({ comment }) {
                 >
                   {likes?.likeCount}
                 </p>
-                <Button className="border-none px-2">
-                  <FontAwesomeIcon icon={faThumbsUpFilled} />
-                </Button>
               </div>
             ) : (
               <div className="flex items-center rounded-md border">
+                <Button
+                  onClick={() =>
+                    handlePostCommentLike(
+                      likePostCommentService,
+                      postId,
+                      _id,
+                      token
+                    )
+                  }
+                  className="border-none px-2"
+                >
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                </Button>
                 <p
-                  className="cursor-pointer border-r px-2"
+                  className="cursor-pointer px-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -186,36 +224,8 @@ export default function Comment({ comment }) {
                 >
                   {likes?.likeCount}
                 </p>
-                <Button className="border-none px-2">
-                  <FontAwesomeIcon icon={faThumbsUp} />
-                </Button>
               </div>
             )}
-
-            {/* 
-            {userDetails?.bookmarks.find((postId) => postId === _id) ? (
-              <Button
-                onClick={(e) =>
-                  clickHandler(
-                    e,
-                    handlePostBookmark(removeBookmarkPostService, _id, token)
-                  )
-                }
-              >
-                <FontAwesomeIcon icon={faBookmarkFilled} />
-              </Button>
-            ) : (
-              <Button
-                onClick={(e) =>
-                  clickHandler(
-                    e,
-                    handlePostBookmark(bookmarkPostService, _id, token)
-                  )
-                }
-              >
-                <FontAwesomeIcon icon={faBookmark} />
-              </Button>
-            )} */}
           </div>
         </div>
       </section>
