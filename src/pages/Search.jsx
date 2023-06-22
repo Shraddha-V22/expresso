@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
 import { useUsers } from "../contexts/UsersProvider";
 import { useMemo } from "react";
-import { AUTH } from "../common/reducerTypes";
-import { followUserService } from "../services/userServices";
-import { useNavigate } from "react-router-dom";
+import UsersToFollow from "../components/UsersToFollow";
+import FollowSuggestions from "../components/FollowSuggestions";
 
 const useToggleOnFocus = (initialState = false) => {
   const [show, setShow] = useState(initialState);
@@ -56,18 +55,18 @@ export default function Search() {
   );
 
   return (
-    <section>
-      <input
-        type="text"
-        placeholder="search user"
-        {...eventHandlers}
-        onChange={(e) => setSearchText(e.target.value)}
-        className="rounded-full border-[1px] p-1 indent-2 outline-none"
-      />
+    <section className="px-2">
+      <div className="w-full border-b pb-2">
+        <input
+          type="text"
+          placeholder="search user"
+          {...eventHandlers}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="w-full rounded-full border p-1 indent-2 outline-none"
+        />
+      </div>
       {!show ? (
-        getUsersToFollow?.map((user) => (
-          <UsersToFollow key={user._id} user={user} />
-        ))
+        <FollowSuggestions />
       ) : searchSuggestions.length ? (
         searchSuggestions?.map((user) => (
           <UsersToFollow key={user._id} user={user} forSearch />
@@ -81,55 +80,49 @@ export default function Search() {
   );
 }
 
-function UsersToFollow({ user, forSearch }) {
-  const navigate = useNavigate();
+export function DesktopSearch() {
+  const {
+    usersData: { users },
+  } = useUsers();
   const {
     userData: {
-      user: { token },
+      user: { userDetails },
     },
-    authDispatch,
   } = useAuth();
+  const [searchText, setSearchText] = useState("");
 
-  const followUnfollowHandler = async (serviceFn, id, token) => {
-    try {
-      const { data, status } = await serviceFn(id, token);
-      if (status === 200) {
-        authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const searchSuggestions = useMemo(
+    () =>
+      searchText.length > 0 &&
+      users?.filter(
+        ({ username, firstName, lastName }) =>
+          username !== userDetails?.username &&
+          (username.toLowerCase().includes(searchText.toLowerCase()) ||
+            firstName.toLowerCase().includes(searchText.toLowerCase()) ||
+            lastName.toLowerCase().includes(searchText.toLowerCase()))
+      ),
+    [searchText]
+  );
 
   return (
-    <section
-      onClick={() => navigate(`/${user?._id}`)}
-      className="flex w-full cursor-pointer items-center gap-2 border-b-[1px] p-2"
-    >
-      <div className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]">
-        <img
-          src={user?.profileImg}
-          alt=""
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="leading-5">
-        <p>
-          {user?.firstName} {user?.lastName}
-        </p>
-        <p className="text-sm">@{user?.username}</p>
-      </div>
-      {!forSearch && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            followUnfollowHandler(followUserService, user?._id, token);
-          }}
-          className="ml-auto rounded-full border-[1px] px-2 py-1 text-sm"
-        >
-          + follow
-        </button>
+    <div className="relative w-full border-b px-2 pb-2">
+      <input
+        type="text"
+        placeholder="search user"
+        onChange={(e) => setSearchText(e.target.value)}
+        className="w-full rounded-full border p-1 indent-2 text-sm outline-none placeholder:text-sm"
+      />
+      {searchText && (
+        <section className="absolute max-h-[350px] overflow-y-auto rounded-md border bg-white">
+          {searchSuggestions?.length ? (
+            searchSuggestions?.map((user) => (
+              <UsersToFollow key={user._id} user={user} forSearch />
+            ))
+          ) : (
+            <p className="h-fit w-full text-sm">No user found</p>
+          )}
+        </section>
       )}
-    </section>
+    </div>
   );
 }

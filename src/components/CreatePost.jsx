@@ -5,8 +5,8 @@ import { POSTS } from "../common/reducerTypes";
 import { createPostService, editPostService } from "../services/postServices";
 import Button from "./Button";
 
-export default function CreatePost({ edit, postId }) {
-  const [inputText, setInputText] = useState("");
+export default function CreatePost({ edit, post }) {
+  const [inputText, setInputText] = useState(post?.content || "");
   const { postsDispatch } = usePosts();
   const {
     userData: {
@@ -47,7 +47,7 @@ export default function CreatePost({ edit, postId }) {
   };
 
   return (
-    <section className="flex flex-col gap-2 border-[1px] p-4">
+    <section className="flex w-full flex-col gap-2 rounded-md border p-4">
       <textarea
         placeholder="What's on your mind?"
         onClick={(e) => e.stopPropagation()}
@@ -56,17 +56,17 @@ export default function CreatePost({ edit, postId }) {
           setInputText(e.target.value);
         }}
         value={inputText}
-        className="resize-none outline-none"
+        className="w-full resize-none outline-none"
         rows="2"
       />
       {edit ? (
         <Button
           onClick={(e) => {
             e.stopPropagation();
-            handlePostEdit(inputText, postId, token);
+            handlePostEdit(inputText, post?._id, token);
           }}
           className={"self-end"}
-          disabled={!inputText.length}
+          disabled={!inputText?.length}
         >
           save
         </Button>
@@ -77,7 +77,7 @@ export default function CreatePost({ edit, postId }) {
             createUserPost(inputText, token);
           }}
           className={"self-end"}
-          disabled={!inputText.length}
+          disabled={!inputText?.length}
         >
           Create
         </Button>

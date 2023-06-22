@@ -29,15 +29,17 @@ export default function Home() {
 
   useEffect(() => {
     getUserFeed();
-  }, [posts]);
+  }, [posts, userDetails]);
 
   return (
-    <section>
-      <h1>home</h1>
+    <section className="w-full">
+      {/* <h1>home</h1> */}
       <CreatePost />
-      {userFeed?.map((post) => (
-        <UserPost key={post._id} userPost={post} />
-      ))}
+      <section className="mt-2 flex flex-col gap-2">
+        {userFeed?.map((post) => (
+          <UserPost key={post._id} userPost={post} />
+        ))}
+      </section>
     </section>
   );
 }

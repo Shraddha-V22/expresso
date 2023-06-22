@@ -63,7 +63,7 @@ export default function UserPost({ userPost }) {
       className="cursor-pointer"
       onClick={() => navigate(`/post/${_id}`)}
     >
-      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
+      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
         <div className="absolute right-2 top-2">
           <button
             onClick={(e) =>
@@ -81,7 +81,7 @@ export default function UserPost({ userPost }) {
               {user?._id === userDetails?._id ? (
                 <div>
                   <Modal className="px-2" modalFor={"Edit"}>
-                    {<CreatePost edit postId={_id} />}
+                    {<CreatePost edit post={userPost} />}
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"

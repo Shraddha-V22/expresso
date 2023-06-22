@@ -29,12 +29,18 @@ export default function Bookmarks() {
   }, [posts]);
 
   return (
-    <section>
-      <h1>Bookmarks</h1>
+    <section className="w-full max-w-[500px]">
+      {/* <h1>Bookmarks</h1> */}
       {bookmarks?.length > 0 ? (
-        bookmarks.map((post) => <UserPost key={post._id} userPost={post} />)
+        <section className="flex flex-col gap-2">
+          {bookmarks.map((post) => (
+            <UserPost key={post._id} userPost={post} />
+          ))}
+        </section>
       ) : (
-        <h4>There are no bookmarks</h4>
+        <div className="grid min-h-[100px] place-items-center">
+          <h4>There are no bookmarks</h4>
+        </div>
       )}
     </section>
   );

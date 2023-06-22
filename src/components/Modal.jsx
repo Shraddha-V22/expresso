@@ -26,16 +26,16 @@ export default function Modal({ children, modalFor, className }) {
           }}
           className="fixed left-0 top-0 z-20 grid h-[100vh] w-[100vw] place-items-center bg-black/10"
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClose();
-            }}
-            className="absolute right-8 top-4"
-          >
-            <FontAwesomeIcon icon={faX} />
-          </button>
-          <section className="h-[fit-content] w-[fit-content] rounded-md border-[1px] bg-white p-4">
+          <section className="relative h-[fit-content] w-[fit-content] rounded-md border-[1px] bg-white px-4 py-6">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClose();
+              }}
+              className="absolute right-4 top-1 text-xs"
+            >
+              <FontAwesomeIcon icon={faX} />
+            </button>
             {children}
           </section>
         </div>

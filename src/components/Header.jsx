@@ -10,7 +10,7 @@ export default function Header() {
     },
   } = useAuth();
   return (
-    <header className="relative p-2">
+    <header className="fixed top-0 z-10 w-full border-b bg-white p-2">
       <button
         onClick={() => setShowMenu((prev) => !prev)}
         className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"

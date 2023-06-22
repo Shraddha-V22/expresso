@@ -85,7 +85,7 @@ export default function Profile() {
             />
           </div>
         </section>
-        <section className="flex flex-col items-start gap-1 p-4">
+        <section className="flex flex-col items-start gap-1 p-2">
           {isUserProfile ? (
             <button className="self-end border-[1px] p-1">edit profile</button>
           ) : userDetails?.following?.find(
@@ -117,6 +117,9 @@ export default function Profile() {
               Follow
             </Button>
           )}
+          <p>
+            {userProfile?.firstName} {userProfile?.lastName}
+          </p>
           <h3>@{userProfile?.username}</h3>
           <p className="text-sm">{userProfile?.bio}</p>
           <p className="text-sm underline">{userProfile?.portfolio}</p>
@@ -126,7 +129,7 @@ export default function Profile() {
           </div>
         </section>
       </section>
-      <section>
+      <section className="flex flex-col gap-2">
         {userPosts?.map((post) => (
           <UserPost key={post._id} userPost={post} />
         ))}
