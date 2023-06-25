@@ -76,8 +76,12 @@ export default function Profile() {
     <section>
       <section>
         <section className="relative">
-          <img src={userProfile?.profileBg} alt="" className="w-full" />
-          <div className="absolute -bottom-[30px] left-4 h-[60px] w-[60px] cursor-pointer overflow-hidden rounded-full border-2 bg-green-200">
+          <img
+            src={userProfile?.profileBg}
+            alt=""
+            className="h-[150px] w-full rounded-md object-cover"
+          />
+          <div className="absolute -bottom-[30px] left-4 h-[100px] w-[100px] cursor-pointer overflow-hidden rounded-full border-2 bg-green-200">
             <img
               src={userProfile?.profileImg}
               alt=""
