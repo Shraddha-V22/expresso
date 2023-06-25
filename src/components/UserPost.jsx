@@ -25,6 +25,7 @@ import {
 import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
+import { formatPostDate } from "../common/formatPostDate";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -32,10 +33,8 @@ export default function UserPost({ userPost }) {
     userData: {
       user: { token, userDetails },
     },
-    authDispatch,
   } = useAuth();
   const {
-    postsDispatch,
     handlePostLike,
     handlePostBookmark,
     handlePostDelete,
@@ -63,7 +62,7 @@ export default function UserPost({ userPost }) {
       className="cursor-pointer"
       onClick={() => navigate(`/post/${_id}`)}
     >
-      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
+      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border p-2">
         <div className="absolute right-2 top-2">
           <button
             onClick={(e) =>
@@ -146,12 +145,16 @@ export default function UserPost({ userPost }) {
         </div>
         <div className="flex flex-col gap-2">
           <div className="leading-5">
-            <p className="text-sm">
-              {user?.firstName} {user?.lastName}
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="text-sm">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs text-gray-600">
+                {formatPostDate(createdAt)}
+              </p>
+            </div>
             <p className="text-xs">@{username}</p>
           </div>
-          <p className="text-xs">{createdAt}</p>
           <div>
             <p className={`text-sm`}>{content}</p>
           </div>
