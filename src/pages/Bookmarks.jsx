@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import UserPost from "../components/UserPost";
 import { useAuth } from "../contexts/AuthProvider";
-import { getUserBookmarksService } from "../services/userServices";
 import { usePosts } from "../contexts/PostsProvider";
 import { useState } from "react";
 
@@ -26,7 +25,7 @@ export default function Bookmarks() {
 
   useEffect(() => {
     getUserBookmarks(userDetails?.bookmarks, posts);
-  }, [posts]);
+  }, [posts, userDetails]);
 
   return (
     <section className="w-full max-w-[500px]">
