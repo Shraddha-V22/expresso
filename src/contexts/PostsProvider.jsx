@@ -13,10 +13,20 @@ import { useAuth } from "./AuthProvider";
 import { addPostCommentService } from "../services/commentsServices";
 
 const PostsContext = createContext();
-const initialPosts = { posts: [], userFeed: [] };
+const initialPosts = {
+  posts: [],
+  userFeed: [],
+  sortedFeed: [],
+  sortBy: "latest",
+};
 
 export default function PostsProvider({ children }) {
-  const { authDispatch } = useAuth();
+  const {
+    userData: {
+      user: { userDetails },
+    },
+    authDispatch,
+  } = useAuth();
   const [postsData, postsDispatch] = useReducer(postReducers, initialPosts);
 
   const getAllPosts = async () => {
@@ -36,6 +46,20 @@ export default function PostsProvider({ children }) {
   useEffect(() => {
     getAllPosts();
   }, []);
+
+  const getUserFeed = () => {
+    const feedPosts = postsData.posts?.filter(
+      (post) =>
+        userDetails?.following?.find(
+          ({ username }) => username === post?.username
+        ) || post.username === userDetails?.username
+    );
+    postsDispatch({ type: POSTS.SET_USER_FEED, payload: feedPosts });
+  };
+
+  useEffect(() => {
+    getUserFeed();
+  }, [postsData.posts, userDetails]);
 
   const handlePostLike = async (serviceFn, postId, token) => {
     try {
