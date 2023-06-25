@@ -22,7 +22,7 @@ export default function FollowSuggestions() {
             !userDetails?.following?.find(({ _id }) => _id === user._id) &&
             user._id !== userDetails?._id
         )
-        .slice(0, 5),
+        .slice(0, 4),
     [users, userDetails]
   );
 
