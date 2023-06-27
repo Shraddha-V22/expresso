@@ -33,15 +33,19 @@ export function SideNavBar() {
     return { color: isActive ? "black" : "black" };
   };
   return (
-    <nav className="flex h-full w-auto flex-col items-start justify-start gap-4 border-r bg-white px-4 pt-4 max-[500px]:items-center">
-      <NavLink style={activeStyle} to="/" className="flex items-center gap-2">
+    <nav className="flex h-full w-auto flex-col items-start justify-start gap-4 border-r bg-white px-2 pt-4 max-[500px]:items-center">
+      <NavLink
+        style={activeStyle}
+        to="/"
+        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
+      >
         <FontAwesomeIcon icon={faHouse} className="w-[20px]" />
         <p className="max-[500px]:hidden">Home</p>
       </NavLink>
       <NavLink
         style={activeStyle}
         to="/explore"
-        className="flex items-center gap-2"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
       >
         <FontAwesomeIcon icon={faCompass} className="w-[20px]" />
         <p className="max-[500px]:hidden">Explore</p>
@@ -49,7 +53,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/bookmarks"
-        className="flex items-center gap-2"
+        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
       >
         <FontAwesomeIcon icon={faBookmark} className="w-[20px]" />
         <p className="max-[500px]:hidden">Bookmarks</p>
