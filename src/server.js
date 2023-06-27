@@ -33,6 +33,7 @@ import {
   getPostCommentsHandler,
   likePostCommentHandler,
 } from "./backend/controllers/CommentsController";
+import { CLOUDINARY_URL } from "./common/uploadMedia";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -115,6 +116,8 @@ export function makeServer({ environment = "development" } = {}) {
         "/comments/delete/:postId/:commentId",
         deletePostCommentHandler.bind(this)
       );
+
+      this.passthrough(CLOUDINARY_URL);
     },
   });
 }

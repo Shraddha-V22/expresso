@@ -155,8 +155,24 @@ export default function UserPost({ userPost }) {
             </div>
             <p className="text-xs">@{username}</p>
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <p className={`text-sm`}>{content}</p>
+            {userPost?.mediaUrl && (
+              <div className="h-[200px] w-full rounded-md border bg-gray-800">
+                {userPost?.mediaUrl.split("/")[4] === "image" && (
+                  <img
+                    src={userPost?.mediaUrl}
+                    alt="post-img"
+                    className="mx-auto h-full"
+                  />
+                )}
+                {userPost?.mediaUrl.split("/")[4] === "video" && (
+                  <video alt="Post-video" className="mx-auto h-full">
+                    <source src={userPost?.mediaUrl} />
+                  </video>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex justify-between text-sm">
             <div
@@ -182,7 +198,7 @@ export default function UserPost({ userPost }) {
               ))}
             </div>
           </div>
-          <div className="flex w-full justify-start gap-2">
+          <div className="flex w-full gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
               <div className="flex items-center rounded-md border">
                 <Button

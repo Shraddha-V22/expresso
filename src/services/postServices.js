@@ -39,14 +39,12 @@ export const dislikePostService = (postId, token) => {
 };
 
 // /api/posts/
-export const createPostService = (inputText, token) => {
+export const createPostService = (postData, token) => {
   return axios.post(
     `/api/posts/`,
 
     {
-      postData: {
-        content: inputText,
-      },
+      postData,
     },
 
     {
