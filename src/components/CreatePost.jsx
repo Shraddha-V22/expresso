@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { uploadMedia } from "../common/uploadMedia";
 
-export default function CreatePost({ edit, post }) {
+export default function CreatePost({ edit, post, setOpen }) {
   const [inputText, setInputText] = useState(post?.content || "");
   const [media, setMedia] = useState(null);
   const { postsDispatch } = usePosts();
@@ -21,23 +21,40 @@ export default function CreatePost({ edit, post }) {
   } = useAuth();
 
   const createUserPost = async (inputText, media, token) => {
-    try {
-      const response = await uploadMedia(media);
-      const { data, status } = await createPostService(
-        { content: inputText, mediaUrl: response.url },
-        token
-      );
-      console.log({ data, status });
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-        setInputText("");
-        setMedia(null);
+    if (media) {
+      try {
+        const response = await uploadMedia(media);
+        const { data, status } = await createPostService(
+          { content: inputText, mediaUrl: response.url },
+          token
+        );
+        if (status === 201) {
+          postsDispatch({
+            type: POSTS.INITIALISE,
+            payload: data.posts.reverse(),
+          });
+          setInputText("");
+          setMedia(null);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      try {
+        const { data, status } = await createPostService(
+          { content: inputText },
+          token
+        );
+        if (status === 201) {
+          postsDispatch({
+            type: POSTS.INITIALISE,
+            payload: data.posts.reverse(),
+          });
+          setInputText("");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -127,6 +144,7 @@ export default function CreatePost({ edit, post }) {
             onClick={(e) => {
               e.stopPropagation();
               handlePostEdit(inputText, post?._id, token);
+              setOpen(false);
             }}
             className={"self-end"}
             disabled={btnDisable}

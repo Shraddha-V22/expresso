@@ -45,10 +45,14 @@ export default function UserPost({ userPost }) {
     usersData: { users },
   } = useUsers();
   const { _id, content, username, likes, comments, createdAt } = userPost;
-  const [showLikedBy, setShowLikedBy] = useState(false);
-  const [showActions, setShowActions] = useState(false);
-  const [showCommentInput, setShowCommentInput] = useState(false);
+
   const [commentInput, setCommentInput] = useState("");
+  const [flags, setFlags] = useState({
+    showLikedBy: false,
+    showActions: false,
+    showCommentInput: false,
+  });
+  const [open, setOpen] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -68,19 +72,27 @@ export default function UserPost({ userPost }) {
             onClick={(e) =>
               clickHandler(
                 e,
-                setShowActions((prev) => !prev)
+                setFlags((prev) => ({
+                  ...prev,
+                  showActions: !prev.showActions,
+                }))
               )
             }
             className="h-6 w-6 rounded-full hover:bg-gray-100"
           >
             <FontAwesomeIcon icon={faEllipsis} />
           </button>
-          {showActions && (
+          {flags.showActions && (
             <div className="absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
               {user?._id === userDetails?._id ? (
                 <div>
-                  <Modal className="px-2" modalFor={"Edit"}>
-                    {<CreatePost edit post={userPost} />}
+                  <Modal
+                    className="px-2"
+                    open={open}
+                    setOpen={setOpen}
+                    modalFor={"Edit"}
+                  >
+                    {<CreatePost edit post={userPost} setOpen={setOpen} />}
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"
@@ -177,12 +189,17 @@ export default function UserPost({ userPost }) {
           <div className="flex justify-between text-sm">
             <div
               className={`${
-                showLikedBy ? "" : "hidden"
+                flags.showLikedBy ? "" : "hidden"
               } fixed left-0 top-0 z-20 flex h-[100vh] w-full flex-col gap-2 overflow-y-auto bg-white p-4 py-2`}
             >
               <button
                 className="self-start"
-                onClick={(e) => clickHandler(e, setShowLikedBy(false))}
+                onClick={(e) =>
+                  clickHandler(
+                    e,
+                    setFlags((prev) => ({ ...prev, showLikedBy: false }))
+                  )
+                }
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
               </button>
@@ -217,7 +234,10 @@ export default function UserPost({ userPost }) {
                   onClick={(e) =>
                     clickHandler(
                       e,
-                      setShowLikedBy((prev) => !prev)
+                      setFlags((prev) => ({
+                        ...prev,
+                        showLikedBy: !prev.showLikedBy,
+                      }))
                     )
                   }
                 >
@@ -239,7 +259,10 @@ export default function UserPost({ userPost }) {
                   onClick={(e) =>
                     clickHandler(
                       e,
-                      setShowLikedBy((prev) => !prev)
+                      setFlags((prev) => ({
+                        ...prev,
+                        showLikedBy: !prev.showLikedBy,
+                      }))
                     )
                   }
                 >
@@ -252,7 +275,10 @@ export default function UserPost({ userPost }) {
                 onClick={(e) =>
                   clickHandler(
                     e,
-                    setShowCommentInput((prev) => !prev)
+                    setFlags((prev) => ({
+                      ...prev,
+                      showCommentInput: !prev.showCommentInput,
+                    }))
                   )
                 }
                 className="border-none px-2"
@@ -288,7 +314,7 @@ export default function UserPost({ userPost }) {
           </div>
         </div>
       </section>
-      {showCommentInput && (
+      {flags.showCommentInput && (
         <section className="m-2 flex justify-end gap-2 p-2 pt-0">
           <input
             type="text"
@@ -301,7 +327,7 @@ export default function UserPost({ userPost }) {
             onClick={(e) => {
               clickHandler(e, addCommentToPost(_id, commentInput, token));
               setCommentInput("");
-              setShowCommentInput(false);
+              setFlags((prev) => ({ ...prev, showLikedBy: false }));
             }}
             className="rounded-full border px-3 py-1 capitalize"
           >
