@@ -19,6 +19,7 @@ import {
   editPostCommentService,
   likePostCommentService,
 } from "../services/commentsServices";
+import { formatPostDate } from "../common/formatPostDate";
 
 export default function Comment({ comment, postId, setComments }) {
   const navigate = useNavigate();
@@ -156,13 +157,15 @@ export default function Comment({ comment, postId, setComments }) {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div className="leading-5">
-            <p className="text-sm">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs">@{username}</p>
+          <div className="flex items-center gap-2">
+            <div className="leading-5">
+              <p className="text-sm">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs">@{username}</p>
+            </div>
+            <p className="text-xs text-gray-600">{formatPostDate(createdAt)}</p>
           </div>
-          <p className="text-xs">{createdAt}</p>
           <div>
             <p className={`text-sm`}>{content}</p>
           </div>
