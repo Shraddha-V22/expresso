@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import NavBar, { SideNavBar } from "../components/NavBar";
 import FollowSuggestions from "../components/FollowSuggestions";
 import { DesktopSearch } from "./Search";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout() {
   return (
@@ -11,16 +13,27 @@ export default function Layout() {
       <section className="min-[350px]:hidden">
         <NavBar />
       </section>
-      <aside className="mt-[70px] max-[350px]:hidden">
+      <aside className="mt-[60px] max-[350px]:hidden">
         <SideNavBar />
       </aside>
-      <main className="mt-[70px] max-w-[500px] flex-grow">
+      <main className="mt-[60px] max-w-[500px] flex-grow">
         <Outlet />
       </main>
-      <section className="mt-[70px] border-x max-[768px]:hidden">
+      <section className="mt-[60px] border-x max-[768px]:hidden">
         <DesktopSearch />
         <FollowSuggestions />
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </section>
   );
 }
