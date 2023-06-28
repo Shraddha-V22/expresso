@@ -9,14 +9,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { uploadMedia } from "../common/uploadMedia";
+import Avatar from "./Avatar";
 
-export default function CreatePost({ edit, post, setOpen }) {
-  const [inputText, setInputText] = useState(post?.content || "");
+export default function CreatePost() {
+  const [inputText, setInputText] = useState("");
   const [media, setMedia] = useState(null);
   const { postsDispatch } = usePosts();
   const {
     userData: {
-      user: { token },
+      user: { token, userDetails },
     },
   } = useAuth();
 
@@ -58,100 +59,74 @@ export default function CreatePost({ edit, post, setOpen }) {
     }
   };
 
-  const handlePostEdit = async (inputText, postId, token) => {
-    try {
-      const { data, status } = await editPostService(inputText, postId, token);
-      if (status === 201) {
-        postsDispatch({
-          type: POSTS.INITIALISE,
-          payload: data.posts.reverse(),
-        });
-        setInputText("");
+  const imageUploadHandler = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*, video/*";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      console.log(file, file.size);
+      if (file.type.split("/")[0] === "image" && file.size > 1024000) {
+        toast.error("The image size should not be more than 1mb.");
+        return;
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const imageUploadHandler = (e) => {
-    const file = e.target.files[0];
-    console.log(file, file.size);
-    if (file.type.split("/")[0] === "image" && file.size > 1024000) {
-      toast.error("The image size should not be more than 1mb.");
-      return;
-    }
-    if (file.type.split("/")[0] === "video" && file.size > 7168000) {
-      toast.error("The video size should not be more than 7mb.");
-      return;
-    }
-    setMedia(file);
+      if (file.type.split("/")[0] === "video" && file.size > 7168000) {
+        toast.error("The video size should not be more than 7mb.");
+        return;
+      }
+      setMedia(file);
+    };
+    input.click();
   };
 
   const btnDisable = !inputText?.trim() && media === null;
 
   return (
-    <section className="flex w-full flex-col gap-2 rounded-md border p-4">
-      <div>
-        <textarea
-          placeholder="What's on your mind?"
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => {
-            e.stopPropagation();
-            setInputText(e.target.value);
-          }}
-          value={inputText}
-          className="w-full resize-none outline-none"
-          rows="2"
-        />
-        {media && (
-          <div className="relative w-fit">
-            {media.type.split("/")[0] === "image" && (
-              <img
-                src={URL.createObjectURL(media)}
-                alt="post-img"
-                className="w-[120px]"
-              />
-            )}
-            {media.type.split("/")[0] === "video" && (
-              <video alt="Post-video" className="w-[120px]">
-                <source src={URL.createObjectURL(media)} />
-              </video>
-            )}
-            <button
-              onClick={() => setMedia(null)}
-              className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px]"
-            >
-              <FontAwesomeIcon icon={faX} />
-            </button>
-          </div>
-        )}
-      </div>
-      <section className="flex justify-between">
+    <section className="flex w-full gap-2 rounded-md border p-4">
+      <Avatar
+        profileId={userDetails?._id}
+        profileUrl={userDetails?.profileImg}
+      />
+      <section className="flex w-full flex-col gap-2">
         <div>
-          <label htmlFor="file-upload">
-            <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
-          </label>
-          <input
-            type="file"
-            id="file-upload"
-            className="hidden"
-            accept="image/*, video/*"
-            onChange={imageUploadHandler}
-          />
-        </div>
-        {edit ? (
-          <Button
-            onClick={(e) => {
+          <textarea
+            placeholder="What's on your mind?"
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => {
               e.stopPropagation();
-              handlePostEdit(inputText, post?._id, token);
-              setOpen(false);
+              setInputText(e.target.value);
             }}
-            className={"self-end"}
-            disabled={btnDisable}
-          >
-            save
-          </Button>
-        ) : (
+            value={inputText}
+            className="w-full resize-none outline-none"
+            rows="2"
+          />
+          {media && (
+            <div className="relative w-fit">
+              {media.type.split("/")[0] === "image" && (
+                <img
+                  src={URL.createObjectURL(media)}
+                  alt="post-img"
+                  className="w-[120px]"
+                />
+              )}
+              {media.type.split("/")[0] === "video" && (
+                <video alt="Post-video" className="w-[120px]">
+                  <source src={URL.createObjectURL(media)} />
+                </video>
+              )}
+              <button
+                onClick={() => setMedia(null)}
+                className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px]"
+              >
+                <FontAwesomeIcon icon={faX} />
+              </button>
+            </div>
+          )}
+        </div>
+        <section className="flex justify-between">
+          <button onClick={imageUploadHandler}>
+            <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
+          </button>
           <Button
             onClick={(e) => {
               e.stopPropagation();
@@ -162,7 +137,7 @@ export default function CreatePost({ edit, post, setOpen }) {
           >
             Create
           </Button>
-        )}
+        </section>
       </section>
     </section>
   );

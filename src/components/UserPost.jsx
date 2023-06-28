@@ -26,6 +26,7 @@ import Modal from "./Modal";
 import CreatePost from "./CreatePost";
 import Button from "./Button";
 import { formatPostDate } from "../common/formatPostDate";
+import EditPost from "./EditPost";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ export default function UserPost({ userPost }) {
                     setOpen={setOpen}
                     modalFor={"Edit"}
                   >
-                    {<CreatePost edit post={userPost} setOpen={setOpen} />}
+                    {<EditPost post={userPost} setOpen={setOpen} />}
                   </Modal>
                   <button
                     className="border-t-[1px] px-2"
@@ -327,7 +328,7 @@ export default function UserPost({ userPost }) {
             onClick={(e) => {
               clickHandler(e, addCommentToPost(_id, commentInput, token));
               setCommentInput("");
-              setFlags((prev) => ({ ...prev, showLikedBy: false }));
+              setFlags((prev) => ({ ...prev, showCommentInput: false }));
             }}
             className="rounded-full border px-3 py-1 capitalize"
           >

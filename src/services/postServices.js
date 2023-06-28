@@ -56,13 +56,11 @@ export const createPostService = (postData, token) => {
 };
 
 // /api/posts/edit/:postId
-export const editPostService = (inputText, postId, token) => {
+export const editPostService = (postData, postId, token) => {
   return axios.post(
     `/api/posts/edit/${postId}`,
     {
-      postData: {
-        content: inputText,
-      },
+      postData,
     },
     {
       headers: {
