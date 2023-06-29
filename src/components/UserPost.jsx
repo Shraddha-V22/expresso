@@ -23,11 +23,11 @@ import {
   unfollowUserService,
 } from "../services/userServices";
 import Modal from "./Modal";
-import CreatePost from "./CreatePost";
 import Button from "./Button";
 import { formatPostDate } from "../common/formatPostDate";
 import EditPost from "./EditPost";
 import Avatar from "./Avatar";
+import Linkify from "react-linkify";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -165,7 +165,7 @@ export default function UserPost({ userPost }) {
             <p className="text-xs">@{username}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className={`text-sm`}>{content}</p>
+            <Linkify className={`text-sm`}>{content}</Linkify>
             {userPost?.mediaUrl && (
               <div className="h-[200px] w-full rounded-md border bg-gray-800">
                 {userPost?.mediaUrl.split("/")[4] === "image" && (
