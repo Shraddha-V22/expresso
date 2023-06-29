@@ -19,7 +19,7 @@ export default function Layout() {
       <main className="mt-[60px] max-w-[500px] flex-grow">
         <Outlet />
       </main>
-      <section className="mt-[60px] border-x max-[768px]:hidden">
+      <section className="mt-[60px] border-x max-[600px]:hidden">
         <DesktopSearch />
         <FollowSuggestions />
       </section>

@@ -4,6 +4,9 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { NavLink } from "react-router-dom";
 import { faCompass } from "@fortawesome/free-regular-svg-icons";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useAuth } from "../contexts/AuthProvider";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function NavBar() {
   const activeStyle = ({ isActive }) => {
@@ -11,7 +14,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="fixed bottom-0 z-10 flex w-full justify-evenly border-[1px] bg-white py-1">
+    <nav className="fixed bottom-0 z-[5] flex w-full justify-evenly border-[1px] bg-white py-1">
       <NavLink style={activeStyle} to="/">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
@@ -29,6 +32,12 @@ export default function NavBar() {
 }
 
 export function SideNavBar() {
+  const {
+    userData: {
+      user: { userDetails },
+    },
+    signOut,
+  } = useAuth();
   const activeStyle = ({ isActive }) => {
     return { color: isActive ? "black" : "black" };
   };
@@ -40,7 +49,15 @@ export function SideNavBar() {
         className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
       >
         <FontAwesomeIcon icon={faHouse} className="w-[20px]" />
-        <p className="max-[500px]:hidden">Home</p>
+        <p className="max-[768px]:hidden">Home</p>
+      </NavLink>
+      <NavLink
+        style={activeStyle}
+        to={`/${userDetails?._id}`}
+        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
+      >
+        <FontAwesomeIcon icon={faUser} className="w-[20px]" />
+        <p className="max-[768px]:hidden">Profile</p>
       </NavLink>
       <NavLink
         style={activeStyle}
@@ -48,16 +65,31 @@ export function SideNavBar() {
         className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
       >
         <FontAwesomeIcon icon={faCompass} className="w-[20px]" />
-        <p className="max-[500px]:hidden">Explore</p>
+        <p className="max-[768px]:hidden">Explore</p>
       </NavLink>
       <NavLink
         style={activeStyle}
         to="/bookmarks"
-        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
       >
         <FontAwesomeIcon icon={faBookmark} className="w-[20px]" />
-        <p className="max-[500px]:hidden">Bookmarks</p>
+        <p className="max-[768px]:hidden">Bookmarks</p>
       </NavLink>
+      <NavLink
+        style={activeStyle}
+        to="/search"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100 sm:hidden"
+      >
+        <FontAwesomeIcon icon={faMagnifyingGlass} className="w-[20px]" />
+        <p className="max-[768px]:hidden">Search</p>
+      </NavLink>
+      <div
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
+        onClick={signOut}
+      >
+        <FontAwesomeIcon icon={faRightFromBracket} className="w-[20px]" />
+        <p className="max-[768px]:hidden">Logout</p>
+      </div>
     </nav>
   );
 }

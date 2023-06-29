@@ -10,10 +10,10 @@ export default function Header() {
     },
   } = useAuth();
   return (
-    <header className="fixed top-0 z-10 flex w-full items-center justify-between bg-white px-2 py-1">
+    <header className="fixed top-0 z-10 flex w-full items-center justify-between bg-white px-2 py-1 min-[350px]:justify-center">
       <button
         onClick={() => setShowMenu((prev) => !prev)}
-        className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
+        className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px] min-[350px]:hidden"
       >
         <img
           src={userDetails?.profileImg}
@@ -22,7 +22,7 @@ export default function Header() {
         />
       </button>
       <h1 className="text-xl">Expresso</h1>
-      <div className="w-4"></div>
+      <div className="w-4 min-[350px]:hidden"></div>
       <Sidebar showMenu={showMenu} setShowMenu={setShowMenu} />
     </header>
   );

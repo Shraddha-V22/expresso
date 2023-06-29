@@ -25,16 +25,19 @@ export default function Sidebar({ showMenu, setShowMenu }) {
       onClick={() => setShowMenu(false)}
       className={`${
         showMenu ? "left-0" : "-left-[100vw]"
-      } absolute top-0 z-10 w-full bg-gray-400/25 duration-300`}
+      } absolute top-0 z-10 w-full duration-300 min-[350px]:hidden`}
     >
       <aside
         onClick={(e) => e.stopPropagation()}
-        className={`flex h-[100vh] w-[80vw] flex-col gap-4 bg-black p-6 text-white`}
+        className={`flex h-[100vh] w-[70vw] flex-col gap-4 bg-black p-6 text-white`}
       >
         <section className="flex flex-col gap-2 border-b-[1px] pb-4">
           <div className="flex items-start justify-between">
             <Avatar
-              onClick={() => goToUserProfile(`/${userDetails?._id}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToUserProfile(`/${userDetails?._id}`);
+              }}
               profileUrl={userDetails?.profileImg}
             />
             <button onClick={() => setShowMenu(false)} className="">
@@ -43,7 +46,10 @@ export default function Sidebar({ showMenu, setShowMenu }) {
           </div>
           <p
             className="cursor-pointer"
-            onClick={() => goToUserProfile(userDetails?._id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToUserProfile(userDetails?._id);
+            }}
           >
             @{userDetails?.username}
           </p>
@@ -54,7 +60,10 @@ export default function Sidebar({ showMenu, setShowMenu }) {
         </section>
         <section className="flex flex-col gap-4">
           <div
-            onClick={() => goToUserProfile(userDetails?._id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToUserProfile(userDetails?._id);
+            }}
             className="flex cursor-pointer items-center gap-4"
           >
             <FontAwesomeIcon icon={faUser} />

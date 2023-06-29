@@ -99,7 +99,7 @@ export default function CreatePost() {
               setInputText(e.target.value);
             }}
             value={inputText}
-            className="w-full resize-none outline-none"
+            className="w-full resize-none text-sm outline-none placeholder:text-sm"
             rows="2"
           />
           {media && (
