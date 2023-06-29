@@ -75,8 +75,8 @@ export default function Comment({ comment, postId, setComments }) {
   };
 
   return (
-    <section className="cursor-pointer">
-      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 rounded-md border-[1px] p-2">
+    <section className="cursor-pointer border-b">
+      <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 p-2 py-1">
         <div className="absolute right-2 top-2">
           <button
             onClick={() => setShowActions((prev) => !prev)}

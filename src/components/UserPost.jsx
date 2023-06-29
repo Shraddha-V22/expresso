@@ -165,7 +165,9 @@ export default function UserPost({ userPost }) {
             <p className="text-xs">@{username}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Linkify className={`text-sm`}>{content}</Linkify>
+            <p className="text-sm">
+              <Linkify>{content}</Linkify>
+            </p>
             {userPost?.mediaUrl && (
               <div className="h-[200px] w-full rounded-md border bg-gray-800">
                 {userPost?.mediaUrl.split("/")[4] === "image" && (

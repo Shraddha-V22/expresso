@@ -40,7 +40,7 @@ export default function Post() {
   }, [posts, postId]);
 
   return (
-    <section>
+    <section className="flex flex-col gap-2">
       <UserPost userPost={post} />
       <Comments postId={postId} />
     </section>
@@ -69,18 +69,22 @@ function Comments({ postId }) {
   }, [posts, postId]);
 
   return (
-    <section className="ml-[50px]">
+    <section className="rounded-md border">
       {comments?.length > 0 ? (
-        comments?.map((co) => (
-          <Comment
-            key={co._id}
-            comment={co}
-            postId={postId}
-            setComments={setComments}
-          />
-        ))
+        <section className="last:border-none">
+          {comments?.map((co) => (
+            <Comment
+              key={co._id}
+              comment={co}
+              postId={postId}
+              setComments={setComments}
+            />
+          ))}
+        </section>
       ) : (
-        <p>Be the first one to comment!</p>
+        <p className="rounded-md p-1 pl-2 text-sm">
+          Be the first one to comment!
+        </p>
       )}
     </section>
   );

@@ -84,7 +84,7 @@ export function SideNavBar() {
         <p className="max-[768px]:hidden">Search</p>
       </NavLink>
       <div
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full cursor-pointer items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
         onClick={signOut}
       >
         <FontAwesomeIcon icon={faRightFromBracket} className="w-[20px]" />
