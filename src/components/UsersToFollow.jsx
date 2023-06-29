@@ -4,7 +4,7 @@ import { followUserService } from "../services/userServices";
 import { usePosts } from "../contexts/PostsProvider";
 import Avatar from "./Avatar";
 
-export default function UsersToFollow({ user, forSearch }) {
+export default function UsersToFollow({ user, forSearch, suggestion }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -15,7 +15,7 @@ export default function UsersToFollow({ user, forSearch }) {
 
   return (
     <section
-      onClick={() => navigate(`/${user?._id}`)}
+      onClick={() => (suggestion ? navigate(`/${user?._id}`) : {})}
       className="flex min-w-[250px] cursor-pointer items-center gap-2 border-b p-2 last:border-b-0"
     >
       <Avatar onClick={() => {}} profileUrl={user?.profileImg} />

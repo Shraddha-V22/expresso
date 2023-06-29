@@ -49,7 +49,7 @@ export default function Registration() {
       return;
     }
     signUp(creds);
-    navigate("/");
+    navigate("/profile-setup");
   };
 
   return (

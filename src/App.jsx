@@ -17,6 +17,7 @@ import UsersProvider from "./contexts/UsersProvider";
 import Explore from "./pages/Explore";
 import Bookmarks from "./pages/Bookmarks";
 import Post from "./pages/Post";
+import ProfileSetup from "./pages/ProfileSetup";
 
 function AppRouter() {
   const router = createBrowserRouter(
@@ -31,6 +32,7 @@ function AppRouter() {
             <Route path="/:userId" element={<Profile />} />
             <Route path="/post/:postId" element={<Post />} />
           </Route>
+          <Route path="/profile-setup" element={<ProfileSetup />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />

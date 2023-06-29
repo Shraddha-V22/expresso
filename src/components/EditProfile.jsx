@@ -184,7 +184,7 @@ export default function EditProfile() {
   );
 }
 
-function EditProfileImage({ userInfo, setUserInfo, setOpen }) {
+export function EditProfileImage({ userInfo, setUserInfo, setOpen }) {
   const {
     userData: {
       user: { userDetails },
