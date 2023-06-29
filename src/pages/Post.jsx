@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import UserPost from "../components/UserPost";
 import { getPostCommentsService } from "../services/commentsServices";
 import Comment from "../components/Comment";
+import { usePosts } from "../contexts/PostsProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -16,6 +18,9 @@ export default function Post() {
   const {
     usersData: { users },
   } = useUsers();
+  const {
+    postsData: { posts },
+  } = usePosts();
 
   const user = users.find((user) => user.username === post?.username);
 
@@ -32,7 +37,7 @@ export default function Post() {
 
   useEffect(() => {
     getUserPost(postId);
-  }, []);
+  }, [posts, postId]);
 
   return (
     <section>
@@ -43,6 +48,9 @@ export default function Post() {
 }
 
 function Comments({ postId }) {
+  const {
+    postsData: { posts },
+  } = usePosts();
   const [comments, setComments] = useState([]);
 
   const getPostComments = async (postId) => {
@@ -58,7 +66,7 @@ function Comments({ postId }) {
 
   useEffect(() => {
     getPostComments(postId);
-  }, []);
+  }, [posts, postId]);
 
   return (
     <section className="ml-[50px]">

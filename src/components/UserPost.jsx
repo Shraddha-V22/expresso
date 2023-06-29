@@ -27,6 +27,7 @@ import CreatePost from "./CreatePost";
 import Button from "./Button";
 import { formatPostDate } from "../common/formatPostDate";
 import EditPost from "./EditPost";
+import Avatar from "./Avatar";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -146,16 +147,11 @@ export default function UserPost({ userPost }) {
             </div>
           )}
         </div>
-        <div
+
+        <Avatar
           onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
-          className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
-        >
-          <img
-            src={user?.profileImg}
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        </div>
+          profileUrl={user?.profileImg}
+        />
         <div className="flex flex-col gap-2">
           <div className="leading-5">
             <div className="flex items-center gap-4">

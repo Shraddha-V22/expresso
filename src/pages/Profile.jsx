@@ -12,6 +12,9 @@ import { getUserPostsService } from "../services/postServices";
 import UserPost from "../components/UserPost";
 import { AUTH } from "../common/reducerTypes";
 import Button from "../components/Button";
+import Modal from "../components/Modal";
+import EditProfile from "../components/EditProfile";
+import { usePosts } from "../contexts/PostsProvider";
 
 export default function Profile() {
   const {
@@ -20,8 +23,13 @@ export default function Profile() {
     },
     authDispatch,
   } = useAuth();
+  const {
+    postsData: { posts },
+  } = usePosts();
   const [userProfile, setUserProfile] = useState({});
   const [userPosts, setUserPosts] = useState([]);
+  const [open, setOpen] = useState(false);
+
   const { userId } = useParams();
 
   const isUserProfile = useMemo(
@@ -66,11 +74,11 @@ export default function Profile() {
 
   useEffect(() => {
     getUserProfile(userId);
-  }, [userId]);
+  }, [userId, userDetails]);
 
   useEffect(() => {
     getAllUserPosts(userProfile?.username);
-  }, [userProfile]);
+  }, [userProfile, posts]);
 
   return (
     <section>
@@ -91,7 +99,14 @@ export default function Profile() {
         </section>
         <section className="flex flex-col items-start gap-1 p-2">
           {isUserProfile ? (
-            <button className="self-end border-[1px] p-1">edit profile</button>
+            <Modal
+              className="self-end rounded-full border px-2 py-1"
+              open={open}
+              setOpen={setOpen}
+              modalFor={"Edit Profile"}
+            >
+              {<EditProfile />}
+            </Modal>
           ) : userDetails?.following?.find(
               ({ _id }) => _id === userProfile?._id
             ) ? (

@@ -8,6 +8,19 @@ export const getSingleUserService = (userId) => {
   return axios.get(`/api/users/${userId}`);
 };
 
+// /api/users/edit
+export const editUserDataService = (userData, token) => {
+  return axios.post(
+    `/api/users/edit`,
+    { userData },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+};
+
 // /api/users/bookmark/
 export const getUserBookmarksService = (token) => {
   return axios.get(`/api/users/bookmark`, {

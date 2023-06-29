@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import { followUserService } from "../services/userServices";
 import { usePosts } from "../contexts/PostsProvider";
+import Avatar from "./Avatar";
 
 export default function UsersToFollow({ user, forSearch }) {
   const navigate = useNavigate();
@@ -17,13 +18,7 @@ export default function UsersToFollow({ user, forSearch }) {
       onClick={() => navigate(`/${user?._id}`)}
       className="flex min-w-[250px] cursor-pointer items-center gap-2 border-b p-2 last:border-b-0"
     >
-      <div className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]">
-        <img
-          src={user?.profileImg}
-          alt=""
-          className="h-full w-full object-cover"
-        />
-      </div>
+      <Avatar onClick={() => {}} profileUrl={user?.profileImg} />
       <div className="leading-5">
         <p className="text-sm">
           {user?.firstName} {user?.lastName}

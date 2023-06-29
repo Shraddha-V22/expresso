@@ -13,9 +13,8 @@ export default function Modal({
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <div className={className}>
       <button
-        className={className}
         onClick={(e) => {
           e.stopPropagation();
           handleOpen();

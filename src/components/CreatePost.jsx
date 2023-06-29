@@ -10,8 +10,10 @@ import { toast } from "react-toastify";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
+  const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
   const [media, setMedia] = useState(null);
   const { postsDispatch } = usePosts();
@@ -84,7 +86,7 @@ export default function CreatePost() {
   return (
     <section className="flex w-full gap-2 rounded-md border p-4">
       <Avatar
-        profileId={userDetails?._id}
+        onClick={() => navigate(`/${userDetails?._id}`)}
         profileUrl={userDetails?.profileImg}
       />
       <section className="flex w-full flex-col gap-2">

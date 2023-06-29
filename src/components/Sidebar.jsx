@@ -4,6 +4,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import Avatar from "./Avatar";
 
 export default function Sidebar({ showMenu, setShowMenu }) {
   const navigate = useNavigate();
@@ -32,16 +33,10 @@ export default function Sidebar({ showMenu, setShowMenu }) {
       >
         <section className="flex flex-col gap-2 border-b-[1px] pb-4">
           <div className="flex items-start justify-between">
-            <div
-              onClick={() => goToUserProfile(userDetails?._id)}
-              className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px] bg-white"
-            >
-              <img
-                src={userDetails?.profileImg}
-                alt=""
-                className="h-full w-full"
-              />
-            </div>
+            <Avatar
+              onClick={() => goToUserProfile(`/${userDetails?._id}`)}
+              profileUrl={userDetails?.profileImg}
+            />
             <button onClick={() => setShowMenu(false)} className="">
               <FontAwesomeIcon icon={faX} />
             </button>
