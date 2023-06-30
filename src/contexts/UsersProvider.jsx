@@ -6,6 +6,7 @@ import { getAllUsersService } from "../services/userServices";
 import { useReducer } from "react";
 import { usersReducers } from "../reducers/usersReducers";
 import { USERS } from "../common/reducerTypes";
+import { useAuth } from "./AuthProvider";
 
 const UsersContext = createContext();
 
@@ -14,6 +15,11 @@ const initialUsers = {
 };
 
 export default function UsersProvider({ children }) {
+  const {
+    userData: {
+      user: { userDetails },
+    },
+  } = useAuth();
   const [usersData, usersDispatch] = useReducer(usersReducers, initialUsers);
 
   const getAllUsers = async () => {
@@ -29,7 +35,7 @@ export default function UsersProvider({ children }) {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [userDetails]);
 
   return (
     <UsersContext.Provider value={{ usersData, usersDispatch }}>
