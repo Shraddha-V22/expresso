@@ -17,6 +17,7 @@ export default function Registration() {
   });
   const { signUp } = useAuth();
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const credsChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -73,20 +74,30 @@ export default function Registration() {
           onChange={credsChangeHandler}
         />
         <FormInput
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="Password"
           onChange={credsChangeHandler}
         />
         <FormInput
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="confirmPassword"
           placeholder="Confirm Password"
           onChange={credsChangeHandler}
         />
-        {/* </div> */}
+        <div className="mb-2 ml-1 flex items-center gap-1">
+          <input
+            type="checkbox"
+            name=""
+            id="show-pass"
+            className="cursor-pointer"
+            onChange={() => setShowPassword((prev) => !prev)}
+          />
+          <label className="text-xs" htmlFor="show-pass">
+            Show Password
+          </label>
+        </div>
         {errorMsg && <p className="text-xs text-red-500">{errorMsg}</p>}
-        {/* <div></div> */}
         <button
           className="h-8 rounded-md border-[1px] px-2 text-sm"
           type="button"
