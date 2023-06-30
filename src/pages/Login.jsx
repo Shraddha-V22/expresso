@@ -8,9 +8,13 @@ import FormInput from "../components/FormInput";
 import AuthContainer from "../components/AuthContainer";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [loginCreds, setLoginCreds] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn } = useAuth();
+  const {
+    signIn,
+    userData: { isLoggedIn },
+  } = useAuth();
 
   const credsChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -21,6 +25,10 @@ export default function Login() {
     e.preventDefault();
     signIn(creds);
   };
+
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, [isLoggedIn]);
 
   return (
     <AuthContainer>

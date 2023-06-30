@@ -5,6 +5,7 @@ import FormInput from "../components/FormInput";
 import AuthContainer from "../components/AuthContainer";
 import { useNavigate } from "react-router-dom";
 import { validateName, validatePassword } from "../common/validatorFns";
+import { useEffect } from "react";
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -15,7 +16,10 @@ export default function Registration() {
     password: "",
     confirmPassword: "",
   });
-  const { signUp } = useAuth();
+  const {
+    signUp,
+    userData: { isLoggedIn },
+  } = useAuth();
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,12 +54,15 @@ export default function Registration() {
       return;
     }
     signUp(creds);
-    navigate("/profile-setup");
   };
+
+  useEffect(() => {
+    isLoggedIn && navigate("/profile-setup");
+  }, [isLoggedIn]);
 
   return (
     <AuthContainer>
-      <h1>Sign up</h1>
+      <h1 className="text-2xl capitalize">Sign up</h1>
       <form className="m-1 flex flex-col gap-2">
         {/* <div className="flex flex-col gap-2"> */}
         <FormInput

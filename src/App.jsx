@@ -19,12 +19,6 @@ import ProfileSetup from "./pages/ProfileSetup";
 import { Navigate } from "react-router-dom";
 
 function AppRouter() {
-  const {
-    userData: {
-      user: { token },
-    },
-  } = useAuth();
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -39,17 +33,19 @@ function AppRouter() {
           </Route>
           <Route path="/profile-setup" element={<ProfileSetup />} />
         </Route>
-        {token === "" ? (
+        <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
+        {/* {token === "" ? (
           <>
-            <Route path="/login" element={<Login />} />
-            <Route path="/registration" element={<Registration />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registration" element={<Registration />} />
           </>
         ) : (
           <>
             <Route path="/login" element={<Navigate to="/" replace />} />
-            <Route path="/registration" element={<Navigate to="/" replace />} />
+            <Route path="/registration" element={<Registration />} />
           </>
-        )}
+        )} */}
       </>
     )
   );
