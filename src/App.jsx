@@ -7,19 +7,24 @@ import {
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
-import AuthProvider from "./contexts/AuthProvider";
+import { useAuth } from "./contexts/AuthProvider";
 import RequiredAuth from "./components/RequiredAuth";
 import Home from "./pages/Home";
-import PostsProvider from "./contexts/PostsProvider";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
-import UsersProvider from "./contexts/UsersProvider";
 import Explore from "./pages/Explore";
 import Bookmarks from "./pages/Bookmarks";
 import Post from "./pages/Post";
 import ProfileSetup from "./pages/ProfileSetup";
+import { Navigate } from "react-router-dom";
 
 function AppRouter() {
+  const {
+    userData: {
+      user: { token },
+    },
+  } = useAuth();
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -34,8 +39,17 @@ function AppRouter() {
           </Route>
           <Route path="/profile-setup" element={<ProfileSetup />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/registration" element={<Registration />} />
+        {token === "" ? (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/registration" element={<Navigate to="/" replace />} />
+          </>
+        )}
       </>
     )
   );
@@ -43,15 +57,7 @@ function AppRouter() {
 }
 
 function App() {
-  return (
-    <AuthProvider>
-      <UsersProvider>
-        <PostsProvider>
-          <AppRouter />
-        </PostsProvider>
-      </UsersProvider>
-    </AuthProvider>
-  );
+  return <AppRouter />;
 }
 
 export default App;

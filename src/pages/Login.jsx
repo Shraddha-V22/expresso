@@ -26,10 +26,6 @@ export default function Login() {
     signIn(creds);
   };
 
-  useEffect(() => {
-    isLoggedIn && navigate(location?.state?.from?.pathname);
-  }, [isLoggedIn]);
-
   return (
     <AuthContainer>
       <h1 className="mb-4 text-2xl capitalize">sign in</h1>
