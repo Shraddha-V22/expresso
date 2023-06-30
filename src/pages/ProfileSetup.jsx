@@ -53,10 +53,12 @@ export default function ProfileSetup() {
     if (typeof userData.profileImg === "object") {
       try {
         const response = await uploadMedia(userData.profileImg);
+        console.log(response.url);
         const { data, status } = await editUserDataService(
           { ...userData, profileImg: response.url },
           token
         );
+        console.log({ data, status });
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
         }

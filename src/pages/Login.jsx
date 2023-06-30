@@ -18,7 +18,6 @@ export default function Login() {
 
   const credsChangeHandler = (e) => {
     const { name, value } = e.target;
-    setErrorMsg("");
     setLoginCreds((prev) => ({ ...prev, [name]: value }));
   };
 
