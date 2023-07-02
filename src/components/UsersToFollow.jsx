@@ -4,7 +4,7 @@ import { followUserService } from "../services/userServices";
 import { usePosts } from "../contexts/PostsProvider";
 import Avatar from "./Avatar";
 
-export default function UsersToFollow({ user, forSearch, suggestion }) {
+export default function UsersToFollow({ user, forSearch }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -15,15 +15,17 @@ export default function UsersToFollow({ user, forSearch, suggestion }) {
 
   return (
     <section
-      onClick={() => (suggestion ? navigate(`/${user?._id}`) : {})}
-      className="flex min-w-[250px] cursor-pointer items-center gap-2 border-b p-2 last:border-b-0"
+      onClick={() => navigate(`/${user?._id}`)}
+      className="grid w-[250px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
     >
-      <Avatar onClick={() => {}} profileUrl={user?.profileImg} />
-      <div className="leading-5">
-        <p className="text-sm">
-          {user?.firstName} {user?.lastName}
-        </p>
-        <p className="text-xs">@{user?.username}</p>
+      <div className="flex gap-2">
+        <Avatar onClick={() => {}} profileUrl={user?.profileImg} />
+        <div className="leading-5">
+          <p className="line-clamp-1 text-sm">
+            {user?.firstName} {user?.lastName}
+          </p>
+          <p className="line-clamp-1 text-xs">@{user?.username}</p>
+        </div>
       </div>
       {!forSearch && (
         <button
@@ -31,7 +33,7 @@ export default function UsersToFollow({ user, forSearch, suggestion }) {
             e.stopPropagation();
             followUnfollowHandler(followUserService, user?._id, token);
           }}
-          className="ml-auto rounded-full border-[1px] px-2 py-1 text-sm"
+          className="ml-auto w-[70px] rounded-full border border-sanJuanLight bg-japnica px-2 py-1 text-sm"
         >
           + follow
         </button>

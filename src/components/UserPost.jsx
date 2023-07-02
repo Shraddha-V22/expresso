@@ -28,6 +28,7 @@ import { formatPostDate } from "../common/formatPostDate";
 import EditPost from "./EditPost";
 import Avatar from "./Avatar";
 import Linkify from "react-linkify";
+import { useEffect } from "react";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -63,12 +64,30 @@ export default function UserPost({ userPost }) {
     func;
   };
 
+  useEffect(() => {
+    document.body.addEventListener("click", () =>
+      setFlags({
+        showLikedBy: false,
+        showActions: false,
+        showCommentInput: false,
+      })
+    );
+    () =>
+      document.body.removeEventListener("click", () =>
+        setFlags({
+          showLikedBy: false,
+          showActions: false,
+          showCommentInput: false,
+        })
+      );
+  }, []);
+
   return (
     <section
       className="cursor-pointer"
       onClick={() => navigate(`/post/${_id}`)}
     >
-      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border p-2">
+      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border border-sanJuanLight p-2">
         <div className="absolute right-2 top-2">
           <button
             onClick={(e) =>
@@ -165,11 +184,11 @@ export default function UserPost({ userPost }) {
             <p className="text-xs">@{username}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-sm">
+            <p className="text-sm tracking-tight">
               <Linkify>{content}</Linkify>
             </p>
             {userPost?.mediaUrl && (
-              <div className="h-[200px] w-full rounded-md border bg-gray-800">
+              <div className="h-[200px] w-full overflow-hidden rounded-md border bg-gray-800">
                 {userPost?.mediaUrl.split("/")[4] === "image" && (
                   <img
                     src={userPost?.mediaUrl}
@@ -178,18 +197,21 @@ export default function UserPost({ userPost }) {
                   />
                 )}
                 {userPost?.mediaUrl.split("/")[4] === "video" && (
-                  <video alt="Post-video" className="mx-auto h-full">
-                    <source src={userPost?.mediaUrl} />
-                  </video>
+                  <video
+                    controls
+                    src={userPost?.mediaUrl}
+                    alt="Post-video"
+                    className="mx-auto h-full"
+                  ></video>
                 )}
               </div>
             )}
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="relative flex justify-between text-sm">
             <div
               className={`${
                 flags.showLikedBy ? "" : "hidden"
-              } fixed left-0 top-0 z-20 flex h-[100vh] w-full flex-col gap-2 overflow-y-auto bg-white p-4 py-2`}
+              } fixed z-20 flex h-[300px] w-[200px] flex-col gap-2 overflow-y-auto rounded-md bg-gray-200 p-4 py-2 shadow-md`}
             >
               <button
                 className="self-start"
@@ -202,7 +224,9 @@ export default function UserPost({ userPost }) {
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
               </button>
-              <h4 className="border-b-[1px] pb-1 capitalize">liked by</h4>
+              <h4 className="border-b border-sanJuanLighter pb-1 capitalize">
+                liked by
+              </h4>
               {likes?.likedBy.map((user) => (
                 <div
                   key={user._id}
@@ -216,7 +240,7 @@ export default function UserPost({ userPost }) {
           </div>
           <div className="flex w-full gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
-              <div className="flex items-center rounded-md border">
+              <div className="flex items-center rounded-md border border-sanJuanLight">
                 <Button
                   className="border-none px-2"
                   onClick={(e) =>
@@ -244,7 +268,7 @@ export default function UserPost({ userPost }) {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center rounded-md border">
+              <div className="flex items-center rounded-md border border-sanJuanLight">
                 <Button
                   className="border-none px-2"
                   onClick={(e) =>
@@ -269,7 +293,7 @@ export default function UserPost({ userPost }) {
                 </p>
               </div>
             )}
-            <div className="flex items-center rounded-md border">
+            <div className="flex items-center rounded-md border border-sanJuanLight">
               <Button
                 onClick={(e) =>
                   clickHandler(
@@ -319,8 +343,8 @@ export default function UserPost({ userPost }) {
             type="text"
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => setCommentInput(e.target.value)}
-            placeholder="write comment..."
-            className="flex-grow rounded-full bg-gray-200 p-1 indent-2 outline-none placeholder:capitalize"
+            placeholder="Add a comment..."
+            className="flex-grow rounded-full bg-sanJuanLighter/30 p-1 indent-2 outline-none placeholder:text-sm placeholder:text-sanJuanLight"
           />
           <button
             onClick={(e) => {
@@ -328,7 +352,7 @@ export default function UserPost({ userPost }) {
               setCommentInput("");
               setFlags((prev) => ({ ...prev, showCommentInput: false }));
             }}
-            className="rounded-full border px-3 py-1 capitalize"
+            className="rounded-full border border-sanJuanLight px-3 py-1 capitalize"
           >
             post
           </button>

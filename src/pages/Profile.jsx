@@ -15,6 +15,8 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import EditProfile from "../components/EditProfile";
 import { usePosts } from "../contexts/PostsProvider";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Profile() {
   const {
@@ -34,7 +36,7 @@ export default function Profile() {
 
   const isUserProfile = useMemo(
     () => userDetails._id === userId,
-    [userDetails]
+    [userDetails, userId]
   );
 
   const getUserProfile = async (id) => {
@@ -81,7 +83,7 @@ export default function Profile() {
   }, [userProfile, posts]);
 
   return (
-    <section>
+    <section className="py-2">
       <section>
         <section className="relative">
           <img
@@ -100,7 +102,7 @@ export default function Profile() {
         <section className="flex flex-col items-start gap-1 p-2">
           {isUserProfile ? (
             <Modal
-              className="self-end rounded-full border px-2 py-1"
+              className="self-end rounded-full border border-sanJuanLight px-2 py-1"
               open={open}
               setOpen={setOpen}
               modalFor={"Edit Profile"}
@@ -118,7 +120,9 @@ export default function Profile() {
                   token
                 )
               }
-              className={"self-end"}
+              className={
+                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+              }
             >
               Following
             </Button>
@@ -131,27 +135,36 @@ export default function Profile() {
                   token
                 )
               }
-              className={"self-end"}
+              className={
+                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+              }
             >
               Follow
             </Button>
           )}
-          <p>
-            {userProfile?.firstName} {userProfile?.lastName}
-          </p>
-          <h3>@{userProfile?.username}</h3>
-          <p className="text-sm">{userProfile?.bio}</p>
-          <p className="text-sm underline">{userProfile?.portfolio}</p>
+          <div>
+            <p>
+              {userProfile?.firstName} {userProfile?.lastName}
+            </p>
+            <h3 className="text-sm">@{userProfile?.username}</h3>
+          </div>
+          <p className="text-xs">{userProfile?.bio}</p>
+          <div className="flex items-center gap-1">
+            <FontAwesomeIcon icon={faLink} className="text-xs" />
+            <p className="text-xs underline">{userProfile?.portfolio}</p>
+          </div>
           <div className="flex gap-4 text-sm">
             <p>{userProfile?.following?.length} Following</p>
             <p>{userProfile?.followers?.length} Followers</p>
           </div>
         </section>
       </section>
-      <section className="flex flex-col gap-2">
-        {userPosts?.map((post) => (
-          <UserPost key={post._id} userPost={post} />
-        ))}
+      <section className="flex flex-col gap-2 border-t border-sanJuanLight pt-2">
+        {userPosts?.length ? (
+          userPosts?.map((post) => <UserPost key={post._id} userPost={post} />)
+        ) : (
+          <h4 className="mt-4 w-full text-center">No Posts.</h4>
+        )}
       </section>
     </section>
   );
