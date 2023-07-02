@@ -6,6 +6,7 @@ import { POSTS } from "../common/reducerTypes";
 import { useEffect } from "react";
 import UserPost from "../components/UserPost";
 import { useState } from "react";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function Home() {
   const {
@@ -13,6 +14,7 @@ export default function Home() {
     postsDispatch,
   } = usePosts();
   const [showSorts, setShowSorts] = useState(false);
+  const { theme } = useTheme();
 
   const handleSort = (e) => {
     e.stopPropagation();
@@ -47,7 +49,11 @@ export default function Home() {
               ▼
             </button>
             {showSorts && (
-              <ul className="absolute right-0 top-4 z-10 flex w-[80px] flex-col gap-2 bg-gray-100 px-2 py-1 text-sm">
+              <ul
+                className={`absolute right-0 top-4 z-10 flex w-[80px] flex-col gap-2 rounded-md ${
+                  theme === "dark" ? "bg-sanJuanLight" : "bg-gray-100"
+                } px-2 py-1 text-sm`}
+              >
                 <div>
                   <input
                     value="top"
@@ -58,7 +64,11 @@ export default function Home() {
                     onChange={handleSort}
                   />
                   <label
-                    className="cursor-pointer hover:text-gray-600"
+                    className={`cursor-pointer ${
+                      theme === "dark"
+                        ? "hover:text-sanJuanDark"
+                        : "hover:text-gray-600"
+                    }`}
                     htmlFor="top"
                   >
                     Top
@@ -74,7 +84,11 @@ export default function Home() {
                     onChange={handleSort}
                   />
                   <label
-                    className="cursor-pointer hover:text-gray-600"
+                    className={`cursor-pointer ${
+                      theme === "dark"
+                        ? "hover:text-sanJuanDark"
+                        : "hover:text-gray-600"
+                    }`}
                     htmlFor="latest"
                   >
                     Latest
@@ -90,7 +104,11 @@ export default function Home() {
                     onChange={handleSort}
                   />
                   <label
-                    className="cursor-pointer hover:text-gray-600"
+                    className={`cursor-pointer ${
+                      theme === "dark"
+                        ? "hover:text-sanJuanDark"
+                        : "hover:text-gray-600"
+                    }`}
                     htmlFor="oldest"
                   >
                     Oldest

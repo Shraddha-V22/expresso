@@ -1,8 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Avatar({ profileUrl, onClick, className }) {
-  const navigate = useNavigate();
   return (
     <img
       src={profileUrl}

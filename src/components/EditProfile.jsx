@@ -146,7 +146,7 @@ export default function EditProfile() {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, bio: e.target.value }))
             }
-            className="rounded-md border border-sanJuanLight py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-sanJuanLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -162,7 +162,7 @@ export default function EditProfile() {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, portfolio: e.target.value }))
             }
-            className="rounded-md border border-sanJuanLight py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-sanJuanLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex w-full gap-2">

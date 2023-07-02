@@ -6,6 +6,9 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import FormInput from "../components/FormInput";
 import AuthContainer from "../components/AuthContainer";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,16 +51,16 @@ export default function Login() {
           />
         </div>
         <div className="mb-2 ml-1 flex items-center gap-1">
-          <input
-            type="checkbox"
-            name=""
-            id="show-pass"
-            className="cursor-pointer"
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
-          <label className="text-xs" htmlFor="show-pass">
-            Show Password
-          </label>
+          {showPassword ? (
+            <button type="button" onClick={() => setShowPassword(false)}>
+              <FontAwesomeIcon icon={faSquareCheck} />
+            </button>
+          ) : (
+            <button type="button" onClick={() => setShowPassword(true)}>
+              <FontAwesomeIcon icon={faSquare} />
+            </button>
+          )}
+          <p className="text-xs">Show Password</p>
         </div>
         <div className="flex flex-col gap-2">
           <button

@@ -6,6 +6,9 @@ import AuthContainer from "../components/AuthContainer";
 import { useNavigate } from "react-router-dom";
 import { validateName, validatePassword } from "../common/validatorFns";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -64,7 +67,6 @@ export default function Registration() {
     <AuthContainer>
       <h1 className="text-2xl capitalize">Sign up</h1>
       <form className="m-1 flex flex-col gap-2">
-        {/* <div className="flex flex-col gap-2"> */}
         <FormInput
           name="firstName"
           placeholder="Firstname"
@@ -93,16 +95,16 @@ export default function Registration() {
           onChange={credsChangeHandler}
         />
         <div className="mb-2 ml-1 flex items-center gap-1">
-          <input
-            type="checkbox"
-            name=""
-            id="show-pass"
-            className="cursor-pointer"
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
-          <label className="text-xs" htmlFor="show-pass">
-            Show Password
-          </label>
+          {showPassword ? (
+            <button type="button" onClick={() => setShowPassword(false)}>
+              <FontAwesomeIcon icon={faSquareCheck} />
+            </button>
+          ) : (
+            <button type="button" onClick={() => setShowPassword(true)}>
+              <FontAwesomeIcon icon={faSquare} />
+            </button>
+          )}
+          <p className="text-xs">Show Password</p>
         </div>
         {errorMsg && <p className="text-xs text-red-500">{errorMsg}</p>}
         <button

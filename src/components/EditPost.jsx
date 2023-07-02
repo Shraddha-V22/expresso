@@ -9,6 +9,7 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import Button from "./Button";
 import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function EditPost({ post, setOpen }) {
   const [editPost, setEditPost] = useState(post || {});
@@ -20,6 +21,7 @@ export default function EditPost({ post, setOpen }) {
       user: { token, userDetails },
     },
   } = useAuth();
+  const { theme } = useTheme();
 
   const handlePostEdit = async (inputText, media, postId, token) => {
     if (media) {
@@ -93,7 +95,7 @@ export default function EditPost({ post, setOpen }) {
             setInputText(e.target.value);
           }}
           value={inputText}
-          className="w-full resize-none outline-none"
+          className={`w-full resize-none bg-inherit text-sm outline-none placeholder:text-sm`}
           rows="2"
         />
         {(media || editPost?.mediaUrl) && (

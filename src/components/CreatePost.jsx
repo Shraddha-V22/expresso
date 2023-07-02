@@ -11,6 +11,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function CreatePost({ modal, setOpen }) {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function CreatePost({ modal, setOpen }) {
       user: { token, userDetails },
     },
   } = useAuth();
+  const { theme } = useTheme();
 
   const createUserPost = async (inputText, media, token) => {
     if (media) {
@@ -99,7 +101,7 @@ export default function CreatePost({ modal, setOpen }) {
               setInputText(e.target.value);
             }}
             value={inputText}
-            className="w-full resize-none text-sm outline-none placeholder:text-sm"
+            className={`w-full resize-none bg-inherit text-sm outline-none placeholder:text-sm`}
             rows="2"
           />
           {media && (
@@ -118,7 +120,7 @@ export default function CreatePost({ modal, setOpen }) {
               )}
               <button
                 onClick={() => setMedia(null)}
-                className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px]"
+                className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-sanJuanDark"
               >
                 <FontAwesomeIcon icon={faX} />
               </button>
@@ -135,7 +137,7 @@ export default function CreatePost({ modal, setOpen }) {
               createUserPost(inputText, media, token);
               modal && setOpen(false);
             }}
-            className={"self-end"}
+            className={`self-end ${btnDisable && "cursor-not-allowed"}`}
             disabled={btnDisable}
           >
             Create

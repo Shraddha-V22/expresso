@@ -11,14 +11,22 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
 import { useState } from "react";
 import CreatePost from "./CreatePost";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function NavBar() {
+  const { theme } = useTheme();
   const activeStyle = ({ isActive }) => {
     return { color: isActive ? "black" : "black" };
   };
 
   return (
-    <nav className="fixed bottom-0 z-[5] flex w-full justify-evenly border-[1px] bg-white py-1">
+    <nav
+      className={`${
+        theme === "dark"
+          ? "bg-japnicaDark text-sanJuan"
+          : "bg-sanJuanLighter text-sanJuanDark"
+      } fixed bottom-0 z-[5] flex w-full justify-evenly py-2`}
+    >
       <NavLink style={activeStyle} to="/">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
@@ -47,6 +55,7 @@ export function SideNavBar() {
       backgroundColor: isActive ? "#5B7F9990" : "",
     };
   };
+  const { theme } = useTheme();
 
   const [open, setOpen] = useState(false);
 
@@ -87,7 +96,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/search"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40  sm:hidden"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 min-[600px]:hidden  sm:hidden"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} className="w-[20px]" />
         <p className="max-[768px]:hidden">Search</p>
@@ -103,7 +112,13 @@ export function SideNavBar() {
         open={open}
         setOpen={setOpen}
         modalFor={
-          <div className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-sanJuanLight bg-sanJuanLight px-2 py-1 text-white duration-200 hover:bg-white hover:text-sanJuan min-[768px]:pr-4">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-japnicaDark text-sanJuanDark hover:bg-japnica"
+                : "border bg-sanJuanLight text-white hover:bg-white"
+            } flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-sanJuanLight px-2 py-1 duration-200 hover:text-sanJuan min-[768px]:pr-4`}
+          >
             <FontAwesomeIcon icon={faPlus} className="w-[20px]" />
             <p className="max-[768px]:hidden">Create</p>
           </div>
@@ -113,12 +128,4 @@ export function SideNavBar() {
       </Modal>
     </nav>
   );
-}
-
-{
-  /* <Modal
-                    className="px-2"
-                    open={open}
-                    setOpen={setOpen}
-                    modalFor={"Edit"} */
 }

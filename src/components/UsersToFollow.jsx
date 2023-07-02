@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import { followUserService } from "../services/userServices";
 import { usePosts } from "../contexts/PostsProvider";
 import Avatar from "./Avatar";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function UsersToFollow({ user, forSearch }) {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function UsersToFollow({ user, forSearch }) {
       user: { token },
     },
   } = useAuth();
+  const { theme } = useTheme();
   const { followUnfollowHandler } = usePosts();
 
   return (
@@ -33,7 +35,11 @@ export default function UsersToFollow({ user, forSearch }) {
             e.stopPropagation();
             followUnfollowHandler(followUserService, user?._id, token);
           }}
-          className="ml-auto w-[70px] rounded-full border border-sanJuanLight bg-japnica px-2 py-1 text-sm"
+          className={`ml-auto w-[70px] rounded-full ${
+            theme === "dark"
+              ? "bg-japnicaDark text-sanJuanDark hover:bg-japnica active:bg-japnicaDarker"
+              : "border bg-japnica"
+          } border-sanJuanLight px-2 py-1 text-sm`}
         >
           + follow
         </button>

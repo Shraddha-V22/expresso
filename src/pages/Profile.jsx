@@ -17,6 +17,7 @@ import EditProfile from "../components/EditProfile";
 import { usePosts } from "../contexts/PostsProvider";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function Profile() {
   const {
@@ -28,6 +29,7 @@ export default function Profile() {
   const {
     postsData: { posts },
   } = usePosts();
+  const { theme } = useTheme();
   const [userProfile, setUserProfile] = useState({});
   const [userPosts, setUserPosts] = useState([]);
   const [open, setOpen] = useState(false);
@@ -91,7 +93,9 @@ export default function Profile() {
             alt=""
             className="h-[150px] w-full rounded-md object-cover"
           />
-          <div className="absolute -bottom-[30px] left-4 h-[100px] w-[100px] cursor-pointer overflow-hidden rounded-full border-2 bg-green-200">
+          <div
+            className={`absolute -bottom-[30px] left-4 h-[100px] w-[100px] cursor-pointer overflow-hidden rounded-full border-2`}
+          >
             <img
               src={userProfile?.profileImg}
               alt=""
@@ -149,10 +153,14 @@ export default function Profile() {
             <h3 className="text-sm">@{userProfile?.username}</h3>
           </div>
           <p className="text-xs">{userProfile?.bio}</p>
-          <div className="flex items-center gap-1">
+          <a
+            href={userProfile?.portfolio}
+            target="_blank"
+            className="flex items-center gap-1"
+          >
             <FontAwesomeIcon icon={faLink} className="text-xs" />
-            <p className="text-xs underline">{userProfile?.portfolio}</p>
-          </div>
+            <p className="text-xs hover:underline">{userProfile?.portfolio}</p>
+          </a>
           <div className="flex gap-4 text-sm">
             <p>{userProfile?.following?.length} Following</p>
             <p>{userProfile?.followers?.length} Followers</p>

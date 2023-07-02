@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import { useUsers } from "../contexts/UsersProvider";
 import UsersToFollow from "./UsersToFollow";
 import { useState } from "react";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function FollowSuggestions() {
   const {
@@ -13,6 +14,7 @@ export default function FollowSuggestions() {
   const {
     usersData: { users },
   } = useUsers();
+  const { theme } = useTheme();
 
   const getUsersToFollow = useMemo(
     () =>
@@ -27,7 +29,7 @@ export default function FollowSuggestions() {
   );
 
   return (
-    <section className="px-2">
+    <section className={`px-2 ${theme === "dark" ? "" : ""}`}>
       {getUsersToFollow?.map((user) => (
         <UsersToFollow key={user._id} user={user} />
       ))}

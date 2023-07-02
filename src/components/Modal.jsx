@@ -1,6 +1,7 @@
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function Modal({
   children,
@@ -11,6 +12,7 @@ export default function Modal({
 }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { theme } = useTheme();
 
   return (
     <div className={className}>
@@ -28,9 +30,15 @@ export default function Modal({
             e.stopPropagation();
             handleClose();
           }}
-          className="fixed left-0 top-0 z-20 grid h-[100vh] w-[100vw] place-items-center bg-black/10"
+          className={`fixed left-0 top-0 z-20 grid h-[100vh] w-[100vw] place-items-center ${
+            theme === "dark" ? "bg-sanJuan/50" : "bg-black/20"
+          }`}
         >
-          <section className="relative h-[fit-content] w-[fit-content] rounded-md border-[1px] bg-white px-4 py-6">
+          <section
+            className={`relative h-[fit-content] w-[fit-content] rounded-md border-[1px] ${
+              theme === "dark" ? "bg-sanJuan" : "bg-white"
+            } px-4 py-6`}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();

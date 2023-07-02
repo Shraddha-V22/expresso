@@ -4,6 +4,7 @@ import { useUsers } from "../contexts/UsersProvider";
 import { useMemo } from "react";
 import UsersToFollow from "../components/UsersToFollow";
 import FollowSuggestions from "../components/FollowSuggestions";
+import { useTheme } from "../contexts/ThemeProvider";
 
 const useToggleOnFocus = (initialState = false) => {
   const [show, setShow] = useState(initialState);
@@ -29,6 +30,7 @@ export default function Search() {
     usersData: { users },
   } = useUsers();
   const [show, eventHandlers] = useToggleOnFocus();
+  const { theme } = useTheme();
   const [searchText, setSearchText] = useState("");
 
   const getUsersToFollow = useMemo(
@@ -55,14 +57,16 @@ export default function Search() {
   );
 
   return (
-    <section className="px-2">
+    <section className="flex flex-col items-center px-2 py-2">
       <div className="w-full border-b pb-2">
         <input
           type="text"
           placeholder="search user"
           {...eventHandlers}
           onChange={(e) => setSearchText(e.target.value)}
-          className="w-full rounded-full border p-1 indent-2 outline-none"
+          className={`${
+            theme === "dark" ? "bg-sanJuanDark" : ""
+          } w-full rounded-full border p-1 indent-2 outline-none`}
         />
       </div>
       {!show ? (
@@ -72,9 +76,9 @@ export default function Search() {
           <UsersToFollow key={user._id} user={user} forSearch />
         ))
       ) : searchText.length ? (
-        <p>No user found</p>
+        <p className="w-full py-2 text-center">No user found</p>
       ) : (
-        <p>search user</p>
+        <p className="w-full py-2 text-center">search user</p>
       )}
     </section>
   );
@@ -89,6 +93,7 @@ export function DesktopSearch() {
       user: { userDetails },
     },
   } = useAuth();
+  const { theme } = useTheme();
   const [searchText, setSearchText] = useState("");
 
   const searchSuggestions = useMemo(
@@ -110,10 +115,16 @@ export function DesktopSearch() {
         type="text"
         placeholder="search user"
         onChange={(e) => setSearchText(e.target.value)}
-        className="w-full rounded-full border border-sanJuanLight p-1 indent-2 text-sm outline-none placeholder:text-sm"
+        className={`${
+          theme === "dark" ? "bg-sanJuanDark" : ""
+        } w-full rounded-full border border-sanJuanLight p-1 indent-2 text-sm outline-none placeholder:text-sm`}
       />
       {searchText && (
-        <section className="absolute max-h-[350px] w-[250px] overflow-y-auto rounded-md border bg-white">
+        <section
+          className={`${
+            theme === "dark" ? "bg-sanJuan" : ""
+          } absolute max-h-[350px] w-[250px] overflow-y-auto rounded-md border bg-white`}
+        >
           {searchSuggestions?.length ? (
             searchSuggestions?.map((user) => (
               <UsersToFollow key={user._id} user={user} forSearch />

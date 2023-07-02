@@ -5,6 +5,9 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Avatar from "./Avatar";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from "../contexts/ThemeProvider";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar({ showMenu, setShowMenu }) {
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ export default function Sidebar({ showMenu, setShowMenu }) {
     },
     signOut,
   } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const goToUserProfile = (userId) => {
     navigate(`/${userId}`);
@@ -69,6 +73,29 @@ export default function Sidebar({ showMenu, setShowMenu }) {
             <FontAwesomeIcon icon={faUser} />
             <p>Profile</p>
           </div>
+          {theme === "dark" ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleTheme();
+              }}
+              className="flex cursor-pointer items-center gap-4"
+            >
+              <FontAwesomeIcon icon={faSun} />
+              <p>Light mode</p>
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleTheme();
+              }}
+              className="flex cursor-pointer items-center gap-4"
+            >
+              <FontAwesomeIcon icon={faMoon} />
+              <p>Dark mode</p>
+            </button>
+          )}
           <div
             className="flex cursor-pointer items-center gap-4"
             onClick={signOut}

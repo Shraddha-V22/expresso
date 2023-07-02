@@ -12,7 +12,7 @@ module.exports = {
         sanJuanLighter: "#5B7F99",
         sanJuanLight: "#415E78",
         sanJuan: "#2E4661",
-        sanJuanLigher: "#213652",
+        sanJuanDark: "#213652",
       },
       fontFamily: {
         karla: ["Karla"],

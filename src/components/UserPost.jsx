@@ -29,6 +29,7 @@ import EditPost from "./EditPost";
 import Avatar from "./Avatar";
 import Linkify from "react-linkify";
 import { useEffect } from "react";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function UserPost({ userPost }) {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export default function UserPost({ userPost }) {
   const {
     usersData: { users },
   } = useUsers();
+  const { theme } = useTheme();
   const { _id, content, username, likes, comments, createdAt } = userPost;
 
   const [commentInput, setCommentInput] = useState("");
@@ -87,99 +89,114 @@ export default function UserPost({ userPost }) {
       className="cursor-pointer"
       onClick={() => navigate(`/post/${_id}`)}
     >
-      <section className="relative grid grid-cols-[auto_1fr] gap-2 rounded-md border border-sanJuanLight p-2">
-        <div className="absolute right-2 top-2">
-          <button
-            onClick={(e) =>
-              clickHandler(
-                e,
-                setFlags((prev) => ({
-                  ...prev,
-                  showActions: !prev.showActions,
-                }))
-              )
-            }
-            className="h-6 w-6 rounded-full hover:bg-gray-100"
-          >
-            <FontAwesomeIcon icon={faEllipsis} />
-          </button>
-          {flags.showActions && (
-            <div className="absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
-              {user?._id === userDetails?._id ? (
-                <div>
-                  <Modal
-                    className="px-2"
-                    open={open}
-                    setOpen={setOpen}
-                    modalFor={"Edit"}
-                  >
-                    {<EditPost post={userPost} setOpen={setOpen} />}
-                  </Modal>
-                  <button
-                    className="border-t-[1px] px-2"
-                    onClick={(e) =>
-                      clickHandler(e, handlePostDelete(_id, token))
-                    }
-                  >
-                    delete
-                  </button>
-                </div>
-              ) : (
-                <div>
-                  {userDetails?.following.find(
-                    ({ username }) => username === user?.username
-                  ) ? (
-                    <button
-                      className="px-2"
-                      onClick={(e) =>
-                        clickHandler(
-                          e,
-                          followUnfollowHandler(
-                            unfollowUserService,
-                            user?._id,
-                            token
-                          )
-                        )
-                      }
-                    >
-                      unfollow
-                    </button>
-                  ) : (
-                    <button
-                      className="px-2"
-                      onClick={(e) =>
-                        clickHandler(
-                          e,
-                          followUnfollowHandler(
-                            followUserService,
-                            user?._id,
-                            token
-                          )
-                        )
-                      }
-                    >
-                      follow
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
+      <section
+        className={`${
+          theme === "dark" ? "bg-sanJuan" : "border bg-white"
+        } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-sanJuanLight p-2 max-[350px]:w-[95vw]`}
+      >
         <Avatar
           onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
           profileUrl={user?.profileImg}
         />
         <div className="flex flex-col gap-2">
           <div className="leading-5">
-            <div className="flex items-center gap-4">
-              <p className="text-sm">
+            <div className="flex items-center justify-start gap-4">
+              <p className="line-clamp-1 text-sm">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-xs text-gray-600">
+              <p
+                className={`text-xs ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                } justify-end`}
+              >
                 {formatPostDate(createdAt)}
               </p>
+              <div className="absolute right-2 top-2 ml-auto">
+                <button
+                  onClick={(e) =>
+                    clickHandler(
+                      e,
+                      setFlags((prev) => ({
+                        ...prev,
+                        showActions: !prev.showActions,
+                      }))
+                    )
+                  }
+                  className={`h-6 w-6 rounded-full ${
+                    theme === "dark"
+                      ? "hover:bg-sanJuanDark"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </button>
+                {flags.showActions && (
+                  <div
+                    className={`absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] ${
+                      theme === "dark" ? "bg-sanJuan" : "bg-white"
+                    } p-1`}
+                  >
+                    {user?._id === userDetails?._id ? (
+                      <div>
+                        <Modal
+                          className="px-2"
+                          open={open}
+                          setOpen={setOpen}
+                          modalFor={"Edit"}
+                        >
+                          {<EditPost post={userPost} setOpen={setOpen} />}
+                        </Modal>
+                        <button
+                          className="border-t-[1px] px-2"
+                          onClick={(e) =>
+                            clickHandler(e, handlePostDelete(_id, token))
+                          }
+                        >
+                          delete
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        {userDetails?.following.find(
+                          ({ username }) => username === user?.username
+                        ) ? (
+                          <button
+                            className="px-2"
+                            onClick={(e) =>
+                              clickHandler(
+                                e,
+                                followUnfollowHandler(
+                                  unfollowUserService,
+                                  user?._id,
+                                  token
+                                )
+                              )
+                            }
+                          >
+                            unfollow
+                          </button>
+                        ) : (
+                          <button
+                            className="px-2"
+                            onClick={(e) =>
+                              clickHandler(
+                                e,
+                                followUnfollowHandler(
+                                  followUserService,
+                                  user?._id,
+                                  token
+                                )
+                              )
+                            }
+                          >
+                            follow
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             <p className="text-xs">@{username}</p>
           </div>
@@ -238,11 +255,11 @@ export default function UserPost({ userPost }) {
               ))}
             </div>
           </div>
-          <div className="flex w-full gap-2">
+          <div className="flex w-full gap-2 border-t border-sanJuanLight pt-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
-              <div className="flex items-center rounded-md border border-sanJuanLight">
+              <div className="flex items-center rounded-md">
                 <Button
-                  className="border-none px-2"
+                  className="border-none pl-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -253,7 +270,7 @@ export default function UserPost({ userPost }) {
                   <FontAwesomeIcon icon={faThumbsUpFilled} />
                 </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer pr-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -268,9 +285,9 @@ export default function UserPost({ userPost }) {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center rounded-md border border-sanJuanLight">
+              <div className="flex items-center rounded-md">
                 <Button
-                  className="border-none px-2"
+                  className="border-none pl-2"
                   onClick={(e) =>
                     clickHandler(e, handlePostLike(likePostService, _id, token))
                   }
@@ -278,7 +295,7 @@ export default function UserPost({ userPost }) {
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer pr-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -293,7 +310,7 @@ export default function UserPost({ userPost }) {
                 </p>
               </div>
             )}
-            <div className="flex items-center rounded-md border border-sanJuanLight">
+            <div className="flex items-center rounded-md">
               <Button
                 onClick={(e) =>
                   clickHandler(
@@ -304,11 +321,11 @@ export default function UserPost({ userPost }) {
                     }))
                   )
                 }
-                className="border-none px-2"
+                className="border-none pl-2"
               >
                 <FontAwesomeIcon icon={faComment} />
               </Button>
-              <p className="px-2">{comments?.length}</p>
+              <p className="pr-2">{comments?.length}</p>
             </div>
 
             {userDetails?.bookmarks.find((postId) => postId === _id) ? (
@@ -319,6 +336,7 @@ export default function UserPost({ userPost }) {
                     handlePostBookmark(removeBookmarkPostService, _id, token)
                   )
                 }
+                className="border-none"
               >
                 <FontAwesomeIcon icon={faBookmarkFilled} />
               </Button>
@@ -330,6 +348,7 @@ export default function UserPost({ userPost }) {
                     handlePostBookmark(bookmarkPostService, _id, token)
                   )
                 }
+                className="border-none"
               >
                 <FontAwesomeIcon icon={faBookmark} />
               </Button>
@@ -344,7 +363,11 @@ export default function UserPost({ userPost }) {
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => setCommentInput(e.target.value)}
             placeholder="Add a comment..."
-            className="flex-grow rounded-full bg-sanJuanLighter/30 p-1 indent-2 outline-none placeholder:text-sm placeholder:text-sanJuanLight"
+            className={`flex-grow rounded-full bg-sanJuanLighter/30 p-1 indent-2 outline-none placeholder:text-sm ${
+              theme === "dark"
+                ? "placeholder:text-sanJuanLighter"
+                : "placeholder:text-sanJuanLight"
+            }`}
           />
           <button
             onClick={(e) => {
@@ -352,7 +375,7 @@ export default function UserPost({ userPost }) {
               setCommentInput("");
               setFlags((prev) => ({ ...prev, showCommentInput: false }));
             }}
-            className="rounded-full border border-sanJuanLight px-3 py-1 capitalize"
+            className="rounded-full border border-sanJuanLight px-3 py-1 text-sm capitalize"
           >
             post
           </button>
