@@ -8,18 +8,18 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout() {
   return (
-    <section className="relative gap-2 min-[350px]:flex min-[350px]:justify-center">
+    <section className="relative h-[100vh] gap-2 font-karla min-[350px]:flex min-[350px]:justify-center">
       <Header />
       <section className="min-[350px]:hidden">
         <NavBar />
       </section>
-      <aside className="mt-[60px] max-[350px]:hidden">
+      <aside className="mt-[50px] border-r border-sanJuanLight max-[350px]:hidden">
         <SideNavBar />
       </aside>
-      <main className="mt-[60px] max-w-[500px] flex-grow">
+      <main className="mt-[50px] max-w-[500px] flex-grow overflow-y-auto">
         <Outlet />
       </main>
-      <section className="mt-[60px] border-x max-[600px]:hidden">
+      <section className="mt-[50px] border-l border-sanJuanLight max-[600px]:hidden">
         <DesktopSearch />
         <FollowSuggestions />
       </section>

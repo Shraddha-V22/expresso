@@ -12,7 +12,7 @@ export default function Header() {
     },
   } = useAuth();
   return (
-    <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b bg-white px-2 py-1 min-[350px]:justify-center">
+    <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-sanJuanLight bg-white px-2 py-1 min-[350px]:justify-center">
       <button
         onClick={() => setShowMenu((prev) => !prev)}
         className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px] min-[350px]:hidden"

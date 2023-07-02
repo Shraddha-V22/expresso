@@ -28,7 +28,7 @@ export default function Bookmarks() {
   }, [posts, userDetails]);
 
   return (
-    <section className="w-full max-w-[500px]">
+    <section className="w-full max-w-[500px] py-2">
       {/* <h1>Bookmarks</h1> */}
       {bookmarks?.length > 0 ? (
         <section className="flex flex-col gap-2">

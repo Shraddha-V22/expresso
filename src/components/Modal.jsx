@@ -36,7 +36,7 @@ export default function Modal({
                 e.stopPropagation();
                 handleClose();
               }}
-              className="absolute right-4 top-1 text-xs"
+              className="absolute right-2 top-1 text-xs"
             >
               <FontAwesomeIcon icon={faX} />
             </button>

@@ -65,7 +65,6 @@ export default function EditProfile() {
         const { data, status } = await editUserDataService(newData, token);
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
-          setOpen(false);
         }
       } catch (error) {
         console.error(error);
@@ -75,7 +74,6 @@ export default function EditProfile() {
         const { data, status } = await editUserDataService(userData, token);
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
-          setOpen(false);
         }
       } catch (error) {
         console.error(error);
@@ -84,7 +82,7 @@ export default function EditProfile() {
   };
 
   return (
-    <section className="w-[250px] rounded-md border p-2">
+    <section className="w-[250px] rounded-md border border-sanJuanLight p-2">
       <div className="relative w-full">
         <div className="relative h-[70px] w-full rounded-md border-2">
           <img
@@ -148,7 +146,7 @@ export default function EditProfile() {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, bio: e.target.value }))
             }
-            className="rounded-md border py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-sanJuanLight py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -164,7 +162,7 @@ export default function EditProfile() {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, portfolio: e.target.value }))
             }
-            className="rounded-md border py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-sanJuanLight py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex w-full gap-2">
@@ -172,6 +170,7 @@ export default function EditProfile() {
             onClick={(e) => {
               e.stopPropagation();
               editProfileHandler(userInfo, token);
+              setOpen(false);
             }}
             className="w-full py-1 text-xs uppercase"
           >

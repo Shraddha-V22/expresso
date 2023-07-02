@@ -4,7 +4,7 @@ export default function Button({ children, onClick, className, disabled }) {
       onClick={onClick}
       className={`${className} ${
         disabled ? "opacity-50" : ""
-      } rounded-md border-[1px] px-2`}
+      } rounded-md border border-sanJuanLight px-2 active:bg-gray-100`}
       disabled={disabled}
     >
       {children}

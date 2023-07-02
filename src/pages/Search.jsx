@@ -105,21 +105,21 @@ export function DesktopSearch() {
   );
 
   return (
-    <div className="relative w-full border-b px-2 pb-2">
+    <div className="relative w-full border-b border-sanJuanLight px-2 py-2">
       <input
         type="text"
         placeholder="search user"
         onChange={(e) => setSearchText(e.target.value)}
-        className="w-full rounded-full border p-1 indent-2 text-sm outline-none placeholder:text-sm"
+        className="w-full rounded-full border border-sanJuanLight p-1 indent-2 text-sm outline-none placeholder:text-sm"
       />
       {searchText && (
-        <section className="absolute max-h-[350px] overflow-y-auto rounded-md border bg-white">
+        <section className="absolute max-h-[350px] w-[250px] overflow-y-auto rounded-md border bg-white">
           {searchSuggestions?.length ? (
             searchSuggestions?.map((user) => (
               <UsersToFollow key={user._id} user={user} forSearch />
             ))
           ) : (
-            <p className="h-fit w-full text-sm">No user found</p>
+            <p className="h-fit w-full p-1 text-sm">No user found</p>
           )}
         </section>
       )}
