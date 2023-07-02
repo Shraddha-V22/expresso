@@ -7,6 +7,10 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useAuth } from "../contexts/AuthProvider";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Modal from "./Modal";
+import { useState } from "react";
+import CreatePost from "./CreatePost";
 
 export default function NavBar() {
   const activeStyle = ({ isActive }) => {
@@ -39,14 +43,19 @@ export function SideNavBar() {
     signOut,
   } = useAuth();
   const activeStyle = ({ isActive }) => {
-    return { color: isActive ? "black" : "black" };
+    return {
+      backgroundColor: isActive ? "#5B7F9990" : "",
+    };
   };
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <nav className="flex h-full w-auto flex-col items-start justify-start gap-4 border-r bg-white px-2 pt-4 max-[500px]:items-center">
+    <nav className="flex h-full w-auto flex-col items-start justify-start gap-4 px-2 pt-4 max-[500px]:items-center">
       <NavLink
         style={activeStyle}
         to="/"
-        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
       >
         <FontAwesomeIcon icon={faHouse} className="w-[20px]" />
         <p className="max-[768px]:hidden">Home</p>
@@ -54,7 +63,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to={`/${userDetails?._id}`}
-        className="flex w-full items-center gap-2  rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
       >
         <FontAwesomeIcon icon={faUser} className="w-[20px]" />
         <p className="max-[768px]:hidden">Profile</p>
@@ -62,7 +71,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/explore"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
       >
         <FontAwesomeIcon icon={faCompass} className="w-[20px]" />
         <p className="max-[768px]:hidden">Explore</p>
@@ -70,7 +79,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/bookmarks"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
       >
         <FontAwesomeIcon icon={faBookmark} className="w-[20px]" />
         <p className="max-[768px]:hidden">Bookmarks</p>
@@ -78,18 +87,38 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/search"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100 sm:hidden"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40  sm:hidden"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} className="w-[20px]" />
         <p className="max-[768px]:hidden">Search</p>
       </NavLink>
       <div
-        className="flex w-full cursor-pointer items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-100"
+        className="flex w-full cursor-pointer items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40  "
         onClick={signOut}
       >
         <FontAwesomeIcon icon={faRightFromBracket} className="w-[20px]" />
         <p className="max-[768px]:hidden">Logout</p>
       </div>
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        modalFor={
+          <div className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-sanJuanLight bg-sanJuanLight px-2 py-1 text-white duration-200 hover:bg-white hover:text-sanJuan min-[768px]:pr-4">
+            <FontAwesomeIcon icon={faPlus} className="w-[20px]" />
+            <p className="max-[768px]:hidden">Create</p>
+          </div>
+        }
+      >
+        <CreatePost setOpen={setOpen} modal />
+      </Modal>
     </nav>
   );
+}
+
+{
+  /* <Modal
+                    className="px-2"
+                    open={open}
+                    setOpen={setOpen}
+                    modalFor={"Edit"} */
 }

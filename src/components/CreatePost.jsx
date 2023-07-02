@@ -12,7 +12,7 @@ import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
 
-export default function CreatePost() {
+export default function CreatePost({ modal, setOpen }) {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
   const [media, setMedia] = useState(null);
@@ -84,7 +84,7 @@ export default function CreatePost() {
   const btnDisable = !inputText?.trim() && media === null;
 
   return (
-    <section className="flex w-full gap-2 rounded-md border p-4">
+    <section className="flex w-full gap-2 rounded-md border border-sanJuanLight p-4">
       <Avatar
         onClick={() => navigate(`/${userDetails?._id}`)}
         profileUrl={userDetails?.profileImg}
@@ -133,6 +133,7 @@ export default function CreatePost() {
             onClick={(e) => {
               e.stopPropagation();
               createUserPost(inputText, media, token);
+              modal && setOpen(false);
             }}
             className={"self-end"}
             disabled={btnDisable}
