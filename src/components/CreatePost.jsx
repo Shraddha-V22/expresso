@@ -2,7 +2,7 @@ import { useState } from "react";
 import { usePosts } from "../contexts/PostsProvider";
 import { useAuth } from "../contexts/AuthProvider";
 import { POSTS } from "../common/reducerTypes";
-import { createPostService, editPostService } from "../services/postServices";
+import { createPostService } from "../services/postServices";
 import Button from "./Button";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,11 +12,16 @@ import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeProvider";
+import { faSmile } from "@fortawesome/free-regular-svg-icons";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { useEffect } from "react";
 
 export default function CreatePost({ modal, setOpen }) {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
   const [media, setMedia] = useState(null);
+  const [showEmojis, setShowEmojis] = useState(false);
   const { postsDispatch } = usePosts();
   const {
     userData: {
@@ -128,9 +133,35 @@ export default function CreatePost({ modal, setOpen }) {
           )}
         </div>
         <section className="flex justify-between">
-          <button onClick={imageUploadHandler}>
-            <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
-          </button>
+          <div className="relative flex items-center gap-4">
+            <button onClick={imageUploadHandler}>
+              <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowEmojis((prev) => !prev);
+              }}
+            >
+              <FontAwesomeIcon icon={faSmile} />
+            </button>
+            {showEmojis && (
+              <div className="absolute top-6 z-10">
+                <Picker
+                  emojiSize={16}
+                  emojiButtonSize={20}
+                  navPosition="bottom"
+                  previewPosition="none"
+                  perLine={6}
+                  theme={theme}
+                  data={data}
+                  onEmojiSelect={(emoji) => {
+                    setInputText((prev) => prev + emoji.native);
+                  }}
+                />
+              </div>
+            )}
+          </div>
           <Button
             onClick={(e) => {
               e.stopPropagation();

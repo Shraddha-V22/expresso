@@ -25,7 +25,7 @@ export default function Layout() {
       <main
         className={`${
           theme === "dark" && "bg-sanJuanDark text-gray-300"
-        } mt-[50px] max-w-[500px] flex-grow overflow-y-auto pb-[50px]`}
+        } mt-[50px] min-h-[100vh] max-w-[500px] flex-grow overflow-y-auto pb-[50px]`}
       >
         <Outlet />
       </main>

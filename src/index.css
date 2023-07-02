@@ -20,3 +20,23 @@
 input {
   background-color: inherit;
 }
+
+em-emoji-picker {
+  /* --background-rgb: 85, 170, 255;
+  --border-radius: 24px;
+  --color-border-over: rgba(0, 0, 0, 0.1);
+  --color-border: rgba(0, 0, 0, 0.05);
+  --rgb-accent: 255, 105, 180;
+  --rgb-background: 262, 240, 283;
+  --rgb-color: 102, 51, 153;
+  --rgb-input: 255, 235, 235;
+  /* --padding: 5px; */
+  /* --shadow: 5px 5px 15px -8px rebeccapurple; */
+  --category-icon-size: 18px;
+  --font-size: 12px;
+  --font-family: "Karla", sans-serif;
+
+  height: 250px;
+  min-height: 200px;
+  max-height: 800px;
+}
