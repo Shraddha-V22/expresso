@@ -11,7 +11,11 @@ import { useAuth } from "./contexts/AuthProvider";
 import RequiredAuth from "./components/RequiredAuth";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import Profile from "./pages/Profile";
+import Profile, {
+  UserFollowers,
+  UserFollowing,
+  UserProfile,
+} from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Bookmarks from "./pages/Bookmarks";
 import Post from "./pages/Post";
@@ -28,24 +32,17 @@ function AppRouter() {
             <Route path="/search" element={<Search />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/:userId" element={<Profile />} />
+            <Route path="/:userId" element={<UserProfile />}>
+              <Route index element={<Profile />} />
+              <Route path="/:userId/following" element={<UserFollowing />} />
+              <Route path="/:userId/followers" element={<UserFollowers />} />
+            </Route>
             <Route path="/post/:postId" element={<Post />} />
           </Route>
           <Route path="/profile-setup" element={<ProfileSetup />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        {/* {token === "" ? (
-          <>
-          <Route path="/login" element={<Login />} />
-          <Route path="/registration" element={<Registration />} />
-          </>
-        ) : (
-          <>
-            <Route path="/login" element={<Navigate to="/" replace />} />
-            <Route path="/registration" element={<Registration />} />
-          </>
-        )} */}
       </>
     )
   );
