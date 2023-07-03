@@ -19,8 +19,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-10 flex w-full items-center justify-between border-sanJuanLight ${
-        theme === "dark" ? "bg-sanJuan shadow-one" : "border-b bg-white"
+      className={`fixed top-0 z-10 flex w-full items-center justify-between border-b border-sanJuanLight ${
+        theme === "dark" ? "bg-sanJuan" : "bg-white"
       } px-2 py-1`}
     >
       <button

@@ -10,7 +10,7 @@ import { avatarImgs } from "../common/avatarImgs";
 import Avatar from "./Avatar";
 import { uploadMedia } from "../common/uploadMedia";
 
-export default function EditProfile({ setOpen: setEditProfieOpen }) {
+export default function EditProfile() {
   const {
     userData: {
       user: { userDetails, token },
@@ -65,7 +65,6 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
         const { data, status } = await editUserDataService(newData, token);
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
-          setEditProfieOpen(false);
         }
       } catch (error) {
         console.error(error);
@@ -75,7 +74,6 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
         const { data, status } = await editUserDataService(userData, token);
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
-          setEditProfieOpen(false);
         }
       } catch (error) {
         console.error(error);
@@ -172,6 +170,7 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
             onClick={(e) => {
               e.stopPropagation();
               editProfileHandler(userInfo, token);
+              setOpen(false);
             }}
             className="w-full py-1 text-xs uppercase"
           >
