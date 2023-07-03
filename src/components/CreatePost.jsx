@@ -152,7 +152,7 @@ export default function CreatePost({ modal, setOpen }) {
                   emojiButtonSize={20}
                   navPosition="bottom"
                   previewPosition="none"
-                  perLine={6}
+                  perLine={8}
                   theme={theme}
                   data={data}
                   onEmojiSelect={(emoji) => {

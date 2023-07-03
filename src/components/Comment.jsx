@@ -22,6 +22,10 @@ import {
 import { formatPostDate } from "../common/formatPostDate";
 import { useTheme } from "../contexts/ThemeProvider";
 import { useEffect } from "react";
+import Avatar from "./Avatar";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { faSmile } from "@fortawesome/free-regular-svg-icons";
 
 export default function Comment({ comment, postId, setComments }) {
   const navigate = useNavigate();
@@ -177,7 +181,7 @@ export default function Comment({ comment, postId, setComments }) {
             </div>
           )}
         </div>
-        <div
+        {/* <div
           onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
           className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px]"
         >
@@ -186,7 +190,11 @@ export default function Comment({ comment, postId, setComments }) {
             alt=""
             className="h-full w-full object-cover"
           />
-        </div>
+        </div> */}
+        <Avatar
+          profileUrl={user?.profileImg}
+          onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
+        />
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="leading-5">
@@ -300,6 +308,7 @@ function EditComment({ postId, setOpen, comment, setComments }) {
     },
   } = useAuth();
   const { postsDispatch } = usePosts();
+  const [showEmojis, setShowEmojis] = useState(false);
   const { theme } = useTheme();
   const [inputText, setInputText] = useState(comment?.content);
 
@@ -339,18 +348,44 @@ function EditComment({ postId, setOpen, comment, setComments }) {
           theme === "dark" ? "bg-sanJuanDark" : "bg-gray-200"
         } p-1 indent-2 outline-none placeholder:text-sm placeholder:capitalize`}
       />
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          editPostComment(postId, comment?._id, inputText, token);
-          setOpen(false);
-        }}
-        className={`${
-          theme === "dark" ? "active:bg-sanJuanDark/40" : "active:bg-gray-100"
-        } self-end rounded-full border px-3 py-1 capitalize`}
-      >
-        post
-      </button>
+      <div className="relative flex justify-between">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowEmojis((prev) => !prev);
+          }}
+        >
+          <FontAwesomeIcon icon={faSmile} />
+        </button>
+        {showEmojis && (
+          <div onClick={e => e.stopPropagation()} className="absolute top-6 z-10">
+            <Picker
+              emojiSize={16}
+              emojiButtonSize={20}
+              navPosition="bottom"
+              previewPosition="none"
+              perLine={8}
+              theme={theme}
+              data={data}
+              onEmojiSelect={(emoji) => {
+                setInputText((prev) => prev + emoji.native);
+              }}
+            />
+          </div>
+        )}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            editPostComment(postId, comment?._id, inputText, token);
+            setOpen(false);
+          }}
+          className={`${
+            theme === "dark" ? "active:bg-sanJuanDark/40" : "active:bg-gray-100"
+          } self-end rounded-full border px-3 py-1 capitalize`}
+        >
+          post
+        </button>
+      </div>
     </section>
   );
 }
