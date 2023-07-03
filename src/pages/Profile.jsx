@@ -76,6 +76,8 @@ export default function Profile() {
     }
   };
 
+  console.log(userProfile);
+
   useEffect(() => {
     getUserProfile(userId);
   }, [userId, userDetails]);
@@ -111,7 +113,7 @@ export default function Profile() {
               setOpen={setOpen}
               modalFor={"Edit Profile"}
             >
-              {<EditProfile />}
+              {<EditProfile setOpen={setOpen} />}
             </Modal>
           ) : userDetails?.following?.find(
               ({ _id }) => _id === userProfile?._id
@@ -166,8 +168,14 @@ export default function Profile() {
             </a>
           )}
           <div className="flex gap-4 text-sm">
-            <p>{userProfile?.following?.length} Following</p>
-            <p>{userProfile?.followers?.length} Followers</p>
+            <p className="cursor-pointer">
+              {userProfile?.following?.length}{" "}
+              <span className="hover:underline">Following</span>
+            </p>
+            <p className="cursor-pointer">
+              {userProfile?.followers?.length}{" "}
+              <span className="hover:underline">Followers</span>
+            </p>
           </div>
         </section>
       </section>

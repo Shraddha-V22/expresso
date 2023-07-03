@@ -13,7 +13,7 @@ export default function Layout() {
     <section
       className={`${
         theme === "dark" && "bg-sanJuanDark text-gray-300"
-      } relative h-[100vh] gap-2 pt-2 font-karla min-[350px]:flex min-[350px]:justify-center`}
+      } relative h-[100vh] gap-2 pt-1 font-karla min-[350px]:flex min-[350px]:justify-center`}
     >
       <Header />
       <section className="min-[350px]:hidden">
