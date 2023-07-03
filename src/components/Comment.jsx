@@ -20,6 +20,8 @@ import {
   likePostCommentService,
 } from "../services/commentsServices";
 import { formatPostDate } from "../common/formatPostDate";
+import { useTheme } from "../contexts/ThemeProvider";
+import { useEffect } from "react";
 
 export default function Comment({ comment, postId, setComments }) {
   const navigate = useNavigate();
@@ -32,10 +34,12 @@ export default function Comment({ comment, postId, setComments }) {
   const {
     usersData: { users },
   } = useUsers();
+  const { theme } = useTheme();
   const { postsDispatch } = usePosts();
   const { _id, content, username, likes, createdAt } = comment;
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [showActions, setShowActions] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -74,26 +78,53 @@ export default function Comment({ comment, postId, setComments }) {
     }
   };
 
+  useEffect(() => {
+    showActions &&
+      document.body.addEventListener("click", () => setShowActions(false));
+    () =>
+      showActions &&
+      document.body.removeEventListener("click", () => setShowActions(false));
+  }, []);
+
   return (
-    <section className="cursor-pointer border-b">
+    <section
+      className={`${
+        theme === "dark" ? "" : "border-sanJuanLight"
+      } cursor-pointer border-b last-of-type:border-b-0`}
+    >
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 p-2 py-1">
         <div className="absolute right-2 top-2">
           <button
-            onClick={() => setShowActions((prev) => !prev)}
-            className="h-6 w-6 rounded-full hover:bg-gray-100"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowActions((prev) => !prev);
+            }}
+            className={`${
+              theme === "dark" ? "hover:bg-sanJuanDark" : "hover:bg-gray-100"
+            } h-6 w-6 rounded-full hover:bg-gray-100`}
           >
             <FontAwesomeIcon icon={faEllipsis} />
           </button>
           {showActions && (
-            <div className="absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] bg-white p-1">
+            <div
+              className={`${
+                theme === "dark" ? "bg-sanJuan" : "bg-white"
+              } absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] p-1`}
+            >
               {user?._id === userDetails?._id ? (
                 <div>
-                  <Modal className="px-2" modalFor={"Edit"}>
+                  <Modal
+                    className="px-2"
+                    setOpen={setOpen}
+                    open={open}
+                    modalFor={"Edit"}
+                  >
                     {
                       <EditComment
                         postId={postId}
                         comment={comment}
                         setComments={setComments}
+                        setOpen={setOpen}
                       />
                     }
                   </Modal>
@@ -159,12 +190,18 @@ export default function Comment({ comment, postId, setComments }) {
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="leading-5">
-              <p className="text-sm">
+              <p className="line-clamp-1 text-sm">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-xs">@{username}</p>
+              <p className="line-clamp-1 text-xs">@{username}</p>
             </div>
-            <p className="text-xs text-gray-600">{formatPostDate(createdAt)}</p>
+            <p
+              className={`${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              } self-start text-xs`}
+            >
+              {formatPostDate(createdAt)}
+            </p>
           </div>
           <div>
             <p className={`text-sm`}>{content}</p>
@@ -195,7 +232,7 @@ export default function Comment({ comment, postId, setComments }) {
           </div>
           <div className="flex w-full justify-start gap-2">
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
-              <div className="flex items-center rounded-md border">
+              <div className="flex items-center rounded-md">
                 <Button
                   onClick={() =>
                     handlePostCommentLike(
@@ -205,12 +242,12 @@ export default function Comment({ comment, postId, setComments }) {
                       token
                     )
                   }
-                  className="border-none px-2"
+                  className="border-none pl-2"
                 >
                   <FontAwesomeIcon icon={faThumbsUpFilled} />
                 </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer pr-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -222,7 +259,7 @@ export default function Comment({ comment, postId, setComments }) {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center rounded-md border">
+              <div className="flex items-center rounded-md">
                 <Button
                   onClick={() =>
                     handlePostCommentLike(
@@ -232,12 +269,12 @@ export default function Comment({ comment, postId, setComments }) {
                       token
                     )
                   }
-                  className="border-none px-2"
+                  className="border-none pl-2"
                 >
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </Button>
                 <p
-                  className="cursor-pointer px-2"
+                  className="cursor-pointer pr-2"
                   onClick={(e) =>
                     clickHandler(
                       e,
@@ -256,13 +293,14 @@ export default function Comment({ comment, postId, setComments }) {
   );
 }
 
-function EditComment({ postId, comment, setComments }) {
+function EditComment({ postId, setOpen, comment, setComments }) {
   const {
     userData: {
       user: { token },
     },
   } = useAuth();
   const { postsDispatch } = usePosts();
+  const { theme } = useTheme();
   const [inputText, setInputText] = useState(comment?.content);
 
   const editPostComment = async (postId, commentId, inputText, token) => {
@@ -297,14 +335,19 @@ function EditComment({ postId, comment, setComments }) {
         onClick={(e) => e.stopPropagation()}
         onChange={(e) => setInputText(e.target.value)}
         value={inputText}
-        className="rounded-full bg-gray-200 p-1 indent-2 outline-none placeholder:text-sm placeholder:capitalize"
+        className={`rounded-full ${
+          theme === "dark" ? "bg-sanJuanDark" : "bg-gray-200"
+        } p-1 indent-2 outline-none placeholder:text-sm placeholder:capitalize`}
       />
       <button
         onClick={(e) => {
           e.stopPropagation();
           editPostComment(postId, comment?._id, inputText, token);
+          setOpen(false);
         }}
-        className="self-end rounded-full border px-3 py-1 capitalize"
+        className={`${
+          theme === "dark" ? "active:bg-sanJuanDark/40" : "active:bg-gray-100"
+        } self-end rounded-full border px-3 py-1 capitalize`}
       >
         post
       </button>

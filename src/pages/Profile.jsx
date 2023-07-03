@@ -152,15 +152,19 @@ export default function Profile() {
             </p>
             <h3 className="text-sm">@{userProfile?.username}</h3>
           </div>
-          <p className="text-xs">{userProfile?.bio}</p>
-          <a
-            href={userProfile?.portfolio}
-            target="_blank"
-            className="flex items-center gap-1"
-          >
-            <FontAwesomeIcon icon={faLink} className="text-xs" />
-            <p className="text-xs hover:underline">{userProfile?.portfolio}</p>
-          </a>
+          {userProfile?.bio && <p className="text-xs">{userProfile?.bio}</p>}
+          {userProfile?.portfolio && (
+            <a
+              href={userProfile?.portfolio}
+              target="_blank"
+              className="flex items-center gap-1"
+            >
+              <FontAwesomeIcon icon={faLink} className="text-xs" />
+              <p className="text-xs hover:underline">
+                {userProfile?.portfolio}
+              </p>
+            </a>
+          )}
           <div className="flex gap-4 text-sm">
             <p>{userProfile?.following?.length} Following</p>
             <p>{userProfile?.followers?.length} Followers</p>

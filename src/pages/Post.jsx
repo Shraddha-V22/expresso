@@ -10,6 +10,7 @@ import { getPostCommentsService } from "../services/commentsServices";
 import Comment from "../components/Comment";
 import { usePosts } from "../contexts/PostsProvider";
 import { useAuth } from "../contexts/AuthProvider";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Post() {
     postsData: { posts },
   } = usePosts();
 
-  const user = users.find((user) => user.username === post?.username);
+  // const user = users.find((user) => user.username === post?.username);
 
   const getUserPost = async (postId) => {
     try {
@@ -41,7 +42,7 @@ export default function Post() {
 
   return (
     <section className="flex flex-col gap-2">
-      <UserPost userPost={post} />
+      <UserPost userPost={post} isSinglePage />
       <Comments postId={postId} />
     </section>
   );
@@ -51,6 +52,7 @@ function Comments({ postId }) {
   const {
     postsData: { posts },
   } = usePosts();
+  const { theme } = useTheme();
   const [comments, setComments] = useState([]);
 
   const getPostComments = async (postId) => {
@@ -69,9 +71,20 @@ function Comments({ postId }) {
   }, [posts, postId]);
 
   return (
-    <section className="rounded-md border">
+    <section
+      className={`${
+        theme === "dark" ? "bg-sanJuan" : "border"
+      } rounded-md border-sanJuanLight`}
+    >
+      <h3
+        className={`${
+          theme === "dark" ? "" : "border-sanJuanLight"
+        } border-b px-4 py-2`}
+      >
+        Comments
+      </h3>
       {comments?.length > 0 ? (
-        <section className="last:border-none">
+        <section className="">
           {comments?.map((co) => (
             <Comment
               key={co._id}
@@ -82,7 +95,7 @@ function Comments({ postId }) {
           ))}
         </section>
       ) : (
-        <p className="rounded-md p-1 pl-2 text-sm">
+        <p className="rounded-md p-1 pl-2 text-center text-sm">
           Be the first one to comment!
         </p>
       )}

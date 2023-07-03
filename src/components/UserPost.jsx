@@ -31,7 +31,7 @@ import Linkify from "react-linkify";
 import { useEffect } from "react";
 import { useTheme } from "../contexts/ThemeProvider";
 
-export default function UserPost({ userPost }) {
+export default function UserPost({ userPost, isSinglePage }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -86,12 +86,12 @@ export default function UserPost({ userPost }) {
 
   return (
     <section
-      className="cursor-pointer"
-      onClick={() => navigate(`/post/${_id}`)}
+      className={`${!isSinglePage && "cursor-pointer"}`}
+      onClick={() => !isSinglePage && navigate(`/post/${_id}`)}
     >
       <section
-        className={`${
-          theme === "dark" ? "bg-sanJuan" : "border bg-white"
+        className={`${theme === "dark" ? "bg-sanJuan" : "border bg-white"} ${
+          !isSinglePage && theme === "light" && "hover:bg-sanJuanLighter/10"
         } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-sanJuanLight p-2 max-[350px]:w-[95vw]`}
       >
         <Avatar

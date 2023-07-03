@@ -10,9 +10,11 @@ import { editUserDataService } from "../services/userServices";
 import { uploadMedia } from "../common/uploadMedia";
 import { AUTH } from "../common/reducerTypes";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeProvider";
 
 export default function ProfileSetup() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const {
     userData: {
       user: { userDetails, token },
@@ -78,15 +80,23 @@ export default function ProfileSetup() {
   };
 
   return (
-    <section className="grid h-[100vh] w-full place-items-center">
-      <div className="flex flex-col gap-4">
+    <section
+      className={`${
+        theme === "dark" ? "bg-sanJuanDark text-white" : ""
+      } grid h-[100vh] w-full place-items-center`}
+    >
+      <div className={`flex flex-col gap-4`}>
         <p className="text-center text-sm">
           {index === 2
             ? "Here are some people you can follow to get started"
             : "Let's take a few seconds to setup your profile"}
         </p>
         {index === 0 && (
-          <div className="flex flex-col gap-4 rounded-md border p-4">
+          <div
+            className={`${
+              theme === "dark" ? "bg-sanJuan" : "border"
+            } flex flex-col gap-4 rounded-md p-4`}
+          >
             <div className="h-[70px] w-[70px] cursor-pointer self-center overflow-hidden rounded-full border-2 bg-green-200">
               <img
                 src={userInfo?.profileImg ? userImg : userDetails?.profileImg}
@@ -124,7 +134,9 @@ export default function ProfileSetup() {
                     e.stopPropagation();
                     imageUploadHandler("profileImg");
                   }}
-                  className="py-1 text-xs uppercase"
+                  className={`${
+                    theme === "dark" ? "bg-sanJuanLight" : ""
+                  } py-1 text-xs uppercase`}
                 >
                   upload from gallery
                 </Button>
@@ -137,7 +149,9 @@ export default function ProfileSetup() {
                         "Please select an avatar/upload from gallery."
                       )
                 }
-                className="py-1 text-xs uppercase"
+                className={`${
+                  theme === "dark" ? "bg-sanJuanLight" : ""
+                } w-full py-1 text-xs uppercase`}
               >
                 next
               </Button>
@@ -145,7 +159,11 @@ export default function ProfileSetup() {
           </div>
         )}
         {index === 1 && (
-          <div className="flex flex-col gap-4 rounded-md border p-4">
+          <div
+            className={`${
+              theme === "dark" ? "bg-sanJuan" : "border"
+            } flex flex-col gap-4 rounded-md p-4`}
+          >
             <div className="flex flex-col gap-1">
               <label htmlFor="bio" className="ml-1 text-xs capitalize">
                 bio
@@ -187,13 +205,17 @@ export default function ProfileSetup() {
                   editProfileHandler(userInfo, token);
                   setIndex((prev) => prev + 1);
                 }}
-                className="py-1 text-xs uppercase"
+                className={`${
+                  theme === "dark" ? "bg-sanJuanLight" : ""
+                } w-full py-1 text-xs uppercase`}
               >
                 save
               </Button>
               <Button
                 onClick={() => setIndex((prev) => prev - 1)}
-                className="py-1 text-xs uppercase"
+                className={`${
+                  theme === "dark" ? "bg-sanJuanLight" : ""
+                } w-full py-1 text-xs uppercase`}
               >
                 go back
               </Button>
@@ -201,11 +223,17 @@ export default function ProfileSetup() {
           </div>
         )}
         {index === 2 && (
-          <div className="flex flex-col gap-4 rounded-md border p-4">
+          <div
+            className={`${
+              theme === "dark" ? "bg-sanJuan" : "border"
+            } flex flex-col items-center gap-4 rounded-md p-4`}
+          >
             <FollowSuggestions />
             <Button
               onClick={() => navigate("/")}
-              className="py-1 text-xs uppercase"
+              className={`${
+                theme === "dark" ? "bg-sanJuanLight" : ""
+              } w-full py-1 text-xs uppercase`}
             >
               skip
             </Button>
