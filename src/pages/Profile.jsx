@@ -320,7 +320,7 @@ export function UserFollowing() {
     getUserProfile(userId);
   }, [userId, userDetails]);
 
-  return (
+  return userProfile?.following?.length ? (
     <section className="flex flex-col gap-2">
       {userProfile?.following?.map((us) => (
         <section
@@ -371,6 +371,8 @@ export function UserFollowing() {
         </section>
       ))}
     </section>
+  ) : (
+    <p className="w-full p-4 text-center">No following yet.</p>
   );
 }
 
@@ -400,7 +402,7 @@ export function UserFollowers() {
     getUserProfile(userId);
   }, [userId, userDetails]);
 
-  return (
+  return userProfile?.followers?.length ? (
     <section className="flex flex-col gap-2">
       {userProfile?.followers?.map((us) => (
         <section
@@ -451,5 +453,7 @@ export function UserFollowers() {
         </section>
       ))}
     </section>
+  ) : (
+    <p className="w-full p-4 text-center">No followers yet.</p>
   );
 }
