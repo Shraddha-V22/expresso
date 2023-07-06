@@ -1,21 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { usePosts } from "../contexts/PostsProvider";
 import { useAuth } from "../contexts/AuthProvider";
+import { useTheme } from "../contexts/ThemeProvider";
 import { POSTS } from "../common/reducerTypes";
+import { uploadMedia } from "../common/uploadMedia";
 import { createPostService } from "../services/postServices";
 import Button from "./Button";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
+import Avatar from "./Avatar";
+import { faImage, faSmile } from "@fortawesome/free-regular-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { uploadMedia } from "../common/uploadMedia";
-import Avatar from "./Avatar";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "../contexts/ThemeProvider";
-import { faSmile } from "@fortawesome/free-regular-svg-icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { useEffect } from "react";
 
 export default function CreatePost({ modal, setOpen }) {
   const navigate = useNavigate();
@@ -31,6 +29,7 @@ export default function CreatePost({ modal, setOpen }) {
   const { theme } = useTheme();
 
   const createUserPost = async (inputText, media, token) => {
+    const id = toast.loading("Creating post...");
     if (media) {
       try {
         const response = await uploadMedia(media);
@@ -45,9 +44,21 @@ export default function CreatePost({ modal, setOpen }) {
           });
           setInputText("");
           setMedia(null);
+          toast.update(id, {
+            render: "Post created!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Create post request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     } else {
       try {
@@ -61,20 +72,32 @@ export default function CreatePost({ modal, setOpen }) {
             payload: data.posts.reverse(),
           });
           setInputText("");
+          toast.update(id, {
+            render: "Post created!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Create post request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     }
   };
 
-  const imageUploadHandler = () => {
+  const imageUploadHandler = (e) => {
+    e.stopPropagation();
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*, video/*";
     input.onchange = (e) => {
       const file = e.target.files[0];
-      console.log(file, file.size);
       if (file.type.split("/")[0] === "image" && file.size > 1024000) {
         toast.error("The image size should not be more than 1mb.");
         return;

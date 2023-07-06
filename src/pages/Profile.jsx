@@ -85,7 +85,7 @@ export function UserProfile() {
                 <h3 className="text-lg font-semibold capitalize">
                   {userProfile?.firstName} {userProfile?.lastName}
                 </h3>
-                <p className="text-xs">{userProfile?.username}</p>
+                <p className="text-xs">@{userProfile?.username}</p>
               </div>
             </div>
             <div className="flex justify-evenly border-b p-2 pb-0">
@@ -165,7 +165,6 @@ export default function Profile() {
     try {
       const { data, status } = await serviceFn(id, token);
       if (status === 200) {
-        console.log(data);
         authDispatch({ type: AUTH.USER_FOLLOW, payload: data.user });
         setUserProfile(data.followUser);
       }
@@ -173,8 +172,6 @@ export default function Profile() {
       console.error(error);
     }
   };
-
-  console.log(userProfile);
 
   useEffect(() => {
     getUserProfile(userId);
@@ -324,6 +321,7 @@ export function UserFollowing() {
     <section className="flex flex-col gap-2">
       {userProfile?.following?.map((us) => (
         <section
+          key={us?._id}
           onClick={() => navigate(`/${us?._id}`)}
           className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
         >
@@ -406,6 +404,7 @@ export function UserFollowers() {
     <section className="flex flex-col gap-2">
       {userProfile?.followers?.map((us) => (
         <section
+          key={us?._id}
           onClick={() => navigate(`/${us?._id}`)}
           className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
         >

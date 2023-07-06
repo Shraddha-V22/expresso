@@ -5,7 +5,7 @@ import { usePosts } from "../contexts/PostsProvider";
 import Avatar from "./Avatar";
 import { useTheme } from "../contexts/ThemeProvider";
 
-export default function UsersToFollow({ user, forSearch }) {
+export default function UsersToFollow({ user, forSearch, isSuggestion }) {
   const navigate = useNavigate();
   const {
     userData: {
@@ -17,7 +17,7 @@ export default function UsersToFollow({ user, forSearch }) {
 
   return (
     <section
-      onClick={() => navigate(`/${user?._id}`)}
+      onClick={() => (!isSuggestion ? navigate(`/${user?._id}`) : {})}
       className="grid w-[250px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
     >
       <div className="flex gap-2">

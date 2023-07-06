@@ -30,6 +30,7 @@ import Avatar from "./Avatar";
 import Linkify from "react-linkify";
 import { useEffect } from "react";
 import { useTheme } from "../contexts/ThemeProvider";
+import ImgModal from "./ImgModal";
 
 export default function UserPost({ userPost, isSinglePage }) {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ export default function UserPost({ userPost, isSinglePage }) {
     showCommentInput: false,
   });
   const [open, setOpen] = useState(false);
+  const [openImg, setOpenImg] = useState(false);
 
   const user = users.find((user) => user.username === username);
 
@@ -88,6 +90,9 @@ export default function UserPost({ userPost, isSinglePage }) {
     <section
       className={`${!isSinglePage && "cursor-pointer"}`}
       onClick={() => !isSinglePage && navigate(`/post/${_id}`)}
+      onDoubleClick={(e) =>
+        clickHandler(e, handlePostLike(likePostService, _id, token))
+      }
     >
       <section
         className={`${theme === "dark" ? "bg-sanJuan" : "border bg-white"} ${
@@ -205,30 +210,57 @@ export default function UserPost({ userPost, isSinglePage }) {
               <Linkify>{content}</Linkify>
             </p>
             {userPost?.mediaUrl && (
-              <div className="h-[200px] w-full overflow-hidden rounded-md border bg-gray-800">
+              <div className="h-[200px] w-full overflow-hidden rounded-md bg-gray-800">
                 {userPost?.mediaUrl.split("/")[4] === "image" && (
-                  <img
-                    src={userPost?.mediaUrl}
-                    alt="post-img"
-                    className="mx-auto h-full"
-                  />
+                  <>
+                    <img
+                      src={userPost?.mediaUrl}
+                      alt="post-img"
+                      className="h-full w-full object-cover"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenImg(true);
+                      }}
+                    />
+                    <ImgModal openImg={openImg} setOpenImg={setOpenImg}>
+                      <img
+                        src={userPost?.mediaUrl}
+                        alt=""
+                        className="max-h-[70vh] max-w-[70vw]"
+                      />
+                    </ImgModal>
+                  </>
                 )}
                 {userPost?.mediaUrl.split("/")[4] === "video" && (
-                  <video
-                    controls
-                    src={userPost?.mediaUrl}
-                    alt="Post-video"
-                    className="mx-auto h-full"
-                  ></video>
+                  <>
+                    <video
+                      controls
+                      src={userPost?.mediaUrl}
+                      alt="Post-video"
+                      className="h-full w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenImg(true);
+                      }}
+                    ></video>
+                    <ImgModal openImg={openImg} setOpenImg={setOpenImg}>
+                      <video
+                        controls
+                        src={userPost?.mediaUrl}
+                        alt="Post-video"
+                        className="max-h-[70vh] max-w-[70vw]"
+                      ></video>
+                    </ImgModal>
+                  </>
                 )}
               </div>
             )}
           </div>
           <div className="relative flex justify-between text-sm">
             <div
-              className={`${
-                flags.showLikedBy ? "" : "hidden"
-              } fixed z-20 flex h-[300px] w-[200px] flex-col gap-2 overflow-y-auto rounded-md bg-gray-200 p-4 py-2 shadow-md`}
+              className={`${flags.showLikedBy ? "" : "hidden"} ${
+                theme === "dark" ? "bg-sanJuanDark" : "bg-gray-200"
+              } absolute bottom-0 z-20 flex max-h-[300px] w-[200px] flex-col gap-2 overflow-y-auto rounded-md p-4 py-2 shadow-one`}
             >
               <button
                 className="self-start"

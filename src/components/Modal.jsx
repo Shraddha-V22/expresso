@@ -35,6 +35,7 @@ export default function Modal({
           }`}
         >
           <section
+            onClick={(e) => e.stopPropagation()}
             className={`relative h-[fit-content] w-[fit-content] rounded-md border-[1px] ${
               theme === "dark" ? "bg-sanJuan" : "bg-white"
             } px-4 py-6`}

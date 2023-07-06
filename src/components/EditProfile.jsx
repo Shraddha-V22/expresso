@@ -9,6 +9,7 @@ import Modal from "./Modal";
 import { avatarImgs } from "../common/avatarImgs";
 import Avatar from "./Avatar";
 import { uploadMedia } from "../common/uploadMedia";
+import { toast } from "react-toastify";
 
 export default function EditProfile({ setOpen: setEditProfieOpen }) {
   const {
@@ -48,6 +49,7 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
   };
 
   const editProfileHandler = async (userData, token) => {
+    const id = toast.loading("Updating profile...");
     if (
       typeof userData.profileBg === "object" ||
       typeof userData.profileImg === "object"
@@ -66,9 +68,21 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
           setEditProfieOpen(false);
+          toast.update(id, {
+            render: "Profile updated!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Update profile request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     } else {
       try {
@@ -76,9 +90,21 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
           setEditProfieOpen(false);
+          toast.update(id, {
+            render: "Profile updated!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Update profile request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     }
   };
@@ -204,7 +230,6 @@ export function EditProfileImage({ userInfo, setUserInfo, setOpen }) {
     input.accept = "image/*";
     input.onchange = (e) => {
       const file = e.target.files[0];
-      console.log(file);
       if (file.type.split("/")[0] === "image" && file.size > 1024000) {
         toast.error("The image size should not be more than 1mb.");
         return;

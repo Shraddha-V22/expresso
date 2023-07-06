@@ -4,24 +4,35 @@ import { Link } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import AuthContainer from "../components/AuthContainer";
 import { useNavigate } from "react-router-dom";
-import { validateName, validatePassword } from "../common/validatorFns";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateUsername,
+} from "../common/validatorFns";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { useLocation } from "react-router-dom";
 
 export default function Registration() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [signUpCreds, setSignUpCreds] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     username: "",
     password: "",
     confirmPassword: "",
   });
   const {
     signUp,
-    userData: { isLoggedIn },
+    userData: {
+      isLoggedIn,
+      user: { userDetails },
+    },
   } = useAuth();
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +43,6 @@ export default function Registration() {
     setSignUpCreds((prev) => ({ ...prev, [name]: value }));
   };
 
-  // console.log(errorMsg);
   const userSignUp = (e, creds) => {
     e.preventDefault();
     if (!validateName(signUpCreds.firstName)) {
@@ -41,6 +51,14 @@ export default function Registration() {
     }
     if (!validateName(signUpCreds.lastName)) {
       setErrorMsg("Invalid Lastname!");
+      return;
+    }
+    if (!validateEmail(signUpCreds.email)) {
+      setErrorMsg("Please enter a valid email!");
+      return;
+    }
+    if (!validateUsername(signUpCreds.username)) {
+      setErrorMsg("Please enter a username!");
       return;
     }
     if (!validatePassword(signUpCreds.password)) {
@@ -60,7 +78,7 @@ export default function Registration() {
   };
 
   useEffect(() => {
-    isLoggedIn && navigate("/profile-setup");
+    isLoggedIn && navigate("/profile-setup", { replace: true });
   }, [isLoggedIn]);
 
   return (
@@ -75,6 +93,11 @@ export default function Registration() {
         <FormInput
           name="lastName"
           placeholder="Lastname"
+          onChange={credsChangeHandler}
+        />
+        <FormInput
+          name="email"
+          placeholder="Email"
           onChange={credsChangeHandler}
         />
         <FormInput

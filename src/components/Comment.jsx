@@ -26,6 +26,7 @@ import Avatar from "./Avatar";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { faSmile } from "@fortawesome/free-regular-svg-icons";
+import { toast } from "react-toastify";
 
 export default function Comment({ comment, postId, setComments }) {
   const navigate = useNavigate();
@@ -313,6 +314,7 @@ function EditComment({ postId, setOpen, comment, setComments }) {
   const [inputText, setInputText] = useState(comment?.content);
 
   const editPostComment = async (postId, commentId, inputText, token) => {
+    const id = toast.loading("Updating Comment...");
     try {
       const { data, status } = await editPostCommentService(
         postId,
@@ -330,6 +332,12 @@ function EditComment({ postId, setOpen, comment, setComments }) {
             co._id === commentId ? { ...co, content: inputText } : co
           )
         );
+        toast.update(id, {
+          render: "Comment Updated!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -358,7 +366,10 @@ function EditComment({ postId, setOpen, comment, setComments }) {
           <FontAwesomeIcon icon={faSmile} />
         </button>
         {showEmojis && (
-          <div onClick={e => e.stopPropagation()} className="absolute top-6 z-10">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute top-6 z-10"
+          >
             <Picker
               emojiSize={16}
               emojiButtonSize={20}

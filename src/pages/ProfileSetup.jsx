@@ -23,7 +23,9 @@ export default function ProfileSetup() {
   } = useAuth();
   const [userInfo, setUserInfo] = useState({
     profileBg: "https://i.redd.it/gocxo6n16m871.png",
-    profileImg: userDetails?.profileImg || null,
+    profileImg:
+      "	https://tse2.mm.bing.net/th?id=OIP.r-l3mhddNzm7351sOrTNjgHaHa&pid=Api&P=0&h=180" ||
+      null,
     bio: userDetails?.bio || "",
     portfolio: userDetails?.portfolio || "",
   });
@@ -55,12 +57,10 @@ export default function ProfileSetup() {
     if (typeof userData.profileImg === "object") {
       try {
         const response = await uploadMedia(userData.profileImg);
-        console.log(response.url);
         const { data, status } = await editUserDataService(
           { ...userData, profileImg: response.url },
           token
         );
-        console.log({ data, status });
         if (status === 201) {
           authDispatch({ type: AUTH.UPDATE_USER, payload: data.user });
         }
@@ -177,6 +177,7 @@ export default function ProfileSetup() {
                 onChange={(e) =>
                   setUserInfo((prev) => ({ ...prev, bio: e.target.value }))
                 }
+                autoComplete="off"
                 className="rounded-md border py-1 indent-2 text-sm outline-none placeholder:text-sm"
               />
             </div>
@@ -196,6 +197,7 @@ export default function ProfileSetup() {
                     portfolio: e.target.value,
                   }))
                 }
+                autoComplete="off"
                 className="rounded-md border py-1 indent-2 text-sm outline-none placeholder:text-sm"
               />
             </div>
@@ -228,14 +230,14 @@ export default function ProfileSetup() {
               theme === "dark" ? "bg-sanJuan" : "border"
             } flex flex-col items-center gap-4 rounded-md p-4`}
           >
-            <FollowSuggestions />
+            <FollowSuggestions isSuggestion />
             <Button
               onClick={() => navigate("/")}
               className={`${
                 theme === "dark" ? "bg-sanJuanLight" : ""
               } w-full py-1 text-xs uppercase`}
             >
-              skip
+              {userDetails?.following?.length > 0 ? "Next" : "Skip"}
             </Button>
           </div>
         )}

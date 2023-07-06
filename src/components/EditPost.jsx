@@ -9,6 +9,7 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import Button from "./Button";
 import { uploadMedia } from "../common/uploadMedia";
 import Avatar from "./Avatar";
+import { toast } from "react-toastify";
 import { useTheme } from "../contexts/ThemeProvider";
 
 export default function EditPost({ post, setOpen }) {
@@ -24,6 +25,7 @@ export default function EditPost({ post, setOpen }) {
   const { theme } = useTheme();
 
   const handlePostEdit = async (inputText, media, postId, token) => {
+    const id = toast.loading("Updating the post...");
     if (media) {
       try {
         const response = await uploadMedia(media);
@@ -39,9 +41,21 @@ export default function EditPost({ post, setOpen }) {
           });
           setInputText("");
           setMedia(null);
+          toast.update(id, {
+            render: "Post updated!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Update post request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     } else {
       try {
@@ -56,9 +70,21 @@ export default function EditPost({ post, setOpen }) {
             payload: data.posts.reverse(),
           });
           setInputText("");
+          toast.update(id, {
+            render: "Post updated!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error(error);
+        toast.update(id, {
+          render: "Update post request failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     }
   };
@@ -69,7 +95,6 @@ export default function EditPost({ post, setOpen }) {
     input.accept = "image/*, video/*";
     input.onchange = (e) => {
       const file = e.target.files[0];
-      console.log(file, file.size);
       if (file.type.split("/")[0] === "image" && file.size > 1024000) {
         toast.error("The image size should not be more than 1mb.");
         return;
@@ -121,7 +146,7 @@ export default function EditPost({ post, setOpen }) {
                 e.stopPropagation();
                 setEditPost((prev) => ({ ...prev, mediaUrl: null }));
               }}
-              className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px]"
+              className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-sanJuanDark"
             >
               <FontAwesomeIcon icon={faX} />
             </button>

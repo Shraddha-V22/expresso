@@ -11,6 +11,7 @@ import { postReducers } from "../reducers/postsReducers";
 import { AUTH, POSTS } from "../common/reducerTypes";
 import { useAuth } from "./AuthProvider";
 import { addPostCommentService } from "../services/commentsServices";
+import { toast } from "react-toastify";
 
 const PostsContext = createContext();
 const initialPosts = {
@@ -113,12 +114,19 @@ export default function PostsProvider({ children }) {
   };
 
   const addCommentToPost = async (id, input, token) => {
+    const toastId = toast.loading("Adding comment...");
     try {
       const { data, status } = await addPostCommentService(id, input, token);
       if (status === 201) {
         postsDispatch({
           type: POSTS.INITIALISE,
           payload: data.posts.reverse(),
+        });
+        toast.update(toastId, {
+          render: "Comment added!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
         });
       }
       // setCommentInput("");

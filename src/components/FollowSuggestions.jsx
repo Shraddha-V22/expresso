@@ -5,7 +5,7 @@ import UsersToFollow from "./UsersToFollow";
 import { useState } from "react";
 import { useTheme } from "../contexts/ThemeProvider";
 
-export default function FollowSuggestions() {
+export default function FollowSuggestions({ isSuggestion }) {
   const {
     userData: {
       user: { userDetails },
@@ -31,7 +31,7 @@ export default function FollowSuggestions() {
   return (
     <section className={`px-2 ${theme === "dark" ? "" : ""}`}>
       {getUsersToFollow?.map((user) => (
-        <UsersToFollow key={user._id} user={user} />
+        <UsersToFollow key={user._id} user={user} isSuggestion={isSuggestion} />
       ))}
     </section>
   );

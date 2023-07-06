@@ -6,7 +6,12 @@ export const authReducer = (state, { type, payload }) => {
       return {
         ...state,
         user: {
-          userDetails: payload.createdUser,
+          userDetails: {
+            ...payload.createdUser,
+            profileBg: "https://i.redd.it/gocxo6n16m871.png",
+            profileImg:
+              "	https://tse2.mm.bing.net/th?id=OIP.r-l3mhddNzm7351sOrTNjgHaHa&pid=Api&P=0&h=180",
+          },
           token: payload.encodedToken,
         },
         isLoggedIn: true,

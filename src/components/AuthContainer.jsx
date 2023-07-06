@@ -12,7 +12,7 @@ export default function AuthContainer({ children }) {
       <section
         className={`${
           theme === "dark" ? "bg-sanJuan" : "border"
-        } flex max-w-[300px] flex-col items-center gap-4 rounded-md px-12 py-8 md:w-fit`}
+        } flex min-w-[300px] flex-col items-center gap-4 rounded-md px-12 py-8 md:w-fit`}
       >
         {children}
       </section>
