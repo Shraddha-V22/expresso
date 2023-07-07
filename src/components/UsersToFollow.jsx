@@ -18,7 +18,7 @@ export default function UsersToFollow({ user, forSearch, isSuggestion }) {
   return (
     <section
       onClick={() => (!isSuggestion ? navigate(`/${user?._id}`) : {})}
-      className="grid w-[250px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
+      className="border-mineShaftLighter grid w-[250px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b p-2 last:border-b-0"
     >
       <div className="flex gap-2">
         <Avatar onClick={() => {}} profileUrl={user?.profileImg} />
@@ -37,9 +37,9 @@ export default function UsersToFollow({ user, forSearch, isSuggestion }) {
           }}
           className={`ml-auto w-[70px] rounded-full ${
             theme === "dark"
-              ? "bg-japnicaDark text-sanJuanDark hover:bg-japnica active:bg-japnicaDarker"
+              ? "text-mineShaftDark bg-japnicaDark hover:bg-japnica active:bg-japnicaDarker"
               : "border bg-japnica"
-          } border-sanJuanLight px-2 py-1 text-sm`}
+          } border-mineShaftLight px-2 py-1 text-sm`}
         >
           + follow
         </button>

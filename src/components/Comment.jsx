@@ -94,7 +94,7 @@ export default function Comment({ comment, postId, setComments }) {
   return (
     <section
       className={`${
-        theme === "dark" ? "" : "border-sanJuanLight"
+        theme === "dark" ? "" : "border-mineShaftLight"
       } cursor-pointer border-b last-of-type:border-b-0`}
     >
       <section className="relative m-2 grid grid-cols-[auto_1fr] gap-2 p-2 py-1">
@@ -105,7 +105,7 @@ export default function Comment({ comment, postId, setComments }) {
               setShowActions((prev) => !prev);
             }}
             className={`${
-              theme === "dark" ? "hover:bg-sanJuanDark" : "hover:bg-gray-100"
+              theme === "dark" ? "hover:bg-mineShaftDark" : "hover:bg-gray-100"
             } h-6 w-6 rounded-full hover:bg-gray-100`}
           >
             <FontAwesomeIcon icon={faEllipsis} />
@@ -113,7 +113,7 @@ export default function Comment({ comment, postId, setComments }) {
           {showActions && (
             <div
               className={`${
-                theme === "dark" ? "bg-sanJuan" : "bg-white"
+                theme === "dark" ? "bg-mineShaft" : "bg-white"
               } absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] p-1`}
             >
               {user?._id === userDetails?._id ? (
@@ -353,7 +353,7 @@ function EditComment({ postId, setOpen, comment, setComments }) {
         onChange={(e) => setInputText(e.target.value)}
         value={inputText}
         className={`rounded-full ${
-          theme === "dark" ? "bg-sanJuanDark" : "bg-gray-200"
+          theme === "dark" ? "bg-mineShaftDark" : "bg-gray-200"
         } p-1 indent-2 outline-none placeholder:text-sm placeholder:capitalize`}
       />
       <div className="relative flex justify-between">
@@ -391,7 +391,9 @@ function EditComment({ postId, setOpen, comment, setComments }) {
             setOpen(false);
           }}
           className={`${
-            theme === "dark" ? "active:bg-sanJuanDark/40" : "active:bg-gray-100"
+            theme === "dark"
+              ? "active:bg-mineShaftDark/40"
+              : "active:bg-gray-100"
           } self-end rounded-full border px-3 py-1 capitalize`}
         >
           post

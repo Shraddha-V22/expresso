@@ -19,13 +19,13 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-10 flex w-full items-center justify-between border-sanJuanLight ${
-        theme === "dark" ? "bg-sanJuan shadow-one" : "border-b bg-white"
+      className={`fixed top-0 z-10 flex w-full items-center justify-between border-mineShaftLight ${
+        theme === "dark" ? "bg-mineShaft shadow-one" : "border-b bg-white"
       } px-2 py-1`}
     >
       <button
         onClick={() => setShowMenu((prev) => !prev)}
-        className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px] min-[350px]:hidden"
+        className="h-[40px] w-[40px] cursor-pointer overflow-hidden rounded-full border-[1px] min-[390px]:hidden"
       >
         <img
           src={userDetails?.profileImg}
@@ -33,20 +33,27 @@ export default function Header() {
           className="h-full w-full object-cover"
         />
       </button>
-      <div className="w-4 max-[350px]:hidden"></div>
+      <div className="w-4 max-[390px]:hidden"></div>
       <Link to="/">
-        <img
+        {/* <img
           src={EXPRESSO}
           alt=""
-          className="h-[40px] w-[200px] object-cover max-[350px]:w-[100px]"
-        />
+          className="h-[40px] w-[200px] object-cover max-[390px]:w-[100px]"
+        /> */}
+        <h1
+          className={`${
+            theme === "dark" ? "" : "text-mineShaftDark"
+          } text-4xl font-bold uppercase`}
+        >
+          EXPRESSO
+        </h1>
       </Link>
-      <div className="w-4 min-[350px]:hidden"></div>
+      <div className="w-4 min-[390px]:hidden"></div>
       <button
         onClick={(e) => {
           toggleTheme();
         }}
-        className="mr-2 flex cursor-pointer items-center justify-items-end gap-4 max-[350px]:hidden"
+        className="mr-2 flex cursor-pointer items-center justify-items-end gap-4 max-[390px]:hidden"
       >
         {theme === "dark" ? (
           <FontAwesomeIcon icon={faSun} />

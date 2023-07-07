@@ -9,10 +9,10 @@ module.exports = {
         japnicaDark: "#CF6650",
         japnicaDarker: "#B44B37",
 
-        sanJuanLighter: "#5B7F99",
-        sanJuanLight: "#415E78",
-        sanJuan: "#2E4661",
-        sanJuanDark: "#213652",
+        mineShaftLighter: "#3C4644",
+        mineShaftLight: "#2E3635",
+        mineShaft: "#232B29",
+        mineShaftDark: "#1C2321",
       },
       fontFamily: {
         karla: ["Karla"],

@@ -146,7 +146,7 @@ export default function EditPost({ post, setOpen }) {
                 e.stopPropagation();
                 setEditPost((prev) => ({ ...prev, mediaUrl: null }));
               }}
-              className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-sanJuanDark"
+              className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-mineShaftDark"
             >
               <FontAwesomeIcon icon={faX} />
             </button>

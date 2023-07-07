@@ -4,7 +4,6 @@ import { loginService, signUpService } from "../services/authServices";
 import { useReducer } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { AUTH } from "../common/reducerTypes";
-import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 const initialUser = {

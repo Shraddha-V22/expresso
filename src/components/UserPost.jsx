@@ -95,9 +95,11 @@ export default function UserPost({ userPost, isSinglePage }) {
       }
     >
       <section
-        className={`${theme === "dark" ? "bg-sanJuan" : "border bg-white"} ${
-          !isSinglePage && theme === "light" && "hover:bg-sanJuanLighter/10"
-        } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-sanJuanLight p-2 max-[350px]:w-[95vw]`}
+        className={`${
+          theme === "dark" ? "bg-mineShaftLight" : "border bg-white"
+        } ${
+          !isSinglePage && theme === "light" && "hover:bg-mineShaftLighter/10"
+        } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-mineShaftLight p-2 max-[390px]:w-[95vw]`}
       >
         <Avatar
           onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
@@ -129,7 +131,7 @@ export default function UserPost({ userPost, isSinglePage }) {
                   }
                   className={`h-6 w-6 rounded-full ${
                     theme === "dark"
-                      ? "hover:bg-sanJuanDark"
+                      ? "hover:bg-mineShaftDark"
                       : "hover:bg-gray-100"
                   }`}
                 >
@@ -138,7 +140,7 @@ export default function UserPost({ userPost, isSinglePage }) {
                 {flags.showActions && (
                   <div
                     className={`absolute -right-[20%] top-5 flex flex-col items-start rounded-md border-[1px] ${
-                      theme === "dark" ? "bg-sanJuan" : "bg-white"
+                      theme === "dark" ? "bg-mineShaft" : "bg-white"
                     } p-1`}
                   >
                     {user?._id === userDetails?._id ? (
@@ -259,7 +261,7 @@ export default function UserPost({ userPost, isSinglePage }) {
           <div className="relative flex justify-between text-sm">
             <div
               className={`${flags.showLikedBy ? "" : "hidden"} ${
-                theme === "dark" ? "bg-sanJuanDark" : "bg-gray-200"
+                theme === "dark" ? "bg-mineShaftDark" : "bg-gray-200"
               } absolute bottom-0 z-20 flex max-h-[300px] w-[200px] flex-col gap-2 overflow-y-auto rounded-md p-4 py-2 shadow-one`}
             >
               <button
@@ -273,7 +275,7 @@ export default function UserPost({ userPost, isSinglePage }) {
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
               </button>
-              <h4 className="border-b border-sanJuanLighter pb-1 capitalize">
+              <h4 className="border-b border-mineShaftLighter pb-1 capitalize">
                 liked by
               </h4>
               {likes?.likedBy.map((user) => (
@@ -287,7 +289,11 @@ export default function UserPost({ userPost, isSinglePage }) {
               ))}
             </div>
           </div>
-          <div className="flex w-full gap-2 border-t border-sanJuanLight pt-2">
+          <div
+            className={`flex w-full gap-2 border-t ${
+              theme === "dark" ? "border-white" : "border-mineShaftLight"
+            } pt-2`}
+          >
             {likes?.likedBy.find(({ _id }) => _id === userDetails._id) ? (
               <div className="flex items-center rounded-md">
                 <Button
@@ -388,17 +394,17 @@ export default function UserPost({ userPost, isSinglePage }) {
           </div>
         </div>
       </section>
-      {flags.showCommentInput && (
+      {flags.showCommentInput && !isSinglePage && (
         <section className="m-2 flex justify-end gap-2 p-2 pt-0">
           <input
             type="text"
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => setCommentInput(e.target.value)}
             placeholder="Add a comment..."
-            className={`flex-grow rounded-full bg-sanJuanLighter/30 p-1 indent-2 outline-none placeholder:text-sm ${
+            className={`flex-grow rounded-full bg-mineShaftLighter/30 p-1 indent-2 outline-none placeholder:text-sm ${
               theme === "dark"
-                ? "placeholder:text-sanJuanLighter"
-                : "placeholder:text-sanJuanLight"
+                ? "placeholder:text-mineShaftLighter"
+                : "placeholder:text-mineShaftLight"
             }`}
           />
           <button
@@ -407,7 +413,34 @@ export default function UserPost({ userPost, isSinglePage }) {
               setCommentInput("");
               setFlags((prev) => ({ ...prev, showCommentInput: false }));
             }}
-            className="rounded-full border border-sanJuanLight px-3 py-1 text-sm capitalize"
+            className="rounded-full border border-mineShaftLight px-3 py-1 text-sm capitalize"
+          >
+            post
+          </button>
+        </section>
+      )}
+      {isSinglePage && (
+        <section className="m-2 flex justify-end gap-2 p-2 pt-0">
+          <input
+            type="text"
+            onClick={(e) => e.stopPropagation()}
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+            placeholder="Add a comment..."
+            className={`flex-grow rounded-full bg-mineShaftLighter/30 p-1 indent-2 outline-none placeholder:text-sm ${
+              theme === "dark"
+                ? "placeholder:text-gray-500"
+                : "placeholder:text-mineShaftLight"
+            }`}
+          />
+          <button
+            onClick={(e) => {
+              clickHandler(e, addCommentToPost(_id, commentInput, token));
+              setCommentInput("");
+              setFlags((prev) => ({ ...prev, showCommentInput: false }));
+            }}
+            className="rounded-full border border-mineShaftLight px-3 py-1 text-sm capitalize disabled:opacity-50"
+            disabled={commentInput === ""}
           >
             post
           </button>

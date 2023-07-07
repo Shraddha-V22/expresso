@@ -11,10 +11,12 @@ import Comment from "../components/Comment";
 import { usePosts } from "../contexts/PostsProvider";
 import { useAuth } from "../contexts/AuthProvider";
 import { useTheme } from "../contexts/ThemeProvider";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Post() {
   const navigate = useNavigate();
   const [post, setPost] = useState({});
+  const [loading, setLoading] = useState(true);
   const { postId } = useParams();
   const {
     usersData: { users },
@@ -30,9 +32,11 @@ export default function Post() {
       const { data, status } = await getSinglePostService(postId);
       if (status === 200) {
         setPost(data.post);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -40,10 +44,20 @@ export default function Post() {
     getUserPost(postId);
   }, [posts, postId]);
 
-  return (
+  return !loading ? (
     <section className="flex flex-col gap-2">
       <UserPost userPost={post} isSinglePage />
       <Comments postId={postId} />
+    </section>
+  ) : (
+    <section className="grid h-full w-full place-items-center">
+      <ClipLoader
+        color={"#E7846D"}
+        loading={loading}
+        size={100}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
     </section>
   );
 }
@@ -73,12 +87,12 @@ function Comments({ postId }) {
   return (
     <section
       className={`${
-        theme === "dark" ? "bg-sanJuan" : "border"
-      } rounded-md border-sanJuanLight`}
+        theme === "dark" ? "bg-mineShaftLight" : "border"
+      } rounded-md border-mineShaftLight`}
     >
       <h3
         className={`${
-          theme === "dark" ? "" : "border-sanJuanLight"
+          theme === "dark" ? "" : "border-mineShaftLight"
         } border-b px-4 py-2`}
       >
         Comments

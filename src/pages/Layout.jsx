@@ -12,24 +12,24 @@ export default function Layout() {
   return (
     <section
       className={`${
-        theme === "dark" && "bg-sanJuanDark text-gray-300"
-      } relative h-[100vh] gap-2 pt-1 font-karla min-[350px]:flex min-[350px]:justify-center`}
+        theme === "dark" && "bg-mineShaftDark text-gray-300"
+      } relative h-[100vh] gap-2 pt-1 font-karla min-[390px]:flex min-[390px]:justify-center`}
     >
       <Header />
-      <section className="min-[350px]:hidden">
+      <section className="min-[390px]:hidden">
         <NavBar />
       </section>
-      <aside className="mt-[50px] border-r border-sanJuanLight max-[350px]:hidden">
+      <aside className="mt-[40px] border-r border-mineShaftLight pt-2 max-[390px]:hidden">
         <SideNavBar />
       </aside>
       <main
         className={`${
-          theme === "dark" && "bg-sanJuanDark text-gray-300"
+          theme === "dark" && "bg-mineShaftDark text-gray-300"
         } mt-[50px] max-w-[500px] flex-grow overflow-y-auto pb-[50px]`}
       >
         <Outlet />
       </main>
-      <section className="mt-[50px] border-l border-sanJuanLight max-[600px]:hidden">
+      <section className="mt-[40px] border-l border-mineShaftLight pt-2 max-[600px]:hidden">
         <DesktopSearch />
         <FollowSuggestions />
       </section>

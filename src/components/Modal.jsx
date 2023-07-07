@@ -31,13 +31,13 @@ export default function Modal({
             handleClose();
           }}
           className={`fixed left-0 top-0 z-20 grid h-[100vh] w-[100vw] place-items-center ${
-            theme === "dark" ? "bg-sanJuan/50" : "bg-black/20"
+            theme === "dark" ? "bg-mineShaft/50" : "bg-black/20"
           }`}
         >
           <section
             onClick={(e) => e.stopPropagation()}
             className={`relative h-[fit-content] w-[fit-content] rounded-md border-[1px] ${
-              theme === "dark" ? "bg-sanJuan" : "bg-white"
+              theme === "dark" ? "bg-mineShaft" : "bg-white"
             } px-4 py-6`}
           >
             <button

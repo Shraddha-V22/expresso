@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 const PostsContext = createContext();
 const initialPosts = {
   posts: [],
+  postsLoading: true,
   userFeed: [],
   sortedFeed: [],
   sortBy: "latest",
@@ -37,6 +38,10 @@ export default function PostsProvider({ children }) {
         postsDispatch({
           type: POSTS.INITIALISE,
           payload: data.posts.reverse(),
+        });
+        postsDispatch({
+          type: POSTS.IS_LOADING,
+          payload: false,
         });
       }
     } catch (error) {

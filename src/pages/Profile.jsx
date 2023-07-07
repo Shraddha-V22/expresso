@@ -23,6 +23,7 @@ import { faLink, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTheme } from "../contexts/ThemeProvider";
 import Avatar from "../components/Avatar";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export function UserProfile() {
   const {
@@ -33,17 +34,21 @@ export function UserProfile() {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme } = useTheme();
-  const [userProfile, setUserProfile] = useState({});
   const { userId } = useParams();
+  const [userProfile, setUserProfile] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const getUserProfile = async (id) => {
     try {
+      setLoading(true);
       const { data, status } = await getSingleUserService(id);
       if (status === 200) {
         setUserProfile(data.user);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -51,14 +56,14 @@ export function UserProfile() {
     getUserProfile(userId);
   }, [userId, userDetails]);
 
-  return (
+  return !loading ? (
     <section>
       <header>
         {location?.pathname === `/${userProfile?._id}` ? (
           <div className="flex items-center gap-4 border-b p-2">
             <button
               className={`h-6 w-6 ${
-                theme === "dark" ? "hover:bg-sanJuan" : "hover:bg-gray-100"
+                theme === "dark" ? "hover:bg-mineShaft" : "hover:bg-gray-100"
               } rounded-full`}
               onClick={() => navigate(-1)}
             >
@@ -75,7 +80,7 @@ export function UserProfile() {
             <div className="flex items-center gap-4 p-2">
               <button
                 className={`h-6 w-6 ${
-                  theme === "dark" ? "hover:bg-sanJuan" : "hover:bg-gray-100"
+                  theme === "dark" ? "hover:bg-mineShaft" : "hover:bg-gray-100"
                 } rounded-full`}
                 onClick={() => navigate(`/${userProfile?._id}`)}
               >
@@ -112,6 +117,16 @@ export function UserProfile() {
         )}
       </header>
       <Outlet />
+    </section>
+  ) : (
+    <section className="grid h-full w-full place-items-center">
+      <ClipLoader
+        color={"#E7846D"}
+        loading={loading}
+        size={100}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
     </section>
   );
 }
@@ -203,7 +218,7 @@ export default function Profile() {
         <section className="flex flex-col items-start gap-1 p-2">
           {isUserProfile ? (
             <Modal
-              className="self-end rounded-full border border-sanJuanLight px-2 py-1"
+              className="self-end rounded-full border border-mineShaftLight px-2 py-1"
               open={open}
               setOpen={setOpen}
               modalFor={"Edit Profile"}
@@ -222,7 +237,7 @@ export default function Profile() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Following
@@ -237,7 +252,7 @@ export default function Profile() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Follow
@@ -280,7 +295,7 @@ export default function Profile() {
           </div>
         </section>
       </section>
-      <section className="flex flex-col gap-2 border-t border-sanJuanLight pt-2">
+      <section className="flex flex-col gap-2 border-t border-mineShaftLight pt-2">
         {userPosts?.length ? (
           userPosts?.map((post) => <UserPost key={post._id} userPost={post} />)
         ) : (
@@ -323,7 +338,7 @@ export function UserFollowing() {
         <section
           key={us?._id}
           onClick={() => navigate(`/${us?._id}`)}
-          className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
+          className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-mineShaftLighter p-2 last:border-b-0"
         >
           <div className="flex items-center gap-2">
             <Avatar onClick={() => {}} profileUrl={us?.profileImg} />
@@ -345,7 +360,7 @@ export function UserFollowing() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Following
@@ -360,7 +375,7 @@ export function UserFollowing() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Follow
@@ -406,7 +421,7 @@ export function UserFollowers() {
         <section
           key={us?._id}
           onClick={() => navigate(`/${us?._id}`)}
-          className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-sanJuanLighter p-2 last:border-b-0"
+          className="grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border-b border-mineShaftLighter p-2 last:border-b-0"
         >
           <div className="flex items-center gap-2">
             <Avatar onClick={() => {}} profileUrl={us?.profileImg} />
@@ -428,7 +443,7 @@ export function UserFollowers() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Following
@@ -443,7 +458,7 @@ export function UserFollowers() {
                 )
               }
               className={
-                "self-end rounded-full border border-sanJuanLight px-2 py-1"
+                "self-end rounded-full border border-mineShaftLight px-2 py-1"
               }
             >
               Follow

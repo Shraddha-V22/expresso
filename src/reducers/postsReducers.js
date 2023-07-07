@@ -21,6 +21,12 @@ export const postReducers = (state, { type, payload }) => {
         sortBy: payload,
       };
       break;
+    case POSTS.IS_LOADING:
+      state = {
+        ...state,
+        postsLoading: payload,
+      };
+      break;
     default:
       break;
   }

@@ -1,7 +1,5 @@
 import { usePosts } from "../contexts/PostsProvider";
-import Modal from "../components/Modal";
 import CreatePost from "../components/CreatePost";
-import { useAuth } from "../contexts/AuthProvider";
 import { POSTS } from "../common/reducerTypes";
 import { useEffect } from "react";
 import UserPost from "../components/UserPost";
@@ -12,6 +10,7 @@ export default function Home() {
   const {
     postsData: { sortedFeed, sortBy },
     postsDispatch,
+    loading,
   } = usePosts();
   const [showSorts, setShowSorts] = useState(false);
   const { theme } = useTheme();
@@ -37,7 +36,7 @@ export default function Home() {
       {sortedFeed?.length ? (
         <>
           <section className="relative flex w-full items-center gap-1">
-            <div className="h-[0.5px] flex-grow bg-sanJuanLight"></div>
+            <div className="h-[0.5px] flex-grow bg-mineShaftLight"></div>
             <p className="text-xs capitalize">{sortBy}</p>
             <button
               className="text-[10px]"
@@ -51,7 +50,7 @@ export default function Home() {
             {showSorts && (
               <ul
                 className={`absolute right-0 top-4 z-10 flex w-[80px] flex-col gap-2 rounded-md ${
-                  theme === "dark" ? "bg-sanJuanLight" : "bg-gray-100"
+                  theme === "dark" ? "bg-mineShaftLight" : "bg-gray-100"
                 } px-2 py-1 text-sm`}
               >
                 <div>
@@ -66,7 +65,7 @@ export default function Home() {
                   <label
                     className={`cursor-pointer ${
                       theme === "dark"
-                        ? "hover:text-sanJuanDark"
+                        ? "hover:text-mineShaftDark"
                         : "hover:text-gray-600"
                     }`}
                     htmlFor="top"
@@ -86,7 +85,7 @@ export default function Home() {
                   <label
                     className={`cursor-pointer ${
                       theme === "dark"
-                        ? "hover:text-sanJuanDark"
+                        ? "hover:text-mineShaftDark"
                         : "hover:text-gray-600"
                     }`}
                     htmlFor="latest"
@@ -106,7 +105,7 @@ export default function Home() {
                   <label
                     className={`cursor-pointer ${
                       theme === "dark"
-                        ? "hover:text-sanJuanDark"
+                        ? "hover:text-mineShaftDark"
                         : "hover:text-gray-600"
                     }`}
                     htmlFor="oldest"

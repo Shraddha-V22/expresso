@@ -50,18 +50,20 @@ export default function Search() {
 
   return (
     <section className="flex flex-col items-center px-2 py-2">
-      <div className="w-full border-b pb-2">
+      <div className="w-full border-b border-mineShaftLight pb-2">
         <input
           type="text"
           placeholder="search user"
           {...eventHandlers}
           onChange={(e) => setSearchText(e.target.value)}
           className={`${
-            theme === "dark" ? "bg-sanJuanDark" : ""
-          } w-full rounded-full border p-1 indent-2 outline-none`}
+            theme === "dark" ? "bg-mineShaftDark" : ""
+          } w-full rounded-full border border-mineShaftLight p-1 indent-2 text-sm outline-none`}
         />
       </div>
-      <div className={`${theme === "dark" ? "bg-sanJuanDark text-white" : ""}`}>
+      <div
+        className={`${theme === "dark" ? "bg-mineShaftDark text-white" : ""}`}
+      >
         {!show ? (
           <FollowSuggestions />
         ) : searchSuggestions.length ? (
@@ -109,28 +111,28 @@ export function DesktopSearch() {
   }, [location]);
 
   return (
-    <div className="relative w-full border-b border-sanJuanLight px-2 py-2">
+    <div className="relative w-full border-b border-mineShaftLight px-2 py-2">
       <input
         type="text"
         placeholder="search user"
         onChange={(e) => setSearchText(e.target.value)}
         value={searchText}
         className={`${
-          theme === "dark" ? "bg-sanJuanDark" : ""
-        } w-full rounded-full border border-sanJuanLight p-1 indent-2 text-sm outline-none placeholder:text-sm`}
+          theme === "dark" ? "bg-mineShaftDark" : ""
+        } w-full rounded-full border border-mineShaftLight p-1 indent-2 text-sm outline-none placeholder:text-sm`}
       />
       {searchText && (
         <section
           className={`${
-            theme === "dark" ? "bg-sanJuan" : "border bg-white"
-          } absolute max-h-[350px] w-[250px] overflow-y-auto rounded-md`}
+            theme === "dark" ? "bg-mineShaft" : "border bg-white"
+          } absolute max-h-[390px] w-[250px] overflow-y-auto rounded-md`}
         >
           {searchSuggestions?.length ? (
             searchSuggestions?.map((user) => (
               <UsersToFollow key={user._id} user={user} forSearch />
             ))
           ) : (
-            <p className="h-fit w-full p-1 text-sm">No user found</p>
+            <p className="h-fit w-full p-2 pl-3 text-sm">No user found</p>
           )}
         </section>
       )}

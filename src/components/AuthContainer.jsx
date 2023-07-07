@@ -6,13 +6,13 @@ export default function AuthContainer({ children }) {
   return (
     <section
       className={`${
-        theme === "dark" ? "bg-sanJuanDark text-white" : ""
+        theme === "dark" ? "bg-mineShaftDark text-white" : ""
       } grid h-[100vh] w-[100vw] place-items-center font-karla`}
     >
       <section
         className={`${
-          theme === "dark" ? "bg-sanJuan" : "border"
-        } flex min-w-[300px] flex-col items-center gap-4 rounded-md px-12 py-8 md:w-fit`}
+          theme === "dark" ? "bg-mineShaftLight" : ""
+        } flex min-w-[30vw] flex-col items-center gap-4 rounded-md px-12 py-8 shadow-one md:w-fit`}
       >
         {children}
       </section>

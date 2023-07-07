@@ -82,7 +82,7 @@ export default function ProfileSetup() {
   return (
     <section
       className={`${
-        theme === "dark" ? "bg-sanJuanDark text-white" : ""
+        theme === "dark" ? "bg-mineShaftDark text-white" : ""
       } grid h-[100vh] w-full place-items-center`}
     >
       <div className={`flex flex-col gap-4`}>
@@ -94,7 +94,7 @@ export default function ProfileSetup() {
         {index === 0 && (
           <div
             className={`${
-              theme === "dark" ? "bg-sanJuan" : "border"
+              theme === "dark" ? "bg-mineShaft" : "border"
             } flex flex-col gap-4 rounded-md p-4`}
           >
             <div className="h-[70px] w-[70px] cursor-pointer self-center overflow-hidden rounded-full border-2 bg-green-200">
@@ -135,7 +135,7 @@ export default function ProfileSetup() {
                     imageUploadHandler("profileImg");
                   }}
                   className={`${
-                    theme === "dark" ? "bg-sanJuanLight" : ""
+                    theme === "dark" ? "bg-mineShaftLight" : ""
                   } py-1 text-xs uppercase`}
                 >
                   upload from gallery
@@ -150,7 +150,7 @@ export default function ProfileSetup() {
                       )
                 }
                 className={`${
-                  theme === "dark" ? "bg-sanJuanLight" : ""
+                  theme === "dark" ? "bg-mineShaftLight" : ""
                 } w-full py-1 text-xs uppercase`}
               >
                 next
@@ -161,7 +161,7 @@ export default function ProfileSetup() {
         {index === 1 && (
           <div
             className={`${
-              theme === "dark" ? "bg-sanJuan" : "border"
+              theme === "dark" ? "bg-mineShaft" : "border"
             } flex flex-col gap-4 rounded-md p-4`}
           >
             <div className="flex flex-col gap-1">
@@ -208,7 +208,7 @@ export default function ProfileSetup() {
                   setIndex((prev) => prev + 1);
                 }}
                 className={`${
-                  theme === "dark" ? "bg-sanJuanLight" : ""
+                  theme === "dark" ? "bg-mineShaftLight" : ""
                 } w-full py-1 text-xs uppercase`}
               >
                 save
@@ -216,7 +216,7 @@ export default function ProfileSetup() {
               <Button
                 onClick={() => setIndex((prev) => prev - 1)}
                 className={`${
-                  theme === "dark" ? "bg-sanJuanLight" : ""
+                  theme === "dark" ? "bg-mineShaftLight" : ""
                 } w-full py-1 text-xs uppercase`}
               >
                 go back
@@ -227,14 +227,14 @@ export default function ProfileSetup() {
         {index === 2 && (
           <div
             className={`${
-              theme === "dark" ? "bg-sanJuan" : "border"
+              theme === "dark" ? "bg-mineShaft" : "border"
             } flex flex-col items-center gap-4 rounded-md p-4`}
           >
             <FollowSuggestions isSuggestion />
             <Button
               onClick={() => navigate("/")}
               className={`${
-                theme === "dark" ? "bg-sanJuanLight" : ""
+                theme === "dark" ? "bg-mineShaftLight" : ""
               } w-full py-1 text-xs uppercase`}
             >
               {userDetails?.following?.length > 0 ? "Next" : "Skip"}

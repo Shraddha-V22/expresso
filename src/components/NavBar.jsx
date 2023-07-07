@@ -21,11 +21,7 @@ export default function NavBar() {
 
   return (
     <nav
-      className={`${
-        theme === "dark"
-          ? "bg-japnicaDark text-sanJuan"
-          : "bg-sanJuanLighter text-sanJuanDark"
-      } fixed bottom-0 z-[5] flex w-full justify-evenly py-2`}
+      className={`fixed bottom-0 z-[5] flex w-full justify-evenly bg-japnicaDark py-2 text-mineShaft`}
     >
       <NavLink style={activeStyle} to="/">
         <FontAwesomeIcon icon={faHouse} />
@@ -52,7 +48,7 @@ export function SideNavBar() {
   } = useAuth();
   const activeStyle = ({ isActive }) => {
     return {
-      backgroundColor: isActive ? "#5B7F9990" : "",
+      backgroundColor: isActive ? "#3C464490" : "",
     };
   };
   const { theme } = useTheme();
@@ -64,7 +60,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40 "
       >
         <FontAwesomeIcon icon={faHouse} className="w-[20px]" />
         <p className="max-[768px]:hidden">Home</p>
@@ -72,7 +68,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to={`/${userDetails?._id}`}
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40 "
       >
         <FontAwesomeIcon icon={faUser} className="w-[20px]" />
         <p className="max-[768px]:hidden">Profile</p>
@@ -80,7 +76,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/explore"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40 "
       >
         <FontAwesomeIcon icon={faCompass} className="w-[20px]" />
         <p className="max-[768px]:hidden">Explore</p>
@@ -88,7 +84,7 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/bookmarks"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 "
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40 "
       >
         <FontAwesomeIcon icon={faBookmark} className="w-[20px]" />
         <p className="max-[768px]:hidden">Bookmarks</p>
@@ -96,13 +92,13 @@ export function SideNavBar() {
       <NavLink
         style={activeStyle}
         to="/search"
-        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40 min-[600px]:hidden  sm:hidden"
+        className="flex w-full items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40 min-[600px]:hidden  sm:hidden"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} className="w-[20px]" />
         <p className="max-[768px]:hidden">Search</p>
       </NavLink>
       <div
-        className="flex w-full cursor-pointer items-center gap-2 rounded-full px-2 py-1 hover:bg-sanJuanLighter/40  "
+        className="flex w-full cursor-pointer items-center gap-2 rounded-full px-2 py-1 hover:bg-mineShaftLighter/40  "
         onClick={signOut}
       >
         <FontAwesomeIcon icon={faRightFromBracket} className="w-[20px]" />
@@ -113,11 +109,7 @@ export function SideNavBar() {
         setOpen={setOpen}
         modalFor={
           <div
-            className={`${
-              theme === "dark"
-                ? "bg-japnicaDark text-sanJuanDark hover:bg-japnica"
-                : "border bg-sanJuanLight text-white hover:bg-white"
-            } flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-sanJuanLight px-2 py-1 duration-200 hover:text-sanJuan min-[768px]:pr-4`}
+            className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-mineShaftLight bg-japnicaDark px-2 py-1 text-mineShaftDark duration-200 hover:text-mineShaft min-[768px]:pr-4`}
           >
             <FontAwesomeIcon icon={faPlus} className="w-[20px]" />
             <p className="max-[768px]:hidden">Create</p>

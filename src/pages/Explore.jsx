@@ -19,7 +19,6 @@ export default function Explore() {
 
   return (
     <section>
-      {/* <h1>Explore</h1> */}
       <section className="flex flex-col gap-2 py-2">
         {explorePosts?.map((post) => (
           <UserPost key={post._id} userPost={post} />

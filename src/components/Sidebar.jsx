@@ -29,7 +29,7 @@ export default function Sidebar({ showMenu, setShowMenu }) {
       onClick={() => setShowMenu(false)}
       className={`${
         showMenu ? "left-0" : "-left-[100vw]"
-      } absolute top-0 z-10 w-full duration-300 min-[350px]:hidden`}
+      } absolute top-0 z-10 w-full duration-300 min-[390px]:hidden`}
     >
       <aside
         onClick={(e) => e.stopPropagation()}

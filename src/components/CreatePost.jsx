@@ -114,7 +114,7 @@ export default function CreatePost({ modal, setOpen }) {
   const btnDisable = !inputText?.trim() && media === null;
 
   return (
-    <section className="flex w-full gap-2 rounded-md border border-sanJuanLight p-4">
+    <section className="flex w-full gap-2 rounded-md border border-mineShaftLight p-4">
       <Avatar
         onClick={() => navigate(`/${userDetails?._id}`)}
         profileUrl={userDetails?.profileImg}
@@ -148,7 +148,7 @@ export default function CreatePost({ modal, setOpen }) {
               )}
               <button
                 onClick={() => setMedia(null)}
-                className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-sanJuanDark"
+                className="absolute right-1 top-1 h-4 w-4 rounded-full bg-gray-200 text-[8px] text-mineShaftDark"
               >
                 <FontAwesomeIcon icon={faX} />
               </button>
@@ -157,7 +157,10 @@ export default function CreatePost({ modal, setOpen }) {
         </div>
         <section className="flex justify-between">
           <div className="relative flex items-center gap-4">
-            <button onClick={imageUploadHandler}>
+            <button
+              onClick={imageUploadHandler}
+              className="h-8 w-8 rounded-full hover:bg-japnica/50"
+            >
               <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
             </button>
             <button
@@ -165,6 +168,7 @@ export default function CreatePost({ modal, setOpen }) {
                 e.stopPropagation();
                 setShowEmojis((prev) => !prev);
               }}
+              className="h-8 w-8 rounded-full hover:bg-japnica/50"
             >
               <FontAwesomeIcon icon={faSmile} />
             </button>

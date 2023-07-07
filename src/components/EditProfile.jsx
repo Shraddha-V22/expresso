@@ -110,7 +110,7 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
   };
 
   return (
-    <section className="w-[250px] rounded-md border border-sanJuanLight p-2">
+    <section className="w-[250px] rounded-md border border-mineShaftLight p-2">
       <div className="relative w-full">
         <div className="relative h-[70px] w-full rounded-md border-2">
           <img
@@ -174,7 +174,7 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, bio: e.target.value }))
             }
-            className="rounded-md border border-sanJuanLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-mineShaftLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -190,7 +190,7 @@ export default function EditProfile({ setOpen: setEditProfieOpen }) {
             onChange={(e) =>
               setUserInfo((prev) => ({ ...prev, portfolio: e.target.value }))
             }
-            className="rounded-md border border-sanJuanLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
+            className="rounded-md border border-mineShaftLight bg-inherit py-1 indent-2 text-sm outline-none placeholder:text-sm"
           />
         </div>
         <div className="flex w-full gap-2">
