@@ -159,7 +159,7 @@ export default function CreatePost({ modal, setOpen }) {
           <div className="relative flex items-center gap-4">
             <button
               onClick={imageUploadHandler}
-              className="h-8 w-8 rounded-full hover:bg-japnica/50"
+              className={`h-8 w-8 rounded-full hover:bg-japnica/50`}
             >
               <FontAwesomeIcon icon={faImage} className="cursor-pointer" />
             </button>
@@ -168,7 +168,7 @@ export default function CreatePost({ modal, setOpen }) {
                 e.stopPropagation();
                 setShowEmojis((prev) => !prev);
               }}
-              className="h-8 w-8 rounded-full hover:bg-japnica/50"
+              className={`h-8 w-8 rounded-full hover:bg-japnica/50`}
             >
               <FontAwesomeIcon icon={faSmile} />
             </button>

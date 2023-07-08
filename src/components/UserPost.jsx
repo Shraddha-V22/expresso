@@ -212,7 +212,7 @@ export default function UserPost({ userPost, isSinglePage }) {
               <Linkify>{content}</Linkify>
             </p>
             {userPost?.mediaUrl && (
-              <div className="h-[200px] w-full overflow-hidden rounded-md bg-gray-800">
+              <div className="h-[250px] w-full overflow-hidden rounded-md bg-gray-800">
                 {userPost?.mediaUrl.split("/")[4] === "image" && (
                   <>
                     <img

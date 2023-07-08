@@ -7,6 +7,7 @@ export default function Modal({
   children,
   modalFor,
   className,
+  btnStyle,
   open,
   setOpen,
 }) {
@@ -21,6 +22,7 @@ export default function Modal({
           e.stopPropagation();
           handleOpen();
         }}
+        className={btnStyle}
       >
         {modalFor}
       </button>

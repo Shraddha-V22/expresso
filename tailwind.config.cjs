@@ -20,6 +20,10 @@ module.exports = {
       boxShadow: {
         one: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
       },
+      backgroundImage: {
+        blob: "url('src/assets/bg-blobs.webp')",
+        "blob-dark": "url('src/assets/bg-blobs-dark.webp')",
+      },
     },
   },
   plugins: [],

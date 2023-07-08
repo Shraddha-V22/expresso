@@ -15,6 +15,7 @@ import { useTheme } from "../contexts/ThemeProvider";
 
 export default function NavBar() {
   const { theme } = useTheme();
+  const [open, setOpen] = useState(false);
   const activeStyle = ({ isActive }) => {
     return { color: isActive ? "black" : "black" };
   };
@@ -29,6 +30,17 @@ export default function NavBar() {
       <NavLink style={activeStyle} to="/search">
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </NavLink>
+      <Modal
+        className={`${theme === "dark" ? "bg-mineShaft text-white" : ""}`}
+        open={open}
+        setOpen={setOpen}
+        btnStyle={"bg-japnicaDark text-mineShaftDark"}
+        modalFor={
+          <FontAwesomeIcon icon={faPlus} className="m-0 bg-japnicaDark" />
+        }
+      >
+        <CreatePost setOpen={setOpen} modal />
+      </Modal>
       <NavLink style={activeStyle} to="/explore">
         <FontAwesomeIcon icon={faCompass} />
       </NavLink>
