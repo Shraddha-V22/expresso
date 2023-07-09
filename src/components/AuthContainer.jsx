@@ -6,8 +6,10 @@ export default function AuthContainer({ children }) {
   return (
     <section
       className={`${
-        theme === "dark" ? "bg-blob-dark text-white" : "bg-blob"
-      } grid h-[100vh] w-[100vw] place-items-center font-karla `}
+        theme === "dark"
+          ? "bg-[url('https://raw.githubusercontent.com/Shraddha-V22/images-for-projects/main/social-media-bg/bg-blobs-dark.webp')] text-white"
+          : "bg-[url('https://raw.githubusercontent.com/Shraddha-V22/images-for-projects/main/social-media-bg/bg-blobs.webp')]"
+      } grid h-[100vh] w-[100vw] place-items-center bg-cover font-karla`}
     >
       <section
         className={`${
