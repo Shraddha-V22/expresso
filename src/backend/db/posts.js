@@ -153,6 +153,21 @@ export const posts = [
   },
   {
     _id: uuid(),
+    content: "Anime : Spirited Away",
+    mediaUrl:
+      "https://res.cloudinary.com/de7oltfip/video/upload/v1688908384/FzpLmIaWYAA_X0p_hjh3hf.mp4",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    comments: [],
+    username: "shraddha__22",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
     content:
       "I'm playing Kwazy Cupcakes, I'm hydrated as hell, and I'm listening to Sheryl Crow. Ive got my own party going on.",
     likes: {
@@ -258,6 +273,21 @@ export const posts = [
   },
   {
     _id: uuid(),
+    content: "Anime : The Secret World of Arrietty",
+    mediaUrl:
+      "https://res.cloudinary.com/de7oltfip/video/upload/v1688908635/FzftzvtWIAAb4Jj_qyo9mr.mp4",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    comments: [],
+    username: "shraddha__22",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
     content: "Love. It sustains you. It's like oatmeal.",
     likes: {
       likeCount: 0,
@@ -285,6 +315,21 @@ export const posts = [
   },
   {
     _id: uuid(),
+    content: "We are thinking about something very IMPORTANT here.",
+    mediaUrl:
+      "https://res.cloudinary.com/de7oltfip/image/upload/v1688909205/a69ff35367de07d3ff04b42f8231c854_ys4exe.jpg",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    comments: [],
+    username: "sergeantamy",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
     content: "We arrested a woman today because we are feminists.",
     likes: {
       likeCount: 0,
@@ -293,6 +338,21 @@ export const posts = [
     },
     comments: [],
     username: "itsyaboijakey",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
+    content: "Anime : Kiki’s Delivery Service",
+    mediaUrl:
+      "https://res.cloudinary.com/de7oltfip/video/upload/v1688908888/Fyl-suJWIAAToYH_z8pbpk.mp4",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    comments: [],
+    username: "shraddha__22",
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
