@@ -129,7 +129,7 @@ export default function CreatePost({ modal, setOpen }) {
               setInputText(e.target.value);
             }}
             value={inputText}
-            className={`w-full resize-none bg-inherit text-sm outline-none placeholder:text-sm`}
+            className={`w-full resize-none bg-inherit px-2 text-sm outline-none placeholder:text-sm`}
             rows="2"
           />
           {media && (

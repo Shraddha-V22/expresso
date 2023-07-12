@@ -31,6 +31,7 @@ import Linkify from "react-linkify";
 import { useEffect } from "react";
 import { useTheme } from "../contexts/ThemeProvider";
 import ImgModal from "./ImgModal";
+import { componentDecorator } from "../common/componentDecorator";
 
 export default function UserPost({ userPost, isSinglePage }) {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ export default function UserPost({ userPost, isSinglePage }) {
           theme === "dark" ? "bg-mineShaftLight" : "border bg-white"
         } ${
           !isSinglePage && theme === "light" && "hover:bg-mineShaftLighter/10"
-        } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-mineShaftLight p-2 max-[390px]:w-[95vw]`}
+        } relative m-auto grid grid-cols-[auto_1fr] gap-2 rounded-md border-mineShaftLight p-2`}
       >
         <Avatar
           onClick={(e) => clickHandler(e, navigate(`/${user?._id}`))}
@@ -209,7 +210,9 @@ export default function UserPost({ userPost, isSinglePage }) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm tracking-tight">
-              <Linkify>{content}</Linkify>
+              <Linkify componentDecorator={componentDecorator}>
+                {content}
+              </Linkify>
             </p>
             {userPost?.mediaUrl && (
               <div className="max-h-[500px] w-full overflow-hidden rounded-md bg-gray-800">
