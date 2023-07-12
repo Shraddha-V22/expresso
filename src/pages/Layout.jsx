@@ -13,7 +13,7 @@ export default function Layout() {
     <section
       className={`${
         theme === "dark" && "bg-mineShaftDark text-gray-300"
-      } relative h-[100vh] gap-2 pt-1 font-karla min-[390px]:flex min-[390px]:justify-center`}
+      } relative h-[100vh] pt-1 font-karla min-[390px]:flex min-[390px]:justify-center`}
     >
       <Header />
       <section className="min-[390px]:hidden">
@@ -25,7 +25,7 @@ export default function Layout() {
       <main
         className={`${
           theme === "dark" && "bg-mineShaftDark text-gray-300"
-        } mt-[50px] max-w-[500px] flex-grow overflow-y-auto pb-[50px]`}
+        } mt-[50px] max-w-[500px] flex-grow overflow-y-auto px-2 pb-[50px]`}
       >
         <Outlet />
       </main>

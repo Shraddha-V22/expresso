@@ -24,6 +24,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTheme } from "../contexts/ThemeProvider";
 import Avatar from "../components/Avatar";
 import ClipLoader from "react-spinners/ClipLoader";
+import { formatPostDate } from "../common/formatPostDate";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 export function UserProfile() {
   const {
@@ -36,11 +38,10 @@ export function UserProfile() {
   const { theme } = useTheme();
   const { userId } = useParams();
   const [userProfile, setUserProfile] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getUserProfile = async (id) => {
     try {
-      setLoading(true);
       const { data, status } = await getSingleUserService(id);
       if (status === 200) {
         setUserProfile(data.user);
@@ -59,7 +60,7 @@ export function UserProfile() {
   return !loading ? (
     <section>
       <header>
-        {location?.pathname === `/${userProfile?._id}` ? (
+        {location?.pathname === `/${userId}` ? (
           <div className="flex items-center gap-4 border-b p-2">
             <button
               className={`h-6 w-6 ${
@@ -264,19 +265,27 @@ export default function Profile() {
             </p>
             <h3 className="text-sm">@{userProfile?.username}</h3>
           </div>
-          {userProfile?.bio && <p className="text-xs">{userProfile?.bio}</p>}
-          {userProfile?.portfolio && (
-            <a
-              href={userProfile?.portfolio}
-              target="_blank"
-              className="flex items-center gap-1"
-            >
-              <FontAwesomeIcon icon={faLink} className="text-xs" />
-              <p className="text-xs hover:underline">
-                {userProfile?.portfolio}
-              </p>
-            </a>
-          )}
+          <div className={`flex flex-col gap-1 text-gray-400`}>
+            {userProfile?.bio && (
+              <p className={` text-xs`}>{userProfile?.bio}</p>
+            )}
+            {userProfile?.portfolio && (
+              <a
+                href={userProfile?.portfolio}
+                target="_blank"
+                className="flex items-center gap-1"
+              >
+                <FontAwesomeIcon icon={faLink} className="text-xs" />
+                <p className="text-xs hover:underline">
+                  {userProfile?.portfolio}
+                </p>
+              </a>
+            )}
+            <p className="flex items-center gap-2 text-xs hover:underline">
+              <FontAwesomeIcon icon={faCalendar} className="text-xs" />
+              {formatPostDate(userProfile?.createdAt)}
+            </p>
+          </div>
           <div className="flex gap-4 text-sm">
             <p
               className="cursor-pointer"
