@@ -21,6 +21,7 @@ import Bookmarks from "./pages/Bookmarks";
 import Post from "./pages/Post";
 import ProfileSetup from "./pages/ProfileSetup";
 import { Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 function AppRouter() {
   const router = createBrowserRouter(
@@ -50,7 +51,22 @@ function AppRouter() {
 }
 
 function App() {
-  return <AppRouter />;
+  return (
+    <>
+      <AppRouter />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </>
+  );
 }
 
 export default App;

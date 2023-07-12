@@ -4,6 +4,7 @@ import { loginService, signUpService } from "../services/authServices";
 import { useReducer } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { AUTH } from "../common/reducerTypes";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 const initialUser = {
@@ -29,6 +30,11 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.error(error);
+      if (error.response.status === 422) {
+        toast.error("User already exists! Do you want to login instead?");
+      } else {
+        toast.error("Something went wrong!");
+      }
     }
   };
 
@@ -44,6 +50,13 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.error(error);
+      if (error.response.status === 401) {
+        toast.error("Invalid Email or Password entered!");
+      } else if (error.response.status === 404) {
+        toast.error("User not fuond. Please Sign Up first!");
+      } else {
+        toast.error("Something went wrong!");
+      }
     }
   };
 

@@ -33,17 +33,6 @@ export default function Layout() {
         <DesktopSearch />
         <FollowSuggestions />
       </section>
-      <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </section>
   );
 }
