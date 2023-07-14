@@ -62,9 +62,7 @@ export default function Registration() {
       return;
     }
     if (!validatePassword(signUpCreds.password)) {
-      setErrorMsg(
-        "Password: 8 characters, 1 number, 1 letter, 1 unique character (!#$%&?)"
-      );
+      setErrorMsg("Password: 1 number, 1 letter, 1 unique character (!#$%&?)");
       return;
     }
     if (
@@ -129,7 +127,9 @@ export default function Registration() {
           )}
           <p className="text-xs">Show Password</p>
         </div>
-        {errorMsg && <p className="text-xs text-red-500">{errorMsg}</p>}
+        {errorMsg && (
+          <p className="max-w-[200px] text-xs text-red-500">{errorMsg}</p>
+        )}
         <button
           className="h-8 rounded-md border-[1px] px-2 text-sm"
           type="button"

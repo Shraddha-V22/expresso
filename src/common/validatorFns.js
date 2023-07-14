@@ -11,8 +11,6 @@ export const validateUsername = (input) => {
 };
 
 export const validatePassword = (input) => {
-  const regexPwd = new RegExp(
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-  );
+  const regexPwd = new RegExp(/^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/);
   return regexPwd.test(input) && input.length !== 0;
 };
